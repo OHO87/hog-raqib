@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-name="hog_raqib.RaqibAppRoot">
+  <MainComponentsContainer/>
+  <div class="raqib-app" dir="rtl">
+
+    <header class="raqib-bar">
+      <div class="raqib-bar-nav">
+        <div class="raqib-brand" role="button" t-on-click="goHome">
+          <i class="fa fa-check-square-o"/> <span>رقيب</span>
+        </div>
+        <button t-if="state.view !== 'home'" class="raqib-bar-btn" t-on-click="goHome">
+          <i class="fa fa-arrow-right"/> عودة
+        </button>
+      </div>
+      <div class="raqib-bar-user">
+        <span t-esc="state.user_name"/>
+        <span t-if="state.is_manager" class="badge text-bg-light">مدير</span>
+        <a class="raqib-bar-btn" href="/odoo"><i class="fa fa-sign-out"/> Odoo</a>
+      </div>
+    </header>
+
+    <div t-if="state.loading" class="raqib-loading">
+      <i class="fa fa-circle-o-notch fa-spin"/> جارٍ التحميل…
+    </div>
+
+    <main t-else="" class="raqib-main">
+
+      <!-- ════ الرئيسية ════ -->
+      <div t-if="state.view === 'home'">
+        <div class="raqib-kpis" t-if="state.kpis">
+          <div class="raqib-kpi">
+            <span class="raqib-kpi-icon"><i class="fa fa-check-square-o"/></span>
+            <strong t-esc="state.kpis.active_audits"/>
+            <span class="raqib-kpi-label">تدقيقات نشطة</span>
+          </div>
+          <div class="raqib-kpi is-warn">
+            <span class="raqib-kpi-icon"><i class="fa fa-list-ol"/></span>
+            <strong t-esc="state.kpis.pending_lines"/>
+            <span class="raqib-kpi-label">بنود بانتظار الفحص</span>
+          </div>
+          <div class="raqib-kpi is-bad">
+            <span class="raqib-kpi-icon"><i class="fa fa-flag-o"/></span>
+            <strong t-esc="state.kpis.open_findings"/>
+            <span class="raqib-kpi-label">ملاحظات مفتوحة</span>
+          </div>
+        </div>
+
+        <h3 class="raqib-sec-title"><span class="raqib-title-bar"/> التدقيقات</h3>
+        <div class="raqib-cards">
+          <button class="raqib-card raqib-card-new" t-on-click="openNew">
+            <span class="raqib-card-new-icon"><i class="fa fa-plus"/></span>
+            <strong>تدقيق جديد</strong>
+            <small>عميل + مواصفة + نوع الزيارة — والبنود تتولد وحدها</small>
+          </button>
+          <button t-foreach="state.audits" t-as="a" t-key="a.id"
+                  class="raqib-card" t-on-click="() => this.openAudit(a.id)">
+            <div class="raqib-card-top">
+              <strong t-esc="a.client"/>
+              <span t-attf-class="raqib-state is-{{a.state}}" t-esc="a.state_label"/>
+            </div>
+            <div class="raqib-card-mid">
+              <span class="raqib-chip"><i class="fa fa-certificate"/> <t t-esc="a.standard"/></span>
+              <span class="raqib-chip" t-esc="a.type_label"/>
+              <span class="raqib-chip is-ji">JI <t t-esc="a.name"/></span>
+            </div>
+            <div class="raqib-progress">
+              <div class="raqib-progress-fill" t-attf-style="width: {{a.progress}}%"/>
+            </div>
+            <div class="raqib-card-foot">
+              <span><t t-esc="a.progress"/>% مكتمل</span>
+              <span t-if="a.findings" class="raqib-findings-badge">
+                <i class="fa fa-flag"/> <t t-esc="a.findings"/> ملاحظة
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- ════ إنشاء سريع ════ -->
+      <div t-if="state.view === 'new'" class="raqib-new">
+        <h2><i class="fa fa-plus-circle"/> تدقيق جديد</h2>
+        <div class="raqib-panel">
+          <label>رقم الزيارة (JI)</label>
+          <input class="form-control" t-model="state.form.name" placeholder="مثال: 216123"/>
+          <label>العميل</label>
+          <select class="form-select" t-model.number="state.form.client_id">
+            <option value="0">— عميل جديد —</option>
+            <option t-foreach="state.clients" t-as="c" t-key="c.id"
+                    t-att-value="c.id" t-esc="c.name"/>
+          </select>
+          <input t-if="!state.form.client_id" class="form-control"
+                 t-model="state.form.client_name" placeholder="اسم العميل الجديد"/>
+          <label>المواصفة</label>
+          <select class="form-select" t-model.number="state.form.standard_id">
+            <option t-foreach="state.standards" t-as="s" t-key="s.id"
+                    t-att-value="s.id" t-esc="s.name"/>
+          </select>
+          <label>نوع الزيارة</label>
+          <div class="raqib-seg">
+            <button t-attf-class="raqib-seg-btn {{state.form.audit_type === 'stage1' ? 'active' : ''}}"
+                    t-on-click="() => state.form.audit_type = 'stage1'">Stage 1</button>
+            <button t-attf-class="raqib-seg-btn {{state.form.audit_type === 'stage2' ? 'active' : ''}}"
+                    t-on-click="() => state.form.audit_type = 'stage2'">Stage 2</button>
+            <button t-attf-class="raqib-seg-btn {{state.form.audit_type === 'surveillance' ? 'active' : ''}}"
+                    t-on-click="() => state.form.audit_type = 'surveillance'">مراقبة</button>
+            <button t-attf-class="raqib-seg-btn {{state.form.audit_type === 'recert' ? 'active' : ''}}"
+                    t-on-click="() => state.form.audit_type = 'recert'">إعادة اعتماد</button>
+          </div>
+          <button class="btn raqib-btn-primary" t-att-disabled="state.saving"
+                  t-on-click="createAudit">
+            <i class="fa fa-bolt"/> إنشاء وتوليد البنود
+          </button>
+        </div>
+      </div>
+
+      <!-- ════ قمرة التدقيق ════ -->
+      <div t-if="state.view === 'audit' and state.audit" class="raqib-audit">
+
+        <div class="raqib-audit-head">
+          <div>
+            <h2 t-esc="state.audit.client"/>
+            <div class="raqib-card-mid">
+              <span class="raqib-chip"><i class="fa fa-certificate"/> <t t-esc="state.audit.standard"/></span>
+              <span class="raqib-chip" t-esc="state.audit.type_label"/>
+              <span class="raqib-chip is-ji">JI <t t-esc="state.audit.name"/></span>
+            </div>
+          </div>
+          <div class="raqib-audit-head-kpi">
+            <div class="raqib-progress big">
+              <div class="raqib-progress-fill" t-attf-style="width: {{state.audit.progress}}%"/>
+            </div>
+            <span><t t-esc="state.audit.progress"/>% · <t t-esc="state.audit.findings"/> ملاحظة</span>
+          </div>
+        </div>
+
+        <div class="raqib-tabs">
+          <button t-attf-class="raqib-tab {{state.tab === 'lines' ? 'active' : ''}}"
+                  t-on-click="() => state.tab = 'lines'">
+            <i class="fa fa-list-ol"/> البنود
+          </button>
+          <button t-attf-class="raqib-tab {{state.tab === 'findings' ? 'active' : ''}}"
+                  t-on-click="() => state.tab = 'findings'">
+            <i class="fa fa-flag-o"/> الملاحظات
+            <span t-if="state.findings.length" class="raqib-tab-count" t-esc="state.findings.length"/>
+          </button>
+          <button t-attf-class="raqib-tab {{state.tab === 'summary' ? 'active' : ''}}"
+                  t-on-click="() => state.tab = 'summary'">
+            <i class="fa fa-file-word-o"/> الخلاصة والتقرير
+          </button>
+        </div>
+
+        <!-- ════ تبويب البنود ════ -->
+        <div t-if="state.tab === 'lines'">
+          <div class="raqib-filters">
+            <button t-attf-class="raqib-chipbtn {{state.filter === 'all' ? 'active' : ''}}"
+                    t-on-click="() => state.filter = 'all'">الكل</button>
+            <button t-attf-class="raqib-chipbtn {{state.filter === 'pending' ? 'active' : ''}}"
+                    t-on-click="() => state.filter = 'pending'">المتبقي</button>
+            <button t-attf-class="raqib-chipbtn {{state.filter === 'done' ? 'active' : ''}}"
+                    t-on-click="() => state.filter = 'done'">المفحوص</button>
+            <button t-attf-class="raqib-chipbtn {{state.filter === 'findings' ? 'active' : ''}}"
+                    t-on-click="() => state.filter = 'findings'">بملاحظات</button>
+          </div>
+
+          <div t-foreach="filteredLines" t-as="l" t-key="l.id"
+               t-attf-class="raqib-line is-{{resultCls(l.result)}}">
+            <div class="raqib-line-head" role="button" t-on-click="() => this.toggleLine(l.id)">
+              <span class="raqib-line-no" t-esc="l.number"/>
+              <div class="raqib-line-title">
+                <strong t-esc="l.title"/>
+                <small t-esc="l.evidence"/>
+              </div>
+              <span t-attf-class="raqib-line-state is-{{resultCls(l.result)}}">
+                <t t-esc="resultLabel(l.result)"/>
+                <t t-if="l.finding_number"> · #<t t-esc="l.finding_number"/></t>
+              </span>
+              <i t-attf-class="fa {{state.openLine === l.id ? 'fa-chevron-up' : 'fa-chevron-down'}}"/>
+            </div>
+
+            <div t-if="state.openLine === l.id" class="raqib-line-body">
+              <div class="raqib-hintbox" t-if="l.hint">
+                <i class="fa fa-lightbulb-o"/>
+                <div>
+                  <strong t-if="l.input_hint" t-esc="l.input_hint"/>
+                  <p t-esc="l.hint"/>
+                </div>
+              </div>
+              <div class="raqib-line-fields">
+                <div>
+                  <label>مرجع الوثيقة / السجل</label>
+                  <input class="form-control" t-att-value="l.doc_reference"
+                         placeholder="مثال: SWOT rev.3"
+                         t-on-change="(ev) => this.saveLineField(l, 'doc_reference', ev.target.value)"/>
+                </div>
+                <div>
+                  <label>تاريخ آخر مراجعة</label>
+                  <input type="date" class="form-control" t-att-value="l.last_review_date"
+                         t-on-change="(ev) => this.saveLineField(l, 'last_review_date', ev.target.value)"/>
+                </div>
+              </div>
+              <div class="raqib-kb" t-if="state.kbFor === l.id">
+                <div class="raqib-kb-head">
+                  <i class="fa fa-database"/> أمثلة جاهزة من تدقيقات سابقة
+                  <small>— الأقرب لقطاع العميل أولًا · عدّل ما بين [الأقواس] فقط</small>
+                  <i t-if="state.kbLoading" class="fa fa-circle-o-notch fa-spin"/>
+                </div>
+                <div class="raqib-seg raqib-kb-tabs">
+                  <button t-foreach="kbKinds" t-as="k" t-key="k.key"
+                          t-attf-class="raqib-seg-btn is-{{k.cls}} {{state.kbTab === k.key ? 'active' : ''}}"
+                          t-on-click="() => state.kbTab = k.key">
+                    <i t-attf-class="fa {{k.icon}}"/> <t t-esc="k.label"/>
+                    <span class="raqib-kb-count" t-esc="kbCount(k.key)"/>
+                  </button>
+                </div>
+                <div class="raqib-kb-list">
+                  <div t-foreach="state.kb[state.kbTab] || []" t-as="ex" t-key="ex.id"
+                       class="raqib-kb-item">
+                    <button class="raqib-kb-add" title="أدرج في ملاحظة المدقق"
+                            t-on-click="() => this.useExample(l, ex)">
+                      <i class="fa fa-plus"/> أدرج
+                    </button>
+                    <p t-esc="ex.text"/>
+                    <span t-if="ex.same" class="raqib-kb-same">نفس القطاع</span>
+                    <span t-elif="ex.ea" class="raqib-kb-ea">EA <t t-esc="ex.ea"/></span>
+                  </div>
+                  <div t-if="!state.kbLoading and !kbCount(state.kbTab)" class="raqib-kb-empty">
+                    لا أمثلة محفوظة لهذا القسم بعد
+                  </div>
+                </div>
+              </div>
+              <label>ملاحظة المدقق (تصبح نص الملاحظة تلقائياً)</label>
+              <textarea class="form-control" t-att-value="l.note"
+                        t-on-change="(ev) => this.saveLineField(l, 'note', ev.target.value)"/>
+              <div class="raqib-results">
+                <button t-foreach="resultBtns" t-as="b" t-key="b.key"
+                        t-attf-class="raqib-result-btn is-{{b.cls}} {{l.result === b.key ? 'active' : ''}}"
+                        t-on-click="() => this.setResult(l, b.key)">
+                  <i t-attf-class="fa {{b.icon}}"/> <t t-esc="b.label"/>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ تبويب الملاحظات ════ -->
+        <div t-if="state.tab === 'findings'" class="raqib-findings">
+          <div t-if="!state.findings.length" class="raqib-empty">
+            <i class="fa fa-check-circle-o"/> لا ملاحظات حتى الآن
+          </div>
+          <div t-foreach="state.findings" t-as="f" t-key="f.id"
+               t-attf-class="raqib-finding is-{{f.classification}}">
+            <span class="raqib-finding-no" t-esc="f.number"/>
+            <div class="raqib-finding-body">
+              <strong t-esc="f.classification_label"/>
+              <small t-esc="f.clause"/>
+              <p t-esc="f.description"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ تبويب الخلاصة والتقرير ════ -->
+        <div t-if="state.tab === 'summary'" class="raqib-summary">
+          <div class="raqib-panel">
+            <h3 class="raqib-sec-title"><span class="raqib-title-bar"/> أيام التدقيق</h3>
+            <div class="raqib-line-fields">
+              <div>
+                <label>المخططة</label>
+                <input type="number" step="0.5" class="form-control"
+                       t-att-value="state.audit.mandays_planned"
+                       t-on-change="(ev) => this.saveAuditField('mandays_planned', parseFloat(ev.target.value) || 0)"/>
+              </div>
+              <div>
+                <label>الفعلية</label>
+                <input type="number" step="0.5" class="form-control"
+                       t-att-value="state.audit.mandays_actual"
+                       t-on-change="(ev) => this.saveAuditField('mandays_actual', parseFloat(ev.target.value) || 0)"/>
+              </div>
+              <div>
+                <label>الزيارة القادمة (شهر/سنة)</label>
+                <input class="form-control" t-att-value="state.audit.next_visit_month"
+                       placeholder="مثال: 11/2026"
+                       t-on-change="(ev) => this.saveAuditField('next_visit_month', ev.target.value)"/>
+              </div>
+            </div>
+            <div class="raqib-hintbox is-action">
+              <i class="fa fa-magic"/>
+              <div>
+                <strong>الإجراء المقترح من العميل (تلقائي من شدة الملاحظات)</strong>
+                <p t-esc="state.audit.client_action_label"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="raqib-panel">
+            <h3 class="raqib-sec-title"><span class="raqib-title-bar"/> تقرير URS</h3>
+            <p>ارفع ملف Client Report كما ولّده CMS — يعبأ من بيانات هذا التدقيق
+               (الأيام، الفريق، الموقع، العمليات، البنود، الملاحظات) وينزل جاهزاً.</p>
+            <label class="btn raqib-btn-primary raqib-upload">
+              <i class="fa fa-file-word-o"/>
+              <t t-if="state.saving">جارٍ التوليد…</t>
+              <t t-else="">رفع القالب وتوليد التقرير</t>
+              <input type="file" accept=".docx" t-on-change="pickReport"
+                     t-att-disabled="state.saving"/>
+            </label>
+            <p t-if="state.audit.report_name" class="raqib-report-name">
+              <i class="fa fa-check"/> آخر تقرير: <t t-esc="state.audit.report_name"/>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</t>
+
+</templates>

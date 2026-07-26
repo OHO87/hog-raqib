@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="index" name="Raqib App">
+        <t t-call="web.layout">
+            <t t-set="html_data" t-value="{'lang': 'ar', 'dir': 'rtl'}"/>
+            <t t-set="title">رقيب</t>
+            <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+                <script type="text/javascript">
+                    odoo = Object.assign(window.odoo || {}, {csrf_token: "<t t-esc='request.csrf_token(None)'/>"});
+                    odoo.__session_info__ = <t t-out="session_info"/>;
+                </script>
+                <t t-call-assets="hog_raqib.assets" t-js="false"/>
+            </t>
+            <t t-set="body_classname" t-value="'o_raqib_app'"/>
+            <t t-call-assets="hog_raqib.assets" t-css="false"/>
+        </t>
+    </template>
+</odoo>

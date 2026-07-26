@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============ 4 سياق المنظمة ============ -->
+    <record id="c9001_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">4</field>
+        <field name="name">سياق المنظمة</field>
+        <field name="sequence">40</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_4_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_4"/>
+        <field name="number">4.1</field>
+        <field name="name">فهم المنظمة وسياقها</field>
+        <field name="sequence">41</field>
+        <field name="requirement">تحديد القضايا الداخلية والخارجية ذات الصلة بغرض المنظمة وتوجهها الاستراتيجي والمؤثرة على قدرتها على تحقيق نتائج نظام إدارة الجودة، ومراقبة ومراجعة هذه القضايا.</field>
+        <field name="evidence_expected">تحليل سوات (SWOT) أو PESTEL محدث ومعتمد، يظهر القضايا الداخلية (قوة/ضعف) والخارجية (فرص/تهديدات)، مع دليل على مراجعته الدورية (عادة ضمن مراجعة الإدارة).</field>
+        <field name="evidence_hint">أمثلة نقاط قوة حسب النطاق: كوادر ذات خبرة طويلة، موقع جغرافي قريب من العملاء، حصة سوقية مستقرة، بنية تحتية حديثة. أمثلة ضعف: اعتماد على موردين محدودين، دوران عمالة مرتفع، أنظمة معلومات قديمة. فرص: توسع سوقي/تشريعات داعمة. تهديدات: منافسة سعرية، تقلب أسعار المواد، نقص العمالة الماهرة.</field>
+        <field name="auditor_input_hint">حدد تاريخ آخر مراجعة للتحليل ومرجعه</field>
+    </record>
+    <record id="c9001_4_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_4"/>
+        <field name="number">4.2</field>
+        <field name="name">فهم احتياجات وتوقعات الأطراف المعنية</field>
+        <field name="sequence">42</field>
+        <field name="requirement">تحديد الأطراف المعنية ذات الصلة بنظام إدارة الجودة ومتطلباتها، ومراقبة ومراجعة المعلومات الخاصة بها.</field>
+        <field name="evidence_expected">سجل الأطراف المعنية (عملاء، موردون، جهات رقابية، موظفون، ملاك...) مع احتياجات/توقعات كل طرف وطريقة تلبيتها، وتاريخ مراجعة.</field>
+        <field name="evidence_hint">أطراف نموذجية: العملاء (جودة/تسليم)، الجهات الرقابية (تراخيص/اشتراطات)، الموردون (شروط دفع واضحة)، الموظفون (بيئة عمل وتدريب)، الجيران/المجتمع إن كان النشاط صناعياً.</field>
+        <field name="auditor_input_hint">حدد تاريخ آخر مراجعة للسجل</field>
+    </record>
+    <record id="c9001_4_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_4"/>
+        <field name="number">4.3</field>
+        <field name="name">تحديد نطاق نظام إدارة الجودة</field>
+        <field name="sequence">43</field>
+        <field name="requirement">تحديد حدود وقابلية تطبيق النظام لوضع نطاقه، مع توثيق النطاق وتبرير أي متطلب غير قابل للتطبيق.</field>
+        <field name="evidence_expected">وثيقة نطاق معتمدة (عادة في دليل الجودة) مطابقة لنص النطاق المتقدم به للشهادة، مع مبررات الاستثناءات (مثل 8.3 التصميم إن لم ينطبق).</field>
+        <field name="evidence_hint">تحقق أن النطاق المكتوب = نطاق طلب الشهادة في CMS حرفياً، وأن الاستثناء مبرر منطقياً (شركة تجارية تستثني التصميم مثلاً).</field>
+        <field name="auditor_input_hint">قارن نص النطاق مع CMS وسجل المرجع</field>
+    </record>
+    <record id="c9001_4_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_4"/>
+        <field name="number">4.4</field>
+        <field name="name">نظام إدارة الجودة وعملياته</field>
+        <field name="sequence">44</field>
+        <field name="requirement">إنشاء وتنفيذ وصيانة وتحسين النظام وعملياته: المدخلات والمخرجات، التتابع والتفاعل، المعايير والطرق، الموارد، المسؤوليات، المخاطر والفرص، التقييم والتحسين.</field>
+        <field name="evidence_expected">خريطة عمليات معتمدة تظهر تتابع وتفاعل العمليات، وبطاقات/إجراءات لكل عملية جوهرية بمؤشراتها ومسؤوليها.</field>
+        <field name="evidence_hint">عمليات نموذجية: المبيعات، المشتريات، الإنتاج/تقديم الخدمة، المستودعات، الصيانة، الموارد البشرية، الجودة. تأكد أن مسميات العمليات هي مسميات العميل نفسه — تُنقل حرفياً لجدول Fundamental Processes.</field>
+        <field name="auditor_input_hint">سجل مرجع خريطة العمليات وتاريخ اعتمادها</field>
+    </record>
+
+    <!-- ============ 5 القيادة ============ -->
+    <record id="c9001_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">5</field>
+        <field name="name">القيادة</field>
+        <field name="sequence">50</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_5_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_5"/>
+        <field name="number">5.1</field>
+        <field name="name">القيادة والالتزام</field>
+        <field name="sequence">51</field>
+        <field name="requirement">إظهار الإدارة العليا القيادة والالتزام تجاه النظام وتجاه التركيز على العميل.</field>
+        <field name="evidence_expected">مقابلة الإدارة العليا + أدلة داعمة: محاضر مراجعة الإدارة، توفير الموارد، تعميم السياسة والأهداف، متابعة رضا العملاء وشكاواهم.</field>
+        <field name="evidence_hint">أسئلة مقترحة للمدير العام: كيف تتابع أداء الجودة؟ ما آخر قرار اتخذته بناء على شكوى عميل؟ ما الموارد التي وفرتها للنظام هذه السنة؟</field>
+        <field name="auditor_input_hint">سجل من قابلت وأبرز ما استمعت إليه</field>
+    </record>
+    <record id="c9001_5_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_5"/>
+        <field name="number">5.2</field>
+        <field name="name">سياسة الجودة</field>
+        <field name="sequence">52</field>
+        <field name="requirement">وضع سياسة جودة مناسبة لغرض المنظمة وسياقها، تتضمن الالتزام بتلبية المتطلبات والتحسين المستمر، موثقة ومبلغة ومتاحة.</field>
+        <field name="evidence_expected">سياسة جودة معتمدة وموقعة ومؤرخة، معلقة/متاحة، والعاملون على علم بمضمونها.</field>
+        <field name="evidence_hint">افحص: هل تناسب السياسة حجم ونشاط العميل أم نص عام منسوخ؟ اسأل موظفاً عشوائياً عن معرفته بها. تحقق من تاريخ الإصدار والمراجعة.</field>
+        <field name="auditor_input_hint">سجل تاريخ اعتماد/مراجعة السياسة</field>
+    </record>
+    <record id="c9001_5_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_5"/>
+        <field name="number">5.3</field>
+        <field name="name">الأدوار والمسؤوليات والصلاحيات التنظيمية</field>
+        <field name="sequence">53</field>
+        <field name="requirement">إسناد وتبليغ المسؤوليات والصلاحيات للأدوار ذات الصلة، بما فيها ضمان مطابقة النظام ورفع تقارير الأداء للإدارة العليا.</field>
+        <field name="evidence_expected">هيكل تنظيمي معتمد + بطاقات وصف وظيفي (خاصة ممثل الإدارة/منسق الجودة) + تعميم رسمي بالمسؤوليات.</field>
+        <field name="evidence_hint">تحقق أن الهيكل يعكس الواقع الفعلي (اسأل: من يرفع تقارير أداء النظام للإدارة؟) وأن بطاقات الوصف موقعة بالاستلام.</field>
+        <field name="auditor_input_hint">سجل تاريخ اعتماد الهيكل التنظيمي</field>
+    </record>
+
+    <!-- ============ 6 التخطيط ============ -->
+    <record id="c9001_6" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">6</field>
+        <field name="name">التخطيط</field>
+        <field name="sequence">60</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_6_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_6"/>
+        <field name="number">6.1</field>
+        <field name="name">إجراءات التعامل مع المخاطر والفرص</field>
+        <field name="sequence">61</field>
+        <field name="requirement">تحديد المخاطر والفرص الواجب معالجتها انطلاقاً من قضايا 4.1 ومتطلبات 4.2، والتخطيط لإجراءات معالجتها وتقييم فعاليتها.</field>
+        <field name="evidence_expected">سجل مخاطر وفرص محدث، مرتبط بقضايا السياق (4.1)، لكل خطر: تقييم (احتمال × أثر)، إجراء معالجة، مسؤول، وحالة تنفيذ.</field>
+        <field name="evidence_hint">مخاطر نموذجية: انقطاع مورد رئيسي، تعطل معدة حرجة، فقدان كفاءات، تأخر تحصيل. فرص: أتمتة عملية، دخول سوق جديد، شهادة إضافية تفتح عملاء حكوميين. تأكد من الربط المنطقي مع SWOT.</field>
+        <field name="auditor_input_hint">حدد تاريخ آخر مراجعة لسجل المخاطر</field>
+    </record>
+    <record id="c9001_6_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_6"/>
+        <field name="number">6.2</field>
+        <field name="name">أهداف الجودة والتخطيط لتحقيقها</field>
+        <field name="sequence">62</field>
+        <field name="requirement">وضع أهداف جودة قابلة للقياس ومتسقة مع السياسة عند الوظائف والمستويات والعمليات ذات الصلة، مع خطط تحقيقها (ماذا، من، متى، الموارد، التقييم).</field>
+        <field name="evidence_expected">أهداف SMART موثقة مع خطة عمل لكل هدف ومتابعة دورية (نتائج/نسب إنجاز)، لا مجرد شعارات.</field>
+        <field name="evidence_hint">أمثلة: رفع رضا العملاء من 82% إلى 90% خلال 2026، خفض مرتجعات الإنتاج إلى أقل من 2%، تقليص زمن تلبية الطلب من 5 أيام إلى 3. تحقق من وجود قياس فعلي وليس أهدافاً بلا بيانات.</field>
+        <field name="auditor_input_hint">سجل آخر قياس للأهداف وتاريخه</field>
+    </record>
+    <record id="c9001_6_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_6"/>
+        <field name="number">6.3</field>
+        <field name="name">التخطيط للتغييرات</field>
+        <field name="sequence">63</field>
+        <field name="requirement">تنفيذ التغييرات على النظام بطريقة مخططة مع مراعاة الغرض والعواقب وسلامة النظام وتوافر الموارد وإعادة إسناد المسؤوليات.</field>
+        <field name="evidence_expected">آلية موثقة لإدارة التغيير (نموذج طلب تغيير) وأمثلة فعلية إن حدثت تغييرات (خط إنتاج جديد، نظام ERP، موقع جديد).</field>
+        <field name="evidence_hint">اسأل: ما آخر تغيير جوهري حدث؟ (توسعة، معدة جديدة، تغيير مورد رئيسي) واطلب دليل تخطيطه. إن لم توجد تغييرات، يكفي وجود الآلية.</field>
+        <field name="auditor_input_hint">سجل مثال تغيير حديث أو أكد وجود الآلية</field>
+    </record>
+
+    <!-- ============ 7 الدعم ============ -->
+    <record id="c9001_7" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">7</field>
+        <field name="name">الدعم</field>
+        <field name="sequence">70</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_7_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_7"/>
+        <field name="number">7.1</field>
+        <field name="name">الموارد (الأفراد، البنية التحتية، بيئة العمل، موارد الرصد والقياس، المعرفة التنظيمية)</field>
+        <field name="sequence">71</field>
+        <field name="requirement">تحديد وتوفير الموارد اللازمة: أفراد، بنية تحتية، بيئة تشغيل العمليات، موارد رصد وقياس صالحة ومعايرة، ومعرفة تنظيمية محفوظة.</field>
+        <field name="evidence_expected">خطة/سجل صيانة البنية التحتية، سجل معايرة أجهزة القياس بشهادات سارية، وقياسات بيئة العمل إن كانت مؤثرة (حرارة/إضاءة/ضجيج).</field>
+        <field name="evidence_hint">ركز حسب النشاط: مصنع → معايرة الموازين والعدادات وشهاداتها من جهة معتمدة؛ خدمات → أنظمة المعلومات والنسخ الاحتياطي. تحقق من ملصقات المعايرة على الأجهزة ميدانياً.</field>
+        <field name="auditor_input_hint">سجل عينة أجهزة فحصتها وتواريخ معايرتها</field>
+    </record>
+    <record id="c9001_7_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_7"/>
+        <field name="number">7.2</field>
+        <field name="name">الكفاءة</field>
+        <field name="sequence">72</field>
+        <field name="requirement">تحديد الكفاءة اللازمة، وضمانها بالتعليم/التدريب/الخبرة، واتخاذ إجراءات لاكتسابها وتقييم فعاليتها، مع الاحتفاظ بمعلومات موثقة.</field>
+        <field name="evidence_expected">مصفوفة كفاءات، خطة تدريب سنوية، سجلات تدريب منفذة مع تقييم فعالية التدريب، وملفات موظفين بشهاداتهم.</field>
+        <field name="evidence_hint">خذ عينة 2-3 موظفين بوظائف مؤثرة على الجودة (مشغل معدة، فاحص جودة) وتتبع: متطلبات الوظيفة ← مؤهلاته الفعلية ← تدريبه ← تقييم فعاليته.</field>
+        <field name="auditor_input_hint">سجل أسماء العينة المفحوصة</field>
+    </record>
+    <record id="c9001_7_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_7"/>
+        <field name="number">7.3</field>
+        <field name="name">التوعية</field>
+        <field name="sequence">73</field>
+        <field name="requirement">توعية العاملين بسياسة الجودة والأهداف ذات الصلة ومساهمتهم في فعالية النظام وتبعات عدم المطابقة.</field>
+        <field name="evidence_expected">سجلات جلسات توعية/تعميمات + الأهم: مقابلات ميدانية تثبت وعي العاملين الفعلي.</field>
+        <field name="evidence_hint">اسأل عاملاً في خط الإنتاج: ماذا يحدث لو خرج منتج غير مطابق من عندك؟ ما هدف قسمك هذه السنة؟ الإجابة العملية تكفي — لا يشترط الحفظ الحرفي.</field>
+        <field name="auditor_input_hint">سجل خلاصة المقابلات الميدانية</field>
+    </record>
+    <record id="c9001_7_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_7"/>
+        <field name="number">7.4</field>
+        <field name="name">الاتصال</field>
+        <field name="sequence">74</field>
+        <field name="requirement">تحديد الاتصالات الداخلية والخارجية ذات الصلة بالنظام: ماذا ومتى ومع من وكيف ومن يتصل.</field>
+        <field name="evidence_expected">مصفوفة/خطة اتصال داخلي وخارجي، وأدلة تنفيذ: محاضر اجتماعات دورية، تعاميم، لوحات إعلانات، مجموعات عمل.</field>
+        <field name="evidence_hint">تحقق من قنوات فعلية: اجتماع إنتاج يومي/أسبوعي بمحاضر، آلية إبلاغ العملاء بتأخر التسليم، قناة تواصل مع الجهات الرقابية.</field>
+        <field name="auditor_input_hint">سجل عينة محاضر اطلعت عليها</field>
+    </record>
+    <record id="c9001_7_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_7"/>
+        <field name="number">7.5</field>
+        <field name="name">المعلومات الموثقة</field>
+        <field name="sequence">75</field>
+        <field name="requirement">إنشاء وتحديث وضبط المعلومات الموثقة المطلوبة: التعريف، الشكل، المراجعة والاعتماد، الإتاحة، الحماية، التوزيع، التخزين، ضبط التغييرات، الاحتفاظ والإتلاف.</field>
+        <field name="evidence_expected">إجراء ضبط وثائق وسجلات + قائمة وثائق رئيسية (Master List) بإصدارات سارية، وعدم تداول نسخ ملغاة في المواقع.</field>
+        <field name="evidence_hint">اختبار ميداني سريع: خذ وثيقة من موقع العمل وقارن رقم إصدارها مع القائمة الرئيسية. تحقق من وجود آلية للنسخ الإلكترونية وصلاحيات التعديل.</field>
+        <field name="auditor_input_hint">سجل الوثائق المعاينة وإصداراتها</field>
+    </record>
+
+    <!-- ============ 8 التشغيل ============ -->
+    <record id="c9001_8" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">8</field>
+        <field name="name">التشغيل</field>
+        <field name="sequence">80</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_8_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.1</field>
+        <field name="name">التخطيط والضبط التشغيلي</field>
+        <field name="sequence">81</field>
+        <field name="requirement">تخطيط وتنفيذ وضبط العمليات اللازمة لتلبية متطلبات المنتجات والخدمات، وضبط التغييرات المخططة ومراجعة عواقب غير المقصودة، وضبط العمليات المسندة خارجياً.</field>
+        <field name="evidence_expected">خطط جودة/أوامر عمل تظهر معايير القبول لكل مرحلة، وضبط العمليات المسندة خارجياً (مقاولي الباطن).</field>
+        <field name="evidence_hint">تتبع أمر عمل واحد من الاستلام حتى التسليم وتحقق من اكتمال نقاط الضبط. إن وجد إسناد خارجي (نقل، معالجة حرارية، فحص خارجي) تحقق من ضبطه.</field>
+        <field name="auditor_input_hint">سجل رقم أمر العمل المتتبع</field>
+    </record>
+    <record id="c9001_8_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.2</field>
+        <field name="name">متطلبات المنتجات والخدمات</field>
+        <field name="sequence">82</field>
+        <field name="requirement">الاتصال بالعملاء، وتحديد متطلبات المنتجات والخدمات، ومراجعتها قبل الالتزام بالتوريد، وضبط التغييرات عليها.</field>
+        <field name="evidence_expected">مراجعة عروض/عقود موثقة قبل القبول (توقيع مراجعة على الطلب/العقد)، وسجل تعديلات العقود وإبلاغ المعنيين.</field>
+        <field name="evidence_hint">خذ عينة 2-3 عقود/أوامر شراء واردة وتحقق من دليل مراجعتها قبل الالتزام (قدرة إنتاجية، مواصفات، مواعيد). افحص حالة تعديل عقد وكيف بُلغ الإنتاج.</field>
+        <field name="auditor_input_hint">سجل أرقام العقود المعاينة</field>
+    </record>
+    <record id="c9001_8_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.3</field>
+        <field name="name">تصميم وتطوير المنتجات والخدمات</field>
+        <field name="sequence">83</field>
+        <field name="requirement">إنشاء وتنفيذ وصيانة عملية تصميم وتطوير: التخطيط، المدخلات، الضوابط (مراجعة/تحقق/إثبات صلاحية)، المخرجات، وضبط تغييرات التصميم.</field>
+        <field name="evidence_expected">ملف مشروع تصميم: خطة، مدخلات، مراجعات موثقة، تحقق وإثبات صلاحية، مخرجات معتمدة، وسجل تغييرات. أو مبرر استثناء موثق إن لم ينطبق.</field>
+        <field name="evidence_hint">كثير من العملاء يستثنون هذا البند — تحقق أن الاستثناء مبرر فعلاً: من يحدد مواصفات المنتج؟ إن كان العميل يطور منتجات خاصة فالبند ينطبق.</field>
+        <field name="auditor_input_hint">أكد الانطباق/الاستثناء ومبرره</field>
+    </record>
+    <record id="c9001_8_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.4</field>
+        <field name="name">ضبط العمليات والمنتجات والخدمات المقدمة من الخارج</field>
+        <field name="sequence">84</field>
+        <field name="requirement">ضمان مطابقة العمليات والمنتجات والخدمات المقدمة خارجياً: معايير تقييم واختيار ومراقبة أداء وإعادة تقييم الموردين، وضبط نوع ومدى الضبط، ومعلومات واضحة للموردين.</field>
+        <field name="evidence_expected">قائمة موردين معتمدين + سجلات تقييم أولي وإعادة تقييم دوري بمعايير واضحة، وفحص استلام للمواد الواردة.</field>
+        <field name="evidence_hint">خذ مورداً حرجاً وتتبع: تقييمه ← أوامر الشراء له ← فحص استلام توريداته ← تعامل مع توريد مرفوض إن وجد. معايير نموذجية: جودة، التزام مواعيد، سعر، استجابة.</field>
+        <field name="auditor_input_hint">سجل الموردين المعاينين</field>
+    </record>
+    <record id="c9001_8_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.5</field>
+        <field name="name">الإنتاج وتقديم الخدمة</field>
+        <field name="sequence">85</field>
+        <field name="requirement">تنفيذ الإنتاج وتقديم الخدمة تحت ظروف مضبوطة: توافر معلومات موثقة، موارد قياس، أنشطة رصد، بيئة مناسبة، كفاءة، إثبات صلاحية العمليات الخاصة، التعريف والتتبع، ممتلكات العملاء، المحافظة على المنتج، أنشطة ما بعد التسليم، وضبط التغييرات.</field>
+        <field name="evidence_expected">جولة ميدانية: تعليمات عمل متاحة عند نقاط الاستخدام، تعريف حالة المنتج (مقبول/مرفوض/قيد الفحص)، تتبع الدفعات، ومناولة وتخزين سليمان.</field>
+        <field name="evidence_hint">هذا بند الجولة الميدانية الرئيسي — امش بعكس اتجاه العملية (من الشحن إلى الاستلام). تحقق من بطاقات التعريف على المنتجات، ومن عزل غير المطابق، ومن ظروف التخزين (حرارة/رطوبة إن لزم).</field>
+        <field name="auditor_input_hint">سجل مسار الجولة وما عاينته</field>
+    </record>
+    <record id="c9001_8_6" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.6</field>
+        <field name="name">إطلاق المنتجات والخدمات</field>
+        <field name="sequence">86</field>
+        <field name="requirement">التحقق من استيفاء متطلبات المنتج/الخدمة قبل الإطلاق، مع معلومات موثقة تشمل دليل المطابقة وتتبع الشخص المخول بالإطلاق.</field>
+        <field name="evidence_expected">سجلات فحص نهائي بمعايير قبول واضحة وتوقيع المخول بالإفراج، وربطها بأمر البيع/الشحنة.</field>
+        <field name="evidence_hint">خذ شحنة حديثة وتتبع للخلف: من وقع الإفراج عنها؟ ما نتائج فحصها النهائي؟ هل تطابق شهادة المطابقة المرفقة للعميل؟</field>
+        <field name="auditor_input_hint">سجل أرقام الشحنات المتتبعة</field>
+    </record>
+    <record id="c9001_8_7" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_8"/>
+        <field name="number">8.7</field>
+        <field name="name">ضبط المخرجات غير المطابقة</field>
+        <field name="sequence">87</field>
+        <field name="requirement">تعريف وضبط المخرجات غير المطابقة لمنع استخدامها أو تسليمها غير المقصود، ومعالجتها (تصحيح، عزل، إبلاغ العميل، قبول بتنازل)، مع معلومات موثقة.</field>
+        <field name="evidence_expected">سجل حالات عدم مطابقة مع التصرف بكل حالة، ومنطقة/وسم عزل واضحة في الموقع، وقرارات التنازل موقعة من مخول.</field>
+        <field name="evidence_hint">تحقق ميدانياً من منطقة الحجر/العزل ووسمها. سجل فارغ تماماً عبر سنة كاملة مؤشر شك لا مؤشر جودة — اسأل كيف يتعاملون فعلياً مع المرفوض.</field>
+        <field name="auditor_input_hint">سجل عدد الحالات في آخر 12 شهراً</field>
+    </record>
+
+    <!-- ============ 9 تقييم الأداء ============ -->
+    <record id="c9001_9" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">9</field>
+        <field name="name">تقييم الأداء</field>
+        <field name="sequence">90</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_9_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_9"/>
+        <field name="number">9.1</field>
+        <field name="name">الرصد والقياس والتحليل والتقييم (بما فيها رضا العملاء)</field>
+        <field name="sequence">91</field>
+        <field name="requirement">تحديد ما يلزم رصده وقياسه وطرق ذلك وتوقيته، ورصد تصورات العملاء عن مدى تلبية احتياجاتهم، وتحليل وتقييم البيانات والمعلومات المناسبة.</field>
+        <field name="evidence_expected">نتائج قياس رضا العملاء (استبيانات/تقييمات) مع تحليلها، ولوحة مؤشرات أداء العمليات مقارنة بالمستهدفات، وتحليل اتجاهات.</field>
+        <field name="evidence_hint">تحقق من: نسبة استجابة الاستبيانات معقولة، النتائج المتدنية عولجت بإجراءات، شكاوى العملاء مسجلة ومغلقة، والتحليل يقود قرارات (وليس أرشيفاً).</field>
+        <field name="auditor_input_hint">سجل آخر قياس رضا وتاريخه ونتيجته</field>
+    </record>
+    <record id="c9001_9_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_9"/>
+        <field name="number">9.2</field>
+        <field name="name">التدقيق الداخلي</field>
+        <field name="sequence">92</field>
+        <field name="requirement">إجراء تدقيقات داخلية على فترات مخططة، ببرنامج تدقيق يراعي الأهمية والتغييرات ونتائج التدقيقات السابقة، بمدققين موضوعيين ومحايدين، مع تصحيحات دون تأخير ومعلومات موثقة.</field>
+        <field name="evidence_expected">برنامج تدقيق داخلي سنوي يغطي كل العمليات والبنود + تقارير دورة كاملة منفذة (خطة، قوائم فحص، ملاحظات، إغلاق) + كفاءة المدققين الداخليين وحيادهم.</field>
+        <field name="evidence_hint">شرط أساسي قبل Stage 2: دورة تدقيق داخلي كاملة منفذة. تحقق: هل دقق المدقق قسمه؟ (خرق حياد). هل أغلقت الملاحظات بأدلة؟ هل غطى البرنامج جميع البنود؟</field>
+        <field name="auditor_input_hint">سجل تاريخ آخر تدقيق داخلي ونطاقه وعدد ملاحظاته</field>
+    </record>
+    <record id="c9001_9_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_9"/>
+        <field name="number">9.3</field>
+        <field name="name">مراجعة الإدارة</field>
+        <field name="sequence">93</field>
+        <field name="requirement">مراجعة الإدارة العليا للنظام على فترات مخططة بمدخلات محددة (حالة إجراءات سابقة، تغييرات السياق، الأداء، الموارد، المخاطر، فرص التحسين) ومخرجات قرارات تحسين وتغيير وموارد.</field>
+        <field name="evidence_expected">محضر مراجعة إدارة حديث يغطي جميع المدخلات التسعة المطلوبة، بقرارات ومسؤولين ومهل، ومتابعة تنفيذ قرارات المراجعة السابقة.</field>
+        <field name="evidence_hint">شرط أساسي قبل Stage 2: مراجعة إدارة منفذة بعد التدقيق الداخلي. افحص المحضر مقابل قائمة المدخلات في 9.3.2 — الناقص الشائع: تغييرات السياق، أداء الموردين، وفعالية إجراءات المخاطر.</field>
+        <field name="auditor_input_hint">سجل تاريخ آخر مراجعة إدارة ومن حضرها</field>
+    </record>
+
+    <!-- ============ 10 التحسين ============ -->
+    <record id="c9001_10" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="number">10</field>
+        <field name="name">التحسين</field>
+        <field name="sequence">100</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c9001_10_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_10"/>
+        <field name="number">10.1</field>
+        <field name="name">عام (فرص التحسين)</field>
+        <field name="sequence">101</field>
+        <field name="requirement">تحديد واختيار فرص التحسين وتنفيذ الإجراءات اللازمة لتلبية متطلبات العملاء وتعزيز رضاهم.</field>
+        <field name="evidence_expected">أمثلة تحسينات منفذة: تحسين منتج/خدمة، تصحيح ومنع آثار غير مرغوبة، تحسين أداء وفعالية النظام.</field>
+        <field name="evidence_hint">اطلب 2-3 أمثلة ملموسة لتحسينات آخر سنة (تقليل هدر، تسريع عملية، تحسين تغليف) — تكفي التحسينات الصغيرة الموثقة.</field>
+        <field name="auditor_input_hint">سجل أمثلة التحسين المقدمة</field>
+    </record>
+    <record id="c9001_10_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_10"/>
+        <field name="number">10.2</field>
+        <field name="name">عدم المطابقة والإجراء التصحيحي</field>
+        <field name="sequence">102</field>
+        <field name="requirement">عند حدوث عدم مطابقة (بما فيها الشكاوى): التفاعل معها، تقييم الحاجة لإجراء يزيل الأسباب، تحليل السبب الجذري، تنفيذ الإجراء ومراجعة فعاليته، مع معلومات موثقة.</field>
+        <field name="evidence_expected">سجل إجراءات تصحيحية بتحليل سبب جذري حقيقي (5 Why / إيشيكاوا) وتحقق من الفعالية بعد التنفيذ، مرتبط بالشكاوى وعدم المطابقات الداخلية.</field>
+        <field name="evidence_hint">الضعف الشائع: 'تم التنبيه على الموظف' كسبب جذري ومعالجة — هذه ملاحظة جاهزة. تحقق أن تحليل السبب يتجاوز الخطأ البشري إلى النظام (تدريب، تعليمات، معدة).</field>
+        <field name="auditor_input_hint">سجل عدد الإجراءات المفتوحة/المغلقة وعينة فحصتها</field>
+    </record>
+    <record id="c9001_10_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_9001"/>
+        <field name="parent_id" ref="c9001_10"/>
+        <field name="number">10.3</field>
+        <field name="name">التحسين المستمر</field>
+        <field name="sequence">103</field>
+        <field name="requirement">التحسين المستمر لملاءمة وكفاية وفعالية نظام إدارة الجودة، بالاستفادة من نتائج التحليل والتقييم ومخرجات مراجعة الإدارة.</field>
+        <field name="evidence_expected">اتجاه تحسن في المؤشرات عبر الزمن، وربط مخرجات مراجعة الإدارة والتحليل بمبادرات تحسين منفذة.</field>
+        <field name="evidence_hint">قارن مؤشرات سنتين متتاليتين — هل من تحسن؟ وهل قرارات مراجعة الإدارة السابقة نفذت وقيست نتائجها؟</field>
+        <field name="auditor_input_hint">سجل مؤشراً واحداً يظهر اتجاه التحسن</field>
+    </record>
+
+</odoo>

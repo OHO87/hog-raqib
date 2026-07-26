@@ -1,0 +1,361 @@
+// ===== رقيب — نفس لغة تصميم حكيم (tablet-first، لمس ≥ 48px) =====
+// الهوية: كحلي #1F3B63 + ذهبي #C8A24B (عائلة HOG) مع أخضر رقابي للمطابقة.
+
+$rq-navy: #1F3B63;
+$rq-navy-dark: #162c4c;
+$rq-gold: #C8A24B;
+$rq-green: #1e8e5a;
+$rq-red: #c0392b;
+$rq-orange: #d68910;
+$rq-bg: #f4f6f9;
+$rq-border: #dde4ee;
+$rq-touch: 48px;
+
+.raqib-app {
+    min-height: 100vh;
+    background: $rq-bg;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    color: #1f2d3d;
+    font-size: 16px;
+
+    .btn, .raqib-bar-btn {
+        min-height: $rq-touch;
+        border-radius: 12px;
+        font-weight: 600;
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .form-control, .form-select { min-height: $rq-touch; font-size: 16px; border-radius: 10px; }
+    textarea.form-control { min-height: 64px; }
+    label { font-weight: 700; font-size: 14px; margin: 10px 0 4px; display: block; color: $rq-navy; }
+
+    // ------------------------------------------------------------- الرأس
+    .raqib-bar {
+        display: flex; justify-content: space-between; align-items: center;
+        background: linear-gradient(180deg, $rq-navy, $rq-navy-dark);
+        color: #fff; padding: 10px 20px; min-height: 64px;
+        box-shadow: 0 2px 8px rgba(16, 34, 62, .25);
+        .raqib-brand {
+            font-size: 22px; font-weight: 800; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px;
+            i { color: $rq-gold; }
+        }
+        .raqib-bar-nav, .raqib-bar-user { display: flex; gap: 12px; align-items: center; }
+        .raqib-bar-btn {
+            background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35);
+            color: #fff; padding: 8px 18px; cursor: pointer; font-size: 15px;
+            text-decoration: none; min-height: 44px;
+            &:hover { background: rgba(255,255,255,.25); color: #fff; }
+        }
+    }
+
+    .raqib-loading { padding: 60px; text-align: center; color: #667; font-size: 18px;
+        i { font-size: 28px; display: block; margin-bottom: 10px; } }
+    .raqib-main { padding: 20px; max-width: 1180px; margin: 0 auto; }
+
+    .raqib-sec-title {
+        font-size: 17px; margin: 20px 0 12px; color: $rq-navy; font-weight: 800;
+        display: flex; align-items: center; gap: 8px;
+        .raqib-title-bar { width: 5px; height: 20px; background: $rq-gold; border-radius: 3px; }
+    }
+
+    // --------------------------------------------------------- المؤشرات
+    .raqib-kpis {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px; padding: 14px; margin-bottom: 8px;
+        border: 1px solid $rq-border; border-radius: 16px;
+        background: linear-gradient(180deg, #fbfdff, #eef3fb);
+    }
+    .raqib-kpi {
+        background: #fff; border: 1px solid $rq-border; border-radius: 14px;
+        padding: 16px 12px; text-align: center; display: flex; flex-direction: column; gap: 4px;
+        strong { font-size: 26px; color: $rq-navy; }
+        .raqib-kpi-icon { color: $rq-gold; font-size: 20px; }
+        .raqib-kpi-label { color: #667; font-size: 14px; }
+        &.is-warn .raqib-kpi-icon { color: $rq-orange; }
+        &.is-bad .raqib-kpi-icon { color: $rq-red; }
+    }
+
+    // ---------------------------------------------------- بطاقات التدقيق
+    .raqib-cards {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 14px;
+    }
+    .raqib-card {
+        background: #fff; border: 1px solid $rq-border; border-radius: 16px;
+        padding: 16px; text-align: right; cursor: pointer;
+        display: flex; flex-direction: column; gap: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.05); transition: all .15s;
+        &:hover { border-color: $rq-navy; transform: translateY(-2px);
+                  box-shadow: 0 4px 14px rgba(16,34,62,.12); }
+        .raqib-card-top { display: flex; justify-content: space-between; align-items: center;
+            strong { font-size: 17px; } }
+        .raqib-card-foot { display: flex; justify-content: space-between; color: #667; font-size: 13px; }
+    }
+    .raqib-card-new {
+        border: 2px dashed $rq-gold; background: #fffdf6; align-items: center;
+        justify-content: center; text-align: center; min-height: 150px;
+        .raqib-card-new-icon {
+            width: 52px; height: 52px; border-radius: 50%; background: $rq-gold; color: #fff;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        small { color: #778; }
+        &:hover { border-color: $rq-navy; }
+    }
+    .raqib-card-mid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .raqib-chip {
+        background: #eef3fb; color: $rq-navy; border-radius: 20px; padding: 4px 12px;
+        font-size: 13px; font-weight: 600;
+        i { color: $rq-gold; }
+        &.is-ji { background: #fdf6e5; color: #8a6d1f; }
+    }
+    .raqib-state {
+        border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700;
+        &.is-draft { background: #eef1f5; color: #556; }
+        &.is-in_progress { background: #fdf1dc; color: $rq-orange; }
+        &.is-review { background: #e8f0fe; color: $rq-navy; }
+        &.is-done { background: #e3f6ec; color: $rq-green; }
+    }
+    .raqib-progress {
+        height: 8px; border-radius: 6px; background: #e8edf5; overflow: hidden;
+        &.big { height: 12px; }
+        .raqib-progress-fill { height: 100%; border-radius: 6px;
+            background: linear-gradient(90deg, $rq-gold, $rq-green); transition: width .3s; }
+    }
+    .raqib-findings-badge { color: $rq-red; font-weight: 700; }
+
+    // ------------------------------------------------------- إنشاء سريع
+    .raqib-new { max-width: 560px; margin: 0 auto; }
+    .raqib-panel {
+        background: #fff; border: 1px solid $rq-border; border-radius: 16px;
+        padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.05); margin-bottom: 16px;
+    }
+    .raqib-seg { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .raqib-seg-btn {
+        flex: 1; min-height: $rq-touch; border-radius: 12px; border: 1px solid $rq-border;
+        background: #fff; font-weight: 700; cursor: pointer; padding: 8px 10px;
+        &.active { background: $rq-navy; color: #fff; border-color: $rq-navy; }
+    }
+    .raqib-btn-primary {
+        background: $rq-navy; color: #fff; border: none; width: 100%;
+        font-size: 17px; margin-top: 8px;
+        &:hover { background: $rq-navy-dark; color: #fff; }
+        &:disabled { opacity: .6; }
+    }
+
+    // ------------------------------------------------------ قمرة التدقيق
+    .raqib-audit-head {
+        display: flex; justify-content: space-between; align-items: center; gap: 16px;
+        background: #fff; border: 1px solid $rq-border; border-radius: 16px;
+        padding: 16px 20px; margin-bottom: 14px; flex-wrap: wrap;
+        h2 { margin: 0 0 8px; font-weight: 800; font-size: 22px; }
+        .raqib-audit-head-kpi { min-width: 220px; text-align: left;
+            span { color: #667; font-size: 14px; } }
+    }
+    .raqib-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .raqib-tab {
+        min-height: $rq-touch; border-radius: 12px; border: 1px solid $rq-border;
+        background: #fff; padding: 8px 22px; font-weight: 700; cursor: pointer;
+        display: inline-flex; align-items: center; gap: 8px;
+        &.active { background: $rq-navy; color: #fff; border-color: $rq-navy;
+            i { color: $rq-gold; } }
+        .raqib-tab-count { background: $rq-red; color: #fff; border-radius: 12px;
+            padding: 1px 9px; font-size: 12px; }
+    }
+    .raqib-filters { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .raqib-chipbtn {
+        border: 1px solid $rq-border; background: #fff; border-radius: 20px;
+        padding: 8px 18px; font-weight: 600; cursor: pointer; min-height: 42px;
+        &.active { background: $rq-gold; border-color: $rq-gold; color: #fff; }
+    }
+
+    // ----------------------------------------------------------- البنود
+    .raqib-line {
+        background: #fff; border: 1px solid $rq-border; border-radius: 14px;
+        margin-bottom: 10px; overflow: hidden;
+        border-inline-start: 5px solid #cfd8e6;
+        &.is-ok { border-inline-start-color: $rq-green; }
+        &.is-warn { border-inline-start-color: $rq-orange; }
+        &.is-bad { border-inline-start-color: $rq-red; }
+        &.is-muted { border-inline-start-color: #aab; opacity: .75; }
+    }
+    .raqib-line-head {
+        display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer;
+        min-height: 64px;
+        &:hover { background: #f7fafd; }
+        .raqib-line-no {
+            background: $rq-navy; color: #fff; border-radius: 10px; font-weight: 800;
+            min-width: 52px; text-align: center; padding: 8px 6px; font-size: 15px;
+        }
+        .raqib-line-title { flex: 1;
+            strong { display: block; font-size: 16px; }
+            small { color: #667; display: block; margin-top: 2px;
+                    max-width: 640px; overflow: hidden; text-overflow: ellipsis;
+                    white-space: nowrap; } }
+        .raqib-line-state {
+            border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 700;
+            background: #eef1f5; color: #556; white-space: nowrap;
+            &.is-ok { background: #e3f6ec; color: $rq-green; }
+            &.is-warn { background: #fdf1dc; color: $rq-orange; }
+            &.is-bad { background: #fdeaea; color: $rq-red; }
+        }
+    }
+    .raqib-line-body { padding: 4px 16px 16px; border-top: 1px dashed $rq-border; }
+    .raqib-hintbox {
+        display: flex; gap: 12px; background: #fffbef; border: 1px solid #f0e3bb;
+        border-radius: 12px; padding: 12px 14px; margin: 12px 0;
+        i { color: $rq-gold; font-size: 20px; margin-top: 2px; }
+        strong { display: block; color: #8a6d1f; margin-bottom: 4px; }
+        p { margin: 0; color: #554f3a; font-size: 14px; line-height: 1.7; }
+        &.is-action { background: #eef7ff; border-color: #cfe3f7;
+            i { color: $rq-navy; } strong { color: $rq-navy; } p { color: #2c4a6e; } }
+    }
+    .raqib-line-fields {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+    .raqib-results { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .raqib-result-btn {
+        min-height: $rq-touch; border-radius: 12px; padding: 8px 16px;
+        border: 2px solid $rq-border; background: #fff; font-weight: 700; cursor: pointer;
+        display: inline-flex; align-items: center; gap: 8px; font-size: 15px;
+        &.is-ok { color: $rq-green; &.active, &:hover { background: $rq-green; color: #fff; border-color: $rq-green; } }
+        &.is-warn { color: $rq-orange; &.active, &:hover { background: $rq-orange; color: #fff; border-color: $rq-orange; } }
+        &.is-bad { color: $rq-red; &.active, &:hover { background: $rq-red; color: #fff; border-color: $rq-red; } }
+        &.is-muted { color: #667; &.active, &:hover { background: #667; color: #fff; border-color: #667; } }
+    }
+
+    // -------------------------------------------------------- الملاحظات
+    .raqib-empty { text-align: center; color: $rq-green; padding: 40px; font-size: 18px;
+        i { font-size: 34px; display: block; margin-bottom: 8px; } }
+    .raqib-finding {
+        display: flex; gap: 14px; background: #fff; border: 1px solid $rq-border;
+        border-radius: 14px; padding: 14px 16px; margin-bottom: 10px;
+        border-inline-start: 5px solid $rq-orange;
+        &.is-nc_major, &.is-nc_minor { border-inline-start-color: $rq-red; }
+        .raqib-finding-no {
+            background: $rq-orange; color: #fff; border-radius: 50%; width: 40px; height: 40px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 800; flex-shrink: 0;
+        }
+        &.is-nc_major .raqib-finding-no, &.is-nc_minor .raqib-finding-no { background: $rq-red; }
+        .raqib-finding-body { flex: 1;
+            strong { display: block; }
+            small { color: #889; display: block; margin: 2px 0 6px; }
+            p { margin: 0; line-height: 1.7; } }
+    }
+
+    // ---------------------------------------------------------- الخلاصة
+    .raqib-upload {
+        position: relative; overflow: hidden; cursor: pointer;
+        input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    }
+    .raqib-report-name { color: $rq-green; font-weight: 700; margin-top: 12px;
+        i { margin-inline-end: 6px; } }
+
+    @media (max-width: 640px) {
+        .raqib-main { padding: 12px; }
+        .raqib-audit-head { flex-direction: column; align-items: stretch;
+            .raqib-audit-head-kpi { text-align: right; } }
+        .raqib-line-head .raqib-line-title small { white-space: normal; }
+    }
+}
+
+
+// ═══════════════ قاعدة المعرفة (أمثلة جاهزة) ═══════════════
+.raqib-kb {
+  margin: 10px 0 12px;
+  border: 1px solid #e3e0d8;
+  border-radius: 10px;
+  background: #fbfaf7;
+  overflow: hidden;
+
+  .raqib-kb-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 13px;
+    background: #f3f1ea;
+    border-bottom: 1px solid #e3e0d8;
+
+    small { font-weight: 400; color: #8a8778; }
+  }
+
+  .raqib-kb-tabs { padding: 8px 12px 0; }
+
+  .raqib-kb-count {
+    display: inline-block;
+    min-width: 20px;
+    padding: 0 5px;
+    margin-inline-start: 4px;
+    border-radius: 9px;
+    background: rgba(0, 0, 0, .08);
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .raqib-kb-list {
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 8px 12px 10px;
+  }
+
+  .raqib-kb-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border: 1px solid #eceae2;
+    border-radius: 8px;
+    background: #fff;
+
+    p {
+      flex: 1;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+  }
+
+  .raqib-kb-add {
+    flex-shrink: 0;
+    border: 1px solid #1d9e75;
+    border-radius: 8px;
+    background: #e1f5ee;
+    color: #085041;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    cursor: pointer;
+
+    &:hover { background: #1d9e75; color: #fff; }
+  }
+
+  .raqib-kb-same {
+    flex-shrink: 0;
+    align-self: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #0f6e56;
+    background: #e1f5ee;
+    border-radius: 8px;
+    padding: 2px 8px;
+  }
+
+  .raqib-kb-ea {
+    flex-shrink: 0;
+    align-self: center;
+    font-size: 11px;
+    color: #8a8778;
+  }
+
+  .raqib-kb-empty {
+    padding: 12px;
+    text-align: center;
+    color: #8a8778;
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_raqib_client_form" model="ir.ui.view">
+        <field name="name">raqib.client.form</field>
+        <field name="model">raqib.client</field>
+        <field name="arch" type="xml">
+            <form string="عميل تدقيق">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_audits" type="object"
+                                class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="audit_count" widget="statinfo" string="تدقيقات"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="اسم العميل"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client_number"/>
+                            <field name="partner_id"/>
+                            <field name="industry"/>
+                        </group>
+                        <group>
+                            <field name="employee_count"/>
+                            <field name="fte_equiv"/>
+                            <field name="site_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="النطاق والموقع">
+                            <group>
+                                <field name="scope_text"/>
+                                <field name="address"/>
+                            </group>
+                        </page>
+                        <page string="العمليات الجوهرية">
+                            <field name="process_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="reference"/>
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="الالتزامات التنظيمية">
+                            <group>
+                                <field name="regulatory_text"/>
+                                <field name="regulatory_comment"/>
+                            </group>
+                        </page>
+                        <page string="ملاحظات">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_raqib_client_list" model="ir.ui.view">
+        <field name="name">raqib.client.list</field>
+        <field name="model">raqib.client</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="client_number" width="100px"/>
+                <field name="name"/>
+                <field name="industry"/>
+                <field name="employee_count"/>
+                <field name="site_count"/>
+                <field name="audit_count" string="تدقيقات"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_raqib_client" model="ir.actions.act_window">
+        <field name="name">العملاء</field>
+        <field name="res_model">raqib.client</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

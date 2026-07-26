@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_raqib_root" name="رقيب"
+              web_icon="hog_raqib,static/description/icon.png"
+              sequence="35"/>
+
+    <menuitem id="menu_raqib_audits" name="التدقيقات"
+              parent="menu_raqib_root" action="action_raqib_audit" sequence="10"/>
+
+    <menuitem id="menu_raqib_clients" name="العملاء"
+              parent="menu_raqib_root" action="action_raqib_client" sequence="20"/>
+
+    <menuitem id="menu_raqib_findings" name="الملاحظات"
+              parent="menu_raqib_root" action="action_raqib_finding" sequence="30"/>
+
+    <menuitem id="menu_raqib_config" name="الإعدادات"
+              parent="menu_raqib_root" sequence="90"
+              groups="hog_raqib.group_raqib_manager"/>
+
+    <menuitem id="menu_raqib_standards" name="المواصفات"
+              parent="menu_raqib_config" action="action_raqib_standard" sequence="10"/>
+
+    <menuitem id="menu_raqib_clauses" name="بنود المواصفات"
+              parent="menu_raqib_config" action="action_raqib_clause" sequence="20"/>
+
+</odoo>

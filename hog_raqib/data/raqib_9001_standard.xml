@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="standard_9001" model="raqib.standard">
+        <field name="name">ISO 9001:2015 — نظام إدارة الجودة</field>
+        <field name="code">9001</field>
+        <field name="sequence">1</field>
+    </record>
+</odoo>

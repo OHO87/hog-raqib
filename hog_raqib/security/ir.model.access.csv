@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_raqib_standard_user,raqib.standard user,model_raqib_standard,group_raqib_user,1,0,0,0
+access_raqib_standard_manager,raqib.standard manager,model_raqib_standard,group_raqib_manager,1,1,1,1
+access_raqib_clause_user,raqib.clause user,model_raqib_clause,group_raqib_user,1,0,0,0
+access_raqib_clause_manager,raqib.clause manager,model_raqib_clause,group_raqib_manager,1,1,1,1
+access_raqib_client_user,raqib.client user,model_raqib_client,group_raqib_user,1,1,1,0
+access_raqib_client_manager,raqib.client manager,model_raqib_client,group_raqib_manager,1,1,1,1
+access_raqib_client_process_user,raqib.client.process user,model_raqib_client_process,group_raqib_user,1,1,1,1
+access_raqib_audit_user,raqib.audit user,model_raqib_audit,group_raqib_user,1,1,1,0
+access_raqib_audit_manager,raqib.audit manager,model_raqib_audit,group_raqib_manager,1,1,1,1
+access_raqib_audit_team_user,raqib.audit.team user,model_raqib_audit_team,group_raqib_user,1,1,1,1
+access_raqib_audit_line_user,raqib.audit.line user,model_raqib_audit_line,group_raqib_user,1,1,1,1
+access_raqib_finding_user,raqib.finding user,model_raqib_finding,group_raqib_user,1,1,1,1
+access_raqib_report_fill_user,raqib.report.fill user,model_raqib_report_fill,group_raqib_user,1,1,1,1

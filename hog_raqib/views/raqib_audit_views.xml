@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_raqib_audit_form" model="ir.ui.view">
+        <field name="name">raqib.audit.form</field>
+        <field name="model">raqib.audit</field>
+        <field name="arch" type="xml">
+            <form string="تدقيق">
+                <header>
+                    <button name="action_generate_lines" type="object"
+                            string="توليد بنود الفحص" class="btn-primary"
+                            invisible="line_ids"/>
+                    <button name="action_open_report_wizard" type="object"
+                            string="توليد تقرير URS" class="btn-primary"
+                            invisible="not line_ids"/>
+                    <button name="action_review" type="object" string="إلى المراجعة"
+                            invisible="state != 'in_progress'"/>
+                    <button name="action_done" type="object" string="اعتماد الإكمال"
+                            invisible="state != 'review'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="رقم الزيارة (JI)"/>
+                        <h1><field name="name" placeholder="مثال: 216123"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client_id"/>
+                            <field name="standard_id"/>
+                            <field name="audit_type"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="progress" widget="progressbar"/>
+                            <field name="finding_count" string="عدد الملاحظات"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="بنود الفحص" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom"
+                                      decoration-success="result == 'conform'"
+                                      decoration-warning="result in ('class3','class4')"
+                                      decoration-danger="result in ('nc_minor','nc_major')"
+                                      decoration-muted="result == 'na'">
+                                    <field name="number" readonly="1" width="70px"/>
+                                    <field name="clause_name" readonly="1"/>
+                                    <field name="evidence_expected" readonly="1" optional="show" width="300px"/>
+                                    <field name="auditor_input_hint" readonly="1" optional="hide"/>
+                                    <field name="doc_reference" optional="show"/>
+                                    <field name="last_review_date"/>
+                                    <field name="result" widget="badge"
+                                           decoration-success="result == 'conform'"
+                                           decoration-warning="result in ('class3','class4')"
+                                           decoration-danger="result in ('nc_minor','nc_major')"/>
+                                    <field name="note" optional="show"/>
+                                    <button name="action_set_conform" type="object"
+                                            icon="fa-check" title="مطابق"/>
+                                    <button name="action_set_class3" type="object"
+                                            icon="fa-exclamation-triangle" title="تصنيف 3"/>
+                                    <button name="action_set_class4" type="object"
+                                            icon="fa-lightbulb-o" title="تصنيف 4 — فرصة تحسين"/>
+                                    <button name="action_set_na" type="object"
+                                            icon="fa-ban" title="لا ينطبق"/>
+                                    <field name="finding_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="الملاحظات" name="findings">
+                            <field name="finding_ids">
+                                <list editable="bottom">
+                                    <field name="number" readonly="1" width="60px"/>
+                                    <field name="clause_id"/>
+                                    <field name="description"/>
+                                    <field name="classification"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="الفريق وأيام التدقيق" name="team">
+                            <group>
+                                <group>
+                                    <field name="mandays_planned"/>
+                                    <field name="mandays_actual"/>
+                                    <field name="mandays_diff" readonly="1"/>
+                                    <field name="mandays_justification"
+                                           invisible="not mandays_diff"/>
+                                </group>
+                                <group>
+                                    <field name="employees_onsite"/>
+                                    <field name="fte_equiv"/>
+                                </group>
+                            </group>
+                            <field name="team_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="role"/>
+                                    <field name="name"/>
+                                    <field name="days"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="الخلاصة والتوصية" name="conclusion">
+                            <group>
+                                <group>
+                                    <field name="client_action"/>
+                                    <field name="recommendation"/>
+                                </group>
+                                <group>
+                                    <field name="next_visit_month"/>
+                                    <field name="next_visit_activity"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="scope_changed"/>
+                                <field name="revised_scope" invisible="not scope_changed"/>
+                                <field name="scope_justification" invisible="not scope_changed"/>
+                            </group>
+                            <group string="التقرير المولد" invisible="not report_docx">
+                                <field name="report_docx" filename="report_docx_name"/>
+                                <field name="report_docx_name" column_invisible="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_raqib_audit_list" model="ir.ui.view">
+        <field name="name">raqib.audit.list</field>
+        <field name="model">raqib.audit</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'"
+                  decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="standard_id"/>
+                <field name="audit_type"/>
+                <field name="date_start"/>
+                <field name="progress" widget="progressbar"/>
+                <field name="finding_count" string="ملاحظات"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_raqib_audit" model="ir.actions.act_window">
+        <field name="name">التدقيقات</field>
+        <field name="res_model">raqib.audit</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">أنشئ أول تدقيق</p>
+            <p>اختر العميل والمواصفة ونوع الزيارة، ثم اضغط "توليد بنود الفحص".</p>
+        </field>
+    </record>
+
+</odoo>
