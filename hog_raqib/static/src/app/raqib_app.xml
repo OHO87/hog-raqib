@@ -234,12 +234,33 @@
                       <div class="raqib-kb-edit-head">
                         <i class="fa fa-pencil"/> صحّح القيم قبل الإدراج (رقم الوثيقة / التاريخ / الأمثلة)
                       </div>
-                      <div t-foreach="state.kbEdit.fields" t-as="f" t-key="f_index"
-                           class="raqib-kb-edit-field">
-                        <label t-esc="f.label"/>
-                        <input class="form-control" dir="ltr" t-att-value="f.value"
-                               t-on-input="(ev) => f.value = ev.target.value"/>
-                      </div>
+                      <t t-foreach="state.kbEdit.fields" t-as="f" t-key="f_index">
+                        <div t-if="f.type === 'text'" class="raqib-kb-edit-field">
+                          <label t-esc="f.label"/>
+                          <input class="form-control" dir="ltr" t-att-value="f.value"
+                                 t-on-input="(ev) => f.value = ev.target.value"/>
+                        </div>
+                        <div t-else="" class="raqib-kb-edit-list">
+                          <label>اختر ما ينطبق (من تدقيقات سابقة):</label>
+                          <div class="raqib-kb-chips">
+                            <button t-foreach="f.items" t-as="it" t-key="it_index"
+                                    t-attf-class="raqib-kb-chip {{it.checked ? 'active' : ''}} {{it.custom ? 'is-custom' : ''}}"
+                                    t-on-click="() => it.checked = !it.checked">
+                              <i t-attf-class="fa {{it.checked ? 'fa-check-square' : 'fa-square-o'}}"/>
+                              <t t-esc="it.ar"/>
+                            </button>
+                          </div>
+                          <div class="raqib-kb-addrow">
+                            <input class="form-control" placeholder="أضف بندًا آخر…"
+                                   t-att-value="f.customInput"
+                                   t-on-input="(ev) => f.customInput = ev.target.value"
+                                   t-on-keydown="(ev) => { if (ev.key === 'Enter') this.addKbCustomItem(f); }"/>
+                            <button class="raqib-kb-addbtn" t-on-click="() => this.addKbCustomItem(f)">
+                              <i class="fa fa-plus"/> إضافة
+                            </button>
+                          </div>
+                        </div>
+                      </t>
                       <div class="raqib-kb-edit-actions">
                         <button class="btn raqib-btn-primary"
                                 t-on-click="() => this.confirmKbEdit(l)">

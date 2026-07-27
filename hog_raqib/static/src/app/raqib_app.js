@@ -200,6 +200,16 @@ export class RaqibAppRoot extends Component {
         return out;
     }
 
+    // هل محتوى القوس قائمة أمثلة؟ (مثل: / e.g.)
+    _listPrefix(s) {
+        const m = /^\s*(e\.g\.:?|مثل:?|مثال:?)\s*/i.exec(s || "");
+        return m ? m[0] : null;
+    }
+
+    _splitItems(s) {
+        return (s || "").split(/[،,]/).map((x) => x.trim()).filter(Boolean);
+    }
+
     useExample(line, ex) {
         const enParts = this._placeholders(ex.text_en);
         if (!enParts.length) {
@@ -211,11 +221,33 @@ export class RaqibAppRoot extends Component {
             exId: ex.id,
             lineId: line.id,
             textEn: ex.text_en,
-            fields: enParts.map((p, i) => ({
-                label: arParts[i] || p,
-                value: p,
-            })),
+            fields: enParts.map((p, i) => {
+                const ar = arParts[i] || p;
+                const enPrefix = this._listPrefix(p);
+                if (enPrefix) {
+                    const enItems = this._splitItems(p.slice(enPrefix.length));
+                    const arContent = this._listPrefix(ar)
+                        ? ar.slice(this._listPrefix(ar).length) : ar;
+                    const arItems = this._splitItems(arContent);
+                    return {
+                        type: "list",
+                        original: p,
+                        items: enItems.map((en, j) => ({
+                            en, ar: arItems[j] || en, checked: false,
+                        })),
+                        customInput: "",
+                    };
+                }
+                return { type: "text", label: ar, value: p };
+            }),
         };
+    }
+
+    addKbCustomItem(f) {
+        const v = (f.customInput || "").trim();
+        if (!v) { return; }
+        f.items.push({ en: v, ar: v, checked: true, custom: true });
+        f.customInput = "";
     }
 
     cancelKbEdit() {
@@ -228,7 +260,13 @@ export class RaqibAppRoot extends Component {
         let i = 0;
         const finalText = edit.textEn.replace(/\[([^\]]*)\]/g, (full, inner) => {
             if (inner === "صغرى" || inner === "كبرى") { return full; }
-            return edit.fields[i++].value;
+            const f = edit.fields[i++];
+            if (f.type === "list") {
+                const picked = f.items.filter((it) => it.checked)
+                    .map((it) => it.en);
+                return picked.length ? picked.join(", ") : f.original;
+            }
+            return f.value;
         });
         this.state.kbEdit = null;
         this._appendNote(line, finalText);

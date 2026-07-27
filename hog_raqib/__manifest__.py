@@ -4,7 +4,7 @@
     "summary": "قمرة تدقيق شهادات ISO متكاملة مع تقارير URS "
                "(Stage 1 / Stage 2) — أقل نقرات، بنود مرتبة حسب المواصفة، "
                "أدلة متوقعة وأمثلة جاهزة لكل بند.",
-    "version": "19.0.1.3.0",
+    "version": "19.0.1.4.0",
     "author": "HOG",
     "license": "LGPL-3",
     "category": "Services/Audit",
