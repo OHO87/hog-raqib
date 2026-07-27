@@ -538,3 +538,68 @@ $rq-touch: 48px;
     }
   }
 }
+
+
+/* ═══ v1.5 — التدقيق متعدد المواصفات ═══ */
+.raqib-app {
+  .raqib-chip.is-ims {
+    background: #ede7f6;
+    color: #4527a0;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .raqib-merged {
+    border: 1px solid #d1c4e9;
+    border-radius: 12px;
+    background: #f6f2fc;
+    padding: 12px;
+    margin-bottom: 12px;
+
+    .raqib-merged-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-weight: 700;
+      color: #4527a0;
+      margin-bottom: 8px;
+
+      .raqib-bar-btn {
+        border: 1px solid #b39ddb;
+        color: #4527a0;
+        background: #fff;
+        min-height: 44px;
+        border-radius: 10px;
+        padding: 0 14px;
+        cursor: pointer;
+
+        &:hover { background: #ede7f6; }
+      }
+    }
+
+    .raqib-merged-seg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-top: 1px dashed #d1c4e9;
+
+      &:first-of-type { border-top: 0; }
+
+      p { margin: 2px 0; }
+      small { color: #6c6a7a; }
+    }
+  }
+
+  .raqib-report-std {
+    margin-bottom: 10px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+  }
+}

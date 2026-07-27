@@ -23,6 +23,56 @@ class RaqibAudit(models.Model):
                                 required=True, tracking=True)
     standard_id = fields.Many2one("raqib.standard", string="المواصفة",
                                   required=True, tracking=True)
+    standard_ids = fields.Many2many(
+        "raqib.standard", "raqib_audit_standard_rel", "audit_id", "standard_id",
+        string="المواصفات",
+        help="اختر مواصفة واحدة أو أكثر — نظام متكامل (IMS) عند اختيار أكثر من واحدة.")
+    is_multi_standard = fields.Boolean(compute="_compute_is_multi_standard")
+
+    @api.depends("standard_ids")
+    def _compute_is_multi_standard(self):
+        for rec in self:
+            rec.is_multi_standard = len(rec.standard_ids) > 1
+
+    @property
+    def effective_standards(self):
+        """المواصفات الفعلية: standard_ids إن حُددت وإلا standard_id (توافق خلفي)."""
+        self.ensure_one()
+        return self.standard_ids or self.standard_id
+
+    @api.onchange("standard_ids")
+    def _onchange_standard_ids(self):
+        for rec in self:
+            if rec.standard_ids and (
+                    not rec.standard_id or rec.standard_id not in rec.standard_ids):
+                rec.standard_id = rec.standard_ids.sorted("sequence")[:1]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            self._sync_standard_vals(vals)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        self._sync_standard_vals(vals)
+        return super().write(vals)
+
+    @api.model
+    def _sync_standard_vals(self, vals):
+        """standard_id ↔ standard_ids: أيهما أعطي يملأ الآخر."""
+        if vals.get("standard_ids") and not vals.get("standard_id"):
+            cmd = vals["standard_ids"]
+            ids = []
+            for c in cmd:
+                if c[0] == 6:
+                    ids = list(c[2])
+                elif c[0] == 4:
+                    ids.append(c[1])
+            if ids:
+                vals["standard_id"] = ids[0]
+        elif vals.get("standard_id") and "standard_ids" not in vals:
+            vals["standard_ids"] = [(4, vals["standard_id"])]
+        return vals
     audit_type = fields.Selection([
         ("stage1", "المرحلة الأولى (Stage 1)"),
         ("stage2", "المرحلة الثانية (Stage 2)"),
@@ -108,15 +158,37 @@ class RaqibAudit(models.Model):
         for rec in self:
             if rec.line_ids:
                 raise UserError("توجد بنود مولدة مسبقاً — احذفها أولاً إن أردت إعادة التوليد.")
+            standards = rec.effective_standards
             clauses = self.env["raqib.clause"].search([
-                ("standard_id", "=", rec.standard_id.id),
+                ("standard_id", "in", standards.ids),
                 ("is_leaf", "=", True),
                 (stage_field[rec.audit_type], "=", True),
             ], order="sequence, number")
-            self.env["raqib.audit.line"].create([{
-                "audit_id": rec.id,
-                "clause_id": c.id,
-            } for c in clauses])
+            vals_list = []
+            if len(standards) <= 1:
+                vals_list = [{"audit_id": rec.id, "clause_id": c.id,
+                              "clause_ids": [(6, 0, [c.id])]} for c in clauses]
+            else:
+                # دمج البنود المشتركة (HLS) بالرقم عبر المواصفات المختارة
+                std_order = {s.id: i for i, s in enumerate(
+                    standards.sorted("sequence"))}
+                groups = {}
+                order = []
+                for c in clauses:
+                    if c.number not in groups:
+                        groups[c.number] = c
+                        order.append(c.number)
+                    else:
+                        groups[c.number] |= c
+                for number in order:
+                    grp = groups[number].sorted(
+                        key=lambda c: std_order.get(c.standard_id.id, 99))
+                    vals_list.append({
+                        "audit_id": rec.id,
+                        "clause_id": grp[0].id,
+                        "clause_ids": [(6, 0, grp.ids)],
+                    })
+            self.env["raqib.audit.line"].create(vals_list)
             rec.state = "in_progress"
         return True
 
@@ -163,6 +235,44 @@ class RaqibAuditLine(models.Model):
     audit_id = fields.Many2one("raqib.audit", required=True, ondelete="cascade")
     sequence = fields.Integer(related="clause_id.sequence", store=True)
     clause_id = fields.Many2one("raqib.clause", string="البند", required=True)
+    clause_ids = fields.Many2many(
+        "raqib.clause", "raqib_audit_line_clause_rel", "line_id", "clause_id",
+        string="البنود المشمولة",
+        help="في التدقيق متعدد المواصفات: البنود المتناظرة المدمجة في هذا السطر.")
+    is_merged = fields.Boolean(compute="_compute_merged", store=True)
+    standard_codes = fields.Char(compute="_compute_merged", store=True,
+                                 string="المواصفات")
+
+    @api.depends("clause_ids", "clause_id")
+    def _compute_merged(self):
+        for line in self:
+            clauses = line.clause_ids or line.clause_id
+            line.is_merged = len(clauses) > 1
+            line.standard_codes = " · ".join(
+                clauses.mapped("standard_id.code")) if clauses else ""
+
+    def _covered_clauses(self):
+        self.ensure_one()
+        return self.clause_ids or self.clause_id
+
+    def action_split_line(self):
+        """فصل السطر المدمج إلى سطر مستقل لكل مواصفة.
+        الملاحظة والنتيجة الحالية تبقى على السطر الأول، والبقية فارغة."""
+        for line in self:
+            clauses = line._covered_clauses()
+            if len(clauses) <= 1:
+                continue
+            first, rest = clauses[0], clauses[1:]
+            line.write({"clause_id": first.id,
+                        "clause_ids": [(6, 0, [first.id])]})
+            self.env["raqib.audit.line"].create([{
+                "audit_id": line.audit_id.id,
+                "clause_id": c.id,
+                "clause_ids": [(6, 0, [c.id])],
+            } for c in rest])
+            if line.finding_id:
+                line._sync_finding()
+        return True
     number = fields.Char(related="clause_id.number", string="البند رقم", store=True)
     clause_name = fields.Char(related="clause_id.name", string="العنوان")
     requirement = fields.Text(related="clause_id.requirement", string="المتطلب")
@@ -205,6 +315,7 @@ class RaqibAuditLine(models.Model):
                 vals = {
                     "audit_id": line.audit_id.id,
                     "clause_id": line.clause_id.id,
+                    "clause_ids": [(6, 0, line._covered_clauses().ids)],
                     "line_id": line.id,
                     "description": desc,
                     "classification": RESULT_TO_CLASSIFICATION[line.result],

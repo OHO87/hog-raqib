@@ -11,7 +11,20 @@ class RaqibFinding(models.Model):
                                string="التدقيق")
     number = fields.Integer("الرقم", readonly=True)
     clause_id = fields.Many2one("raqib.clause", string="البند")
+    clause_ids = fields.Many2many(
+        "raqib.clause", "raqib_finding_clause_rel", "finding_id", "clause_id",
+        string="البنود المشمولة")
+    standard_ids = fields.Many2many(
+        "raqib.standard", "raqib_finding_standard_rel", "finding_id",
+        "standard_id", compute="_compute_standard_ids", store=True,
+        string="المواصفات")
     line_id = fields.Many2one("raqib.audit.line", string="سطر الفحص")
+
+    @api.depends("clause_ids", "clause_id")
+    def _compute_standard_ids(self):
+        for rec in self:
+            clauses = rec.clause_ids or rec.clause_id
+            rec.standard_ids = clauses.mapped("standard_id")
     description = fields.Text("الوصف", required=True)
     classification = fields.Selection([
         ("class3", "3 — احتمال عدم مطابقة (Potential NC)"),

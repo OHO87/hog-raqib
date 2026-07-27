@@ -38,8 +38,32 @@ class RaqibReportFill(models.TransientModel):
     _description = "تعبئة تقرير URS"
 
     audit_id = fields.Many2one("raqib.audit", required=True)
+    standard_id = fields.Many2one(
+        "raqib.standard", string="المواصفة",
+        help="في التدقيق متعدد المواصفات: يولد تقرير هذه المواصفة فقط "
+             "(بنودها وملاحظاتها). اتركه فارغاً لتقرير يشمل الكل.")
     template_file = fields.Binary("ملف التقرير من CMS (docx)", required=True)
     template_filename = fields.Char("اسم الملف")
+
+    def _report_lines(self):
+        """بنود الفحص الداخلة في هذا التقرير (مفلترة بالمواصفة إن حددت)."""
+        audit = self.audit_id
+        lines = audit.line_ids.filtered(lambda l: l.result != "pending")
+        if self.standard_id:
+            std = self.standard_id
+            lines = lines.filtered(
+                lambda l: std in l._covered_clauses().mapped("standard_id"))
+        return lines
+
+    def _report_findings(self):
+        audit = self.audit_id
+        findings = audit.finding_ids
+        if self.standard_id:
+            std = self.standard_id
+            findings = findings.filtered(
+                lambda f: std in (f.standard_ids
+                                  or f.clause_id.standard_id))
+        return findings
 
     # ------------------------------------------------------------------
     # أدوات مساعدة على بنية الوثيقة
@@ -216,7 +240,7 @@ class RaqibReportFill(models.TransientModel):
             result_label = dict(
                 audit.line_ids._fields["result"]._description_selection(self.env))
             rows = []
-            for line in audit.line_ids.filtered(lambda l: l.result != "pending"):
+            for line in self._report_lines():
                 ref = line.doc_reference or ""
                 if line.last_review_date:
                     ref = ("%s — آخر مراجعة %s" % (
@@ -236,7 +260,7 @@ class RaqibReportFill(models.TransientModel):
         t = self._find_table(document, KEY_COMMENTS)
         if t is not None:
             rows = [(str(f.number), f.description, f.urs_type_label())
-                    for f in audit.finding_ids]
+                    for f in self._report_findings()]
             if rows:
                 self._fill_repeating(t, rows)
             filled.append("Comments Raised")
@@ -258,15 +282,28 @@ class RaqibReportFill(models.TransientModel):
 
         out = io.BytesIO()
         document.save(out)
+        data = base64.b64encode(out.getvalue())
+        suffix = (" - %s" % self.standard_id.code) if self.standard_id else ""
         fname = (self.template_filename or "urs_report.docx").replace(
-            ".docx", "") + " - FILLED.docx"
+            ".docx", "") + suffix + " - FILLED.docx"
         audit.write({
-            "report_docx": base64.b64encode(out.getvalue()),
+            "report_docx": data,
             "report_docx_name": fname,
         })
+        # أرشفة نسخة دائمة لكل مواصفة (التدقيق متعدد المواصفات يولد عدة تقارير)
+        self.env["ir.attachment"].create({
+            "name": fname,
+            "res_model": "raqib.audit",
+            "res_id": audit.id,
+            "datas": data,
+            "mimetype": ("application/vnd.openxmlformats-officedocument"
+                         ".wordprocessingml.document"),
+        })
         audit.message_post(body=(
-            "تم توليد التقرير. جداول عبئت: %s.%s"
-            % (", ".join(filled),
+            "تم توليد التقرير%s. جداول عبئت: %s.%s"
+            % ((" (مواصفة %s)" % self.standard_id.code)
+               if self.standard_id else "",
+               ", ".join(filled),
                (" لم يعثر على: %s — عبئها يدوياً." % ", ".join(missing))
                if missing else "")))
         return {

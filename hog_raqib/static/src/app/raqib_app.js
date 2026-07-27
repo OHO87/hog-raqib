@@ -54,8 +54,9 @@ export class RaqibAppRoot extends Component {
             kbEdit: null, // {exId, lineId, textEn, fields: [{label, value}]}
             tab: "lines",  // lines | findings | summary
             // إنشاء سريع
-            form: { name: "", client_id: 0, client_name: "", standard_id: 0,
+            form: { name: "", client_id: 0, client_name: "", standard_ids: [],
                     audit_type: "stage1" },
+            reportStd: 0, // مواصفة التقرير في التدقيق متعدد المواصفات
             saving: false,
         });
         onWillStart(() => this.loadHome());
@@ -95,15 +96,24 @@ export class RaqibAppRoot extends Component {
     // --------------------------------------------------------- إنشاء سريع
     openNew() {
         this.state.form = { name: "", client_id: 0, client_name: "",
-                            standard_id: this.state.standards[0]?.id || 0,
+                            standard_ids: this.state.standards[0]
+                                ? [this.state.standards[0].id] : [],
                             audit_type: "stage1" };
         this.state.view = "new";
     }
 
+    toggleStandard(id) {
+        const sel = this.state.form.standard_ids;
+        const i = sel.indexOf(id);
+        if (i >= 0) { sel.splice(i, 1); } else { sel.push(id); }
+    }
+
     async createAudit() {
         const f = this.state.form;
-        if (!f.name || (!f.client_id && !f.client_name) || !f.standard_id) {
-            this.notification.add("أكمل: رقم الزيارة، العميل، والمواصفة.",
+        if (!f.name || (!f.client_id && !f.client_name)
+                || !f.standard_ids.length) {
+            this.notification.add(
+                "أكمل: رقم الزيارة، العميل، ومواصفة واحدة على الأقل.",
                 { type: "warning" });
             return;
         }
@@ -114,7 +124,7 @@ export class RaqibAppRoot extends Component {
                     name: f.name,
                     client_id: f.client_id || false,
                     client_name: f.client_name,
-                    standard_id: f.standard_id,
+                    standard_ids: f.standard_ids,
                     audit_type: f.audit_type,
                 }]);
             await this.openAudit(id);
@@ -138,6 +148,8 @@ export class RaqibAppRoot extends Component {
             this.state.filter = "all";
             this.state.tab = "lines";
             this.state.openLine = false;
+            this.state.reportStd = res.header.is_multi
+                ? (res.header.standard_list[0]?.id || 0) : 0;
             this.state.view = "audit";
         } catch (e) {
             this._err(e);
@@ -164,6 +176,23 @@ export class RaqibAppRoot extends Component {
         this.state.openLine = this.state.openLine === id ? false : id;
         if (this.state.openLine) {
             this.loadKb(id);
+        }
+    }
+
+    async splitLine(line) {
+        if (!confirm("فصل هذا البند إلى سطر مستقل لكل مواصفة؟ "
+                     + "تبقى الملاحظة الحالية على السطر الأول.")) {
+            return;
+        }
+        try {
+            const lines = await this.orm.call(
+                "raqib.audit", "raqib_app_split_line", [line.id]);
+            this.state.lines = lines;
+            this.state.openLine = false;
+            this.notification.add("فُصل البند حسب المواصفات.",
+                { type: "success" });
+        } catch (e) {
+            this._err(e);
         }
     }
 
@@ -346,7 +375,8 @@ export class RaqibAppRoot extends Component {
             this.state.saving = true;
             const url = await this.orm.call("raqib.audit",
                 "raqib_app_fill_report",
-                [[this.state.audit.id], file.name, b64]);
+                [[this.state.audit.id], file.name, b64,
+                 this.state.reportStd || false]);
             this.notification.add("تم توليد التقرير.", { type: "success" });
             if (url) { window.open(url, "_blank"); }
         } catch (e) {

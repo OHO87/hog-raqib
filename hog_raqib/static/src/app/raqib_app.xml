@@ -92,11 +92,15 @@
           </select>
           <input t-if="!state.form.client_id" class="form-control"
                  t-model="state.form.client_name" placeholder="اسم العميل الجديد"/>
-          <label>المواصفة</label>
-          <select class="form-select" t-model.number="state.form.standard_id">
-            <option t-foreach="state.standards" t-as="s" t-key="s.id"
-                    t-att-value="s.id" t-esc="s.name"/>
-          </select>
+          <label>المواصفات — اختر واحدة أو أكثر (نظام متكامل)</label>
+          <div class="raqib-kb-chips">
+            <button t-foreach="state.standards" t-as="s" t-key="s.id"
+                    t-attf-class="raqib-kb-chip {{state.form.standard_ids.includes(s.id) ? 'active' : ''}}"
+                    t-on-click="() => this.toggleStandard(s.id)">
+              <i t-attf-class="fa {{state.form.standard_ids.includes(s.id) ? 'fa-check-square' : 'fa-square-o'}}"/>
+              <t t-esc="s.name"/>
+            </button>
+          </div>
           <label>نوع الزيارة</label>
           <div class="raqib-seg">
             <button t-attf-class="raqib-seg-btn {{state.form.audit_type === 'stage1' ? 'active' : ''}}"
@@ -170,6 +174,10 @@
               <span class="raqib-line-no" t-esc="l.number"/>
               <div class="raqib-line-title">
                 <strong t-esc="l.title"/>
+                <span t-if="l.is_merged" class="raqib-chip is-ims"
+                      title="بند مدمج يغطي المواصفات المختارة">
+                  <i class="fa fa-compress"/> <t t-esc="l.standards"/>
+                </span>
                 <small t-esc="l.evidence"/>
               </div>
               <span t-attf-class="raqib-line-state is-{{resultCls(l.result)}}">
@@ -180,6 +188,25 @@
             </div>
 
             <div t-if="state.openLine === l.id" class="raqib-line-body">
+              <!-- بند مدمج: متطلبات كل مواصفة + زر الفصل -->
+              <div t-if="l.is_merged" class="raqib-merged">
+                <div class="raqib-merged-head">
+                  <span><i class="fa fa-compress"/> بند مدمج — متطلبات كل مواصفة:</span>
+                  <button class="raqib-bar-btn" t-on-click="() => this.splitLine(l)"
+                          title="سطر مستقل لكل مواصفة">
+                    <i class="fa fa-expand"/> فصل حسب المواصفة
+                  </button>
+                </div>
+                <div t-foreach="l.segments" t-as="seg" t-key="seg.clause_id"
+                     class="raqib-merged-seg">
+                  <span class="raqib-chip is-ims" t-esc="seg.std"/>
+                  <div>
+                    <strong><t t-esc="seg.number"/> <t t-esc="seg.title"/></strong>
+                    <p t-esc="seg.requirement"/>
+                    <small t-if="seg.evidence" t-esc="seg.evidence"/>
+                  </div>
+                </div>
+              </div>
               <div class="raqib-hintbox" t-if="l.hint">
                 <i class="fa fa-lightbulb-o"/>
                 <div>
@@ -224,6 +251,7 @@
                       <div class="raqib-kb-body">
                         <p dir="rtl" t-esc="ex.text_ar"/>
                         <div class="raqib-kb-tags">
+                          <span t-if="ex.std" class="raqib-chip is-ims" t-esc="ex.std"/>
                           <span t-if="ex.same" class="raqib-kb-same">✓ نفس قطاع العميل</span>
                           <span t-if="ex.ea_label" class="raqib-kb-ea">EA <t t-esc="ex.ea_label"/></span>
                         </div>
@@ -344,6 +372,16 @@
             <h3 class="raqib-sec-title"><span class="raqib-title-bar"/> تقرير URS</h3>
             <p>ارفع ملف Client Report كما ولّده CMS — يعبأ من بيانات هذا التدقيق
                (الأيام، الفريق، الموقع، العمليات، البنود، الملاحظات) وينزل جاهزاً.</p>
+            <div t-if="state.audit.is_multi" class="raqib-report-std">
+              <label>تقرير المواصفة — ولّد ملفاً مستقلاً لكل مواصفة:</label>
+              <div class="raqib-seg">
+                <button t-foreach="state.audit.standard_list" t-as="s" t-key="s.id"
+                        t-attf-class="raqib-seg-btn {{state.reportStd === s.id ? 'active' : ''}}"
+                        t-on-click="() => state.reportStd = s.id">
+                  <t t-esc="s.code"/>
+                </button>
+              </div>
+            </div>
             <label class="btn raqib-btn-primary raqib-upload">
               <i class="fa fa-file-word-o"/>
               <t t-if="state.saving">جارٍ التوليد…</t>

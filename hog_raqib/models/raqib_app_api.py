@@ -40,10 +40,13 @@ class RaqibAuditApp(models.Model):
         }
 
     def _app_audit_card(self, a):
+        standards = a.standard_ids or a.standard_id
         return {
             "id": a.id, "name": a.name,
             "client": a.client_id.name,
-            "standard": a.standard_id.code or a.standard_id.name,
+            "standard": " · ".join(
+                s.code or s.name for s in standards.sorted("sequence")),
+            "is_multi": len(standards) > 1,
             "type_label": _sel_label(a, "audit_type"),
             "state": a.state, "state_label": _sel_label(a, "state"),
             "progress": round(a.progress),
@@ -57,10 +60,12 @@ class RaqibAuditApp(models.Model):
         if not client_id and vals.get("client_name"):
             client_id = self.env["raqib.client"].create(
                 {"name": vals["client_name"]}).id
+        standard_ids = vals.get("standard_ids") or (
+            [vals["standard_id"]] if vals.get("standard_id") else [])
         audit = self.create({
             "name": vals["name"],
             "client_id": client_id,
-            "standard_id": vals["standard_id"],
+            "standard_ids": [(6, 0, standard_ids)],
             "audit_type": vals.get("audit_type", "stage1"),
         })
         audit.action_generate_lines()
@@ -79,27 +84,54 @@ class RaqibAuditApp(models.Model):
                 "recommendation": self.recommendation or "",
                 "next_visit_month": self.next_visit_month or "",
                 "report_name": self.report_docx_name or "",
+                "standard_list": [{
+                    "id": s.id, "code": s.code or s.name,
+                } for s in (self.standard_ids or self.standard_id).sorted(
+                    "sequence")],
             }),
-            "lines": [{
-                "id": l.id,
-                "number": l.number,
-                "title": l.clause_name,
-                "requirement": l.requirement or "",
-                "evidence": l.evidence_expected or "",
-                "hint": l.evidence_hint or "",
-                "input_hint": l.auditor_input_hint or "",
-                "doc_reference": l.doc_reference or "",
-                "last_review_date": l.last_review_date
-                    and fields.Date.to_string(l.last_review_date) or "",
-                "note": l.note or "",
-                "result": l.result,
-                "finding_number": l.finding_id.number or 0,
-            } for l in self.line_ids],
+            "lines": [self._app_line(l) for l in self.line_ids],
             "findings": self._app_findings(),
             "result_labels": dict(
                 self.env["raqib.audit.line"]._fields[
                     "result"]._description_selection(self.env)),
         }
+
+    def _app_line(self, l):
+        clauses = l._covered_clauses()
+        return {
+            "id": l.id,
+            "number": l.number,
+            "title": l.clause_name,
+            "requirement": l.requirement or "",
+            "evidence": l.evidence_expected or "",
+            "hint": l.evidence_hint or "",
+            "input_hint": l.auditor_input_hint or "",
+            "doc_reference": l.doc_reference or "",
+            "last_review_date": l.last_review_date
+                and fields.Date.to_string(l.last_review_date) or "",
+            "note": l.note or "",
+            "result": l.result,
+            "finding_number": l.finding_id.number or 0,
+            "is_merged": l.is_merged,
+            "standards": l.standard_codes or "",
+            "segments": [{
+                "clause_id": c.id,
+                "std": c.standard_id.code or "",
+                "number": c.number,
+                "title": c.name,
+                "requirement": c.requirement or "",
+                "evidence": c.evidence_expected or "",
+                "hint": c.evidence_hint or "",
+            } for c in clauses] if l.is_merged else [],
+        }
+
+    @api.model
+    def raqib_app_split_line(self, line_id):
+        """فصل سطر مدمج — يعيد قائمة البنود المحدثة كاملة."""
+        line = self.env["raqib.audit.line"].browse(line_id)
+        audit = line.audit_id
+        line.action_split_line()
+        return [audit._app_line(l) for l in audit.line_ids]
 
     def _app_findings(self):
         return [{
@@ -108,6 +140,8 @@ class RaqibAuditApp(models.Model):
             "classification": f.classification,
             "classification_label": _sel_label(f, "classification"),
             "clause": f.clause_id.display_label or "",
+            "standards": " · ".join(
+                (f.standard_ids or f.clause_id.standard_id).mapped("code")),
         } for f in self.finding_ids]
 
     # ------------------------------------------------------- تحديث سطر
@@ -164,13 +198,15 @@ class RaqibAuditApp(models.Model):
         if "x_raqib.kb.example" not in self.env:
             return empty
         line = self.env["raqib.audit.line"].browse(line_id)
-        if not line.clause_id:
+        clauses = line._covered_clauses()
+        if not clauses:
             return empty
         Ex = self.env["x_raqib.kb.example"]
         labels = dict(Ex._fields["x_ea_code"]._description_selection(self.env))
         client = line.audit_id.client_id
         ea = client.x_ea_code if "x_ea_code" in client._fields else False
         fam = self._ea_family(ea)
+        clause_std = {c.id: c.standard_id.code or "" for c in clauses}
 
         def rank(r):
             if ea and r.x_ea_code == ea:
@@ -179,7 +215,7 @@ class RaqibAuditApp(models.Model):
                 return (1, r.id)
             return (2, r.id)
 
-        examples = Ex.search([("x_clause_id", "=", line.clause_id.id)])
+        examples = Ex.search([("x_clause_id", "in", clauses.ids)])
         out = dict(empty)
         for ex in examples.sorted(key=rank):
             out[ex.x_kind].append({
@@ -189,6 +225,8 @@ class RaqibAuditApp(models.Model):
                 "ea": ex.x_ea_code or "",
                 "ea_label": labels.get(ex.x_ea_code, ""),
                 "same": bool(ea and ex.x_ea_code == ea),
+                "std": clause_std.get(ex.x_clause_id.id, "")
+                    if line.is_merged else "",
             })
         return out
 
@@ -209,10 +247,11 @@ class RaqibAuditApp(models.Model):
         line.note = (line.note or "") + sep + (ex.x_text or "")
         return line.note
 
-    def raqib_app_fill_report(self, filename, b64data):
+    def raqib_app_fill_report(self, filename, b64data, standard_id=False):
         self.ensure_one()
         wizard = self.env["raqib.report.fill"].create({
             "audit_id": self.id,
+            "standard_id": standard_id or False,
             "template_file": b64data,
             "template_filename": filename,
         })
