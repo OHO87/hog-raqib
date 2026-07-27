@@ -254,7 +254,7 @@
                             <input class="form-control" placeholder="أضف بندًا آخر…"
                                    t-att-value="f.customInput"
                                    t-on-input="(ev) => f.customInput = ev.target.value"
-                                   t-on-keydown="(ev) => { if (ev.key === 'Enter') this.addKbCustomItem(f); }"/>
+                                   t-on-keydown="(ev) => ev.key === 'Enter' and this.addKbCustomItem(f)"/>
                             <button class="raqib-kb-addbtn" t-on-click="() => this.addKbCustomItem(f)">
                               <i class="fa fa-plus"/> إضافة
                             </button>
