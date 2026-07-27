@@ -51,6 +51,7 @@ export class RaqibAppRoot extends Component {
             kbFor: 0,
             kbTab: "evidence",
             kbLoading: false,
+            kbEdit: null, // {exId, lineId, textEn, fields: [{label, value}]}
             tab: "lines",  // lines | findings | summary
             // إنشاء سريع
             form: { name: "", client_id: 0, client_name: "", standard_id: 0,
@@ -171,6 +172,7 @@ export class RaqibAppRoot extends Component {
         this.state.kbFor = lineId;
         this.state.kbTab = "evidence";
         this.state.kb = { evidence: [], ofi: [], nc: [] };
+        this.state.kbEdit = null;
         this.state.kbLoading = true;
         try {
             this.state.kb = await this.orm.call(
@@ -186,12 +188,58 @@ export class RaqibAppRoot extends Component {
         return (this.state.kb[kind] || []).length;
     }
 
-    async useExample(line, ex) {
+    // أقواس [..] القابلة للتصحيح (نستثني وسم الشدة صغرى/كبرى)
+    _placeholders(text) {
+        const out = [];
+        const re = /\[([^\]]*)\]/g;
+        let m;
+        while ((m = re.exec(text || ""))) {
+            if (m[1] === "صغرى" || m[1] === "كبرى") { continue; }
+            out.push(m[1]);
+        }
+        return out;
+    }
+
+    useExample(line, ex) {
+        const enParts = this._placeholders(ex.text_en);
+        if (!enParts.length) {
+            this._appendNote(line, ex.text_en);
+            return;
+        }
+        const arParts = this._placeholders(ex.text_ar);
+        this.state.kbEdit = {
+            exId: ex.id,
+            lineId: line.id,
+            textEn: ex.text_en,
+            fields: enParts.map((p, i) => ({
+                label: arParts[i] || p,
+                value: p,
+            })),
+        };
+    }
+
+    cancelKbEdit() {
+        this.state.kbEdit = null;
+    }
+
+    confirmKbEdit(line) {
+        const edit = this.state.kbEdit;
+        if (!edit) { return; }
+        let i = 0;
+        const finalText = edit.textEn.replace(/\[([^\]]*)\]/g, (full, inner) => {
+            if (inner === "صغرى" || inner === "كبرى") { return full; }
+            return edit.fields[i++].value;
+        });
+        this.state.kbEdit = null;
+        this._appendNote(line, finalText);
+    }
+
+    async _appendNote(line, text) {
         try {
             const note = await this.orm.call(
-                "raqib.audit", "raqib_app_use_example", [line.id, ex.id]);
+                "raqib.audit", "raqib_app_append_note", [line.id, text]);
             line.note = note;
-            this.notification.add("أُدرج المثال في ملاحظة المدقق — عدّل ما بين [الأقواس].",
+            this.notification.add("أُدرجت النقطة في ملاحظة المدقق.",
                 { type: "success" });
         } catch (e) {
             this._err(e);

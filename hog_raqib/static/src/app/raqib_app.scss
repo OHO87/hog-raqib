@@ -359,3 +359,115 @@ $rq-touch: 48px;
     font-size: 13px;
   }
 }
+
+
+// ═══════════ قاعدة المعرفة: نص عربي + وسوم + محرر تصحيح ═══════════
+.raqib-kb {
+  .raqib-kb-body {
+    flex: 1;
+    min-width: 0;
+
+    p { margin: 0 0 4px; }
+  }
+
+  .raqib-kb-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .raqib-kb-ea {
+    background: #f3f1ea;
+    border-radius: 8px;
+    padding: 2px 8px;
+    color: #6b6857;
+  }
+}
+
+.raqib-kb-edit {
+  margin: -2px 6px 10px;
+  border: 1px solid #d9b64a;
+  border-radius: 10px;
+  background: #fdf8ec;
+  padding: 10px 12px;
+
+  .raqib-kb-edit-head {
+    font-weight: 600;
+    font-size: 13px;
+    color: #7a5d10;
+    margin-bottom: 8px;
+  }
+
+  .raqib-kb-edit-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+
+    label {
+      flex: 0 0 45%;
+      font-size: 12.5px;
+      color: #5f5c4e;
+      margin: 0;
+    }
+
+    input { flex: 1; min-height: 42px; }
+  }
+
+  .raqib-kb-edit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+
+    .raqib-kb-cancel {
+      border: 1px solid #cfccc0;
+      background: #fff;
+    }
+  }
+}
+
+// ═══════════ تهيئة التابلت واللمس ═══════════
+@media (pointer: coarse) {
+  .raqib-kb .raqib-kb-add,
+  .raqib-kb-edit .raqib-kb-edit-actions .btn,
+  .raqib-result-btn,
+  .raqib-seg-btn,
+  .raqib-chipbtn {
+    min-height: 44px;
+  }
+
+  .raqib-line-head { min-height: 56px; }
+}
+
+@media (max-width: 1024px) {
+  .raqib-kb .raqib-kb-tabs {
+    display: flex;
+
+    .raqib-seg-btn { flex: 1; }
+  }
+
+  .raqib-kb .raqib-kb-list { max-height: 420px; }
+
+  .raqib-kb .raqib-kb-item {
+    flex-direction: column;
+
+    .raqib-kb-add { align-self: flex-start; width: auto; padding: 8px 18px; }
+  }
+
+  .raqib-kb-edit .raqib-kb-edit-field {
+    flex-direction: column;
+    align-items: stretch;
+
+    label { flex: none; }
+  }
+
+  .raqib-line-fields { grid-template-columns: 1fr !important; }
+
+  .raqib-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  textarea.form-control { min-height: 110px; font-size: 15px; }
+}

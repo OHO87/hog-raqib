@@ -141,29 +141,64 @@ class RaqibAuditApp(models.Model):
         return True
 
     # ---------------------------------------------------- قاعدة المعرفة
+    @staticmethod
+    def _ea_family(code):
+        """عائلة قطاع EA للترتيب: أولية / تصنيع / مرافق وإنشاء / خدمات."""
+        try:
+            c = int(code)
+        except (TypeError, ValueError):
+            return 9
+        if c <= 2:
+            return 0
+        if c <= 24:
+            return 1
+        if c <= 28:
+            return 2
+        return 3
+
     @api.model
     def raqib_app_kb(self, line_id):
-        """أمثلة قاعدة المعرفة لبند السطر — نفس قطاع العميل أولًا."""
+        """أمثلة قاعدة المعرفة لبند السطر — مرتبة حسب قطاع عميل التدقيق:
+        نفس الرمز أولًا، ثم نفس عائلة القطاع، ثم البقية."""
         empty = {"evidence": [], "ofi": [], "nc": []}
         if "x_raqib.kb.example" not in self.env:
             return empty
         line = self.env["raqib.audit.line"].browse(line_id)
         if not line.clause_id:
             return empty
+        Ex = self.env["x_raqib.kb.example"]
+        labels = dict(Ex._fields["x_ea_code"]._description_selection(self.env))
         client = line.audit_id.client_id
         ea = client.x_ea_code if "x_ea_code" in client._fields else False
-        examples = self.env["x_raqib.kb.example"].search(
-            [("x_clause_id", "=", line.clause_id.id)])
+        fam = self._ea_family(ea)
+
+        def rank(r):
+            if ea and r.x_ea_code == ea:
+                return (0, r.id)
+            if ea and self._ea_family(r.x_ea_code) == fam:
+                return (1, r.id)
+            return (2, r.id)
+
+        examples = Ex.search([("x_clause_id", "=", line.clause_id.id)])
         out = dict(empty)
-        for ex in examples.sorted(
-                key=lambda r: (0 if ea and r.x_ea_code == ea else 1, r.id)):
+        for ex in examples.sorted(key=rank):
             out[ex.x_kind].append({
                 "id": ex.id,
-                "text": ex.x_text or "",
+                "text_en": ex.x_text or "",
+                "text_ar": ex.x_text_ar or ex.x_text or "",
                 "ea": ex.x_ea_code or "",
+                "ea_label": labels.get(ex.x_ea_code, ""),
                 "same": bool(ea and ex.x_ea_code == ea),
             })
         return out
+
+    @api.model
+    def raqib_app_append_note(self, line_id, text):
+        """إلحاق نقطة (بعد تصحيح الأقواس) بملاحظة المدقق — يعيد النص المحدّث."""
+        line = self.env["raqib.audit.line"].browse(line_id)
+        sep = "\n• " if line.note else "• "
+        line.note = (line.note or "") + sep + (text or "")
+        return line.note
 
     @api.model
     def raqib_app_use_example(self, line_id, example_id):

@@ -215,16 +215,42 @@
                   </button>
                 </div>
                 <div class="raqib-kb-list">
-                  <div t-foreach="state.kb[state.kbTab] || []" t-as="ex" t-key="ex.id"
-                       class="raqib-kb-item">
-                    <button class="raqib-kb-add" title="أدرج في ملاحظة المدقق"
-                            t-on-click="() => this.useExample(l, ex)">
-                      <i class="fa fa-plus"/> أدرج
-                    </button>
-                    <p t-esc="ex.text"/>
-                    <span t-if="ex.same" class="raqib-kb-same">نفس القطاع</span>
-                    <span t-elif="ex.ea" class="raqib-kb-ea">EA <t t-esc="ex.ea"/></span>
-                  </div>
+                  <t t-foreach="state.kb[state.kbTab] || []" t-as="ex" t-key="ex.id">
+                    <div class="raqib-kb-item">
+                      <button class="raqib-kb-add" title="أدرج في ملاحظة المدقق"
+                              t-on-click="() => this.useExample(l, ex)">
+                        <i class="fa fa-plus"/> أدرج
+                      </button>
+                      <div class="raqib-kb-body">
+                        <p dir="rtl" t-esc="ex.text_ar"/>
+                        <div class="raqib-kb-tags">
+                          <span t-if="ex.same" class="raqib-kb-same">✓ نفس قطاع العميل</span>
+                          <span t-if="ex.ea_label" class="raqib-kb-ea">EA <t t-esc="ex.ea_label"/></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div t-if="state.kbEdit and state.kbEdit.exId === ex.id"
+                         class="raqib-kb-edit">
+                      <div class="raqib-kb-edit-head">
+                        <i class="fa fa-pencil"/> صحّح القيم قبل الإدراج (رقم الوثيقة / التاريخ / الأمثلة)
+                      </div>
+                      <div t-foreach="state.kbEdit.fields" t-as="f" t-key="f_index"
+                           class="raqib-kb-edit-field">
+                        <label t-esc="f.label"/>
+                        <input class="form-control" dir="ltr" t-att-value="f.value"
+                               t-on-input="(ev) => f.value = ev.target.value"/>
+                      </div>
+                      <div class="raqib-kb-edit-actions">
+                        <button class="btn raqib-btn-primary"
+                                t-on-click="() => this.confirmKbEdit(l)">
+                          <i class="fa fa-check"/> أدرج في الملاحظة
+                        </button>
+                        <button class="btn raqib-kb-cancel" t-on-click="cancelKbEdit">
+                          إلغاء
+                        </button>
+                      </div>
+                    </div>
+                  </t>
                   <div t-if="!state.kbLoading and !kbCount(state.kbTab)" class="raqib-kb-empty">
                     لا أمثلة محفوظة لهذا القسم بعد
                   </div>
