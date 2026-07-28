@@ -603,3 +603,117 @@ $rq-touch: 48px;
     }
   }
 }
+
+
+// ═══════════ شرائح اختيار عامة (مواصفات / قطاعات EA) ═══════════
+// ب-9: كانت .raqib-kb-chip معرَّفة حصراً داخل .raqib-kb-edit-list
+// فظهرت شرائح الإنشاء السريع بلا تنسيق. هذه نسخة مشتركة مستقلة.
+.raqib-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.raqib-chips-empty {
+  font-size: 12.5px;
+  color: #8a8676;
+  padding: 8px 2px;
+}
+
+button.raqib-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #d6d2c4;
+  border-radius: 22px;
+  background: #fff;
+  color: #4d4a3d;
+  font-size: 13.5px;
+  cursor: pointer;
+
+  i { color: #b3ae9d; }
+
+  &.active {
+    border-color: #1d9e75;
+    background: #e1f5ee;
+    color: #085041;
+
+    i { color: #1d9e75; }
+  }
+}
+
+.raqib-req { color: #c0392b; margin-inline-start: 3px; }
+
+.raqib-hintbox-sm {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+
+  p { margin: 0; font-size: 12.5px; }
+}
+
+// ═══════════ لوحة تفاصيل البند — تُفتح بالنقر لا تلقائياً ═══════════
+.raqib-line-ask {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-inline-start: 3px solid #1d9e75;
+  background: #f2faf7;
+  border-radius: 6px;
+  font-size: 14px;
+
+  i { color: #1d9e75; margin-top: 2px; }
+  strong { font-weight: 600; color: #0d4d3d; }
+}
+
+button.raqib-guide-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  border: 1px dashed #cfcabb;
+  border-radius: 8px;
+  background: transparent;
+  color: #6b6757;
+  font-size: 13.5px;
+  cursor: pointer;
+
+  &:hover { background: #faf9f5; color: #3f3c31; }
+}
+
+.raqib-guide {
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  background: #fbfaf6;
+  border: 1px solid #e8e4d8;
+  border-radius: 8px;
+
+  .raqib-guide-sec + .raqib-guide-sec {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ece8dc;
+  }
+
+  .raqib-guide-lbl {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    color: #97927f;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #3f3c31;
+    white-space: pre-line;
+  }
+}

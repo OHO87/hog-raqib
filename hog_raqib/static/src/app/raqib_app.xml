@@ -92,10 +92,42 @@
           </select>
           <input t-if="!state.form.client_id" class="form-control"
                  t-model="state.form.client_name" placeholder="اسم العميل الجديد"/>
+
+          <!-- قطاع EA — إلزامي للعميل الجديد، ومطلوب لإكمال بيانات القائم -->
+          <t t-if="needsSector">
+            <label>
+              قطاع EA / IAF — رمز أو أكثر
+              <span class="raqib-req" t-if="!state.form.client_id">*</span>
+            </label>
+            <div class="raqib-hintbox raqib-hintbox-sm">
+              <i class="fa fa-info-circle"/>
+              <p>عليه يعتمد ترتيب الأمثلة المقترحة: أمثلة نفس القطاع من
+                 تدقيقات سابقة تتصدر القائمة. ابحث بالرمز أو باسم القطاع.</p>
+            </div>
+            <input class="form-control" t-model="state.form.ea_search"
+                   placeholder="مثال: 28 أو «الإنشاءات»"/>
+            <div class="raqib-chips">
+              <button t-foreach="eaResults" t-as="s" t-key="s.id"
+                      t-attf-class="raqib-chip {{state.form.ea_sector_ids.includes(s.id) ? 'active' : ''}}"
+                      t-on-click="() => this.toggleSector(s.id)">
+                <i t-attf-class="fa {{state.form.ea_sector_ids.includes(s.id) ? 'fa-check-square' : 'fa-square-o'}}"/>
+                <t t-esc="s.label"/>
+              </button>
+              <span class="raqib-chips-empty"
+                    t-if="!eaResults.length and !state.form.ea_search">
+                اكتب رمزاً أو جزءاً من اسم القطاع للبحث
+              </span>
+              <span class="raqib-chips-empty"
+                    t-if="!eaResults.length and state.form.ea_search">
+                لا قطاع مطابق
+              </span>
+            </div>
+          </t>
+
           <label>المواصفات — اختر واحدة أو أكثر (نظام متكامل)</label>
-          <div class="raqib-kb-chips">
+          <div class="raqib-chips">
             <button t-foreach="state.standards" t-as="s" t-key="s.id"
-                    t-attf-class="raqib-kb-chip {{state.form.standard_ids.includes(s.id) ? 'active' : ''}}"
+                    t-attf-class="raqib-chip {{state.form.standard_ids.includes(s.id) ? 'active' : ''}}"
                     t-on-click="() => this.toggleStandard(s.id)">
               <i t-attf-class="fa {{state.form.standard_ids.includes(s.id) ? 'fa-check-square' : 'fa-square-o'}}"/>
               <t t-esc="s.name"/>
@@ -178,7 +210,7 @@
                       title="بند مدمج يغطي المواصفات المختارة">
                   <i class="fa fa-compress"/> <t t-esc="l.standards"/>
                 </span>
-                <small t-esc="l.evidence"/>
+                <small t-esc="l.evidence" t-att-title="l.evidence"/>
               </div>
               <span t-attf-class="raqib-line-state is-{{resultCls(l.result)}}">
                 <t t-esc="resultLabel(l.result)"/>
@@ -207,13 +239,36 @@
                   </div>
                 </div>
               </div>
-              <div class="raqib-hintbox" t-if="l.hint">
-                <i class="fa fa-lightbulb-o"/>
-                <div>
-                  <strong t-if="l.input_hint" t-esc="l.input_hint"/>
+              <!-- ما يحتاجه المدقق فوراً: أقصر سطر ممكن -->
+              <div class="raqib-line-ask" t-if="l.input_hint">
+                <i class="fa fa-hand-o-left"/>
+                <strong t-esc="l.input_hint"/>
+              </div>
+
+              <!-- التفاصيل بالنقر فقط: المتطلب + الدليل المتوقع + الإرشاد -->
+              <button class="raqib-guide-toggle"
+                      t-if="l.requirement or l.evidence or l.hint"
+                      t-on-click="toggleGuide">
+                <i t-attf-class="fa {{state.showGuide ? 'fa-caret-down' : 'fa-caret-left'}}"/>
+                <i class="fa fa-book"/> تفاصيل البند ومتطلب المواصفة
+              </button>
+              <div class="raqib-guide" t-if="state.showGuide">
+                <div t-if="l.requirement" class="raqib-guide-sec">
+                  <span class="raqib-guide-lbl">نص المتطلب</span>
+                  <p t-esc="l.requirement"/>
+                </div>
+                <div t-if="l.evidence" class="raqib-guide-sec">
+                  <span class="raqib-guide-lbl">الدليل المتوقع</span>
+                  <p t-esc="l.evidence"/>
+                </div>
+                <div t-if="l.hint" class="raqib-guide-sec">
+                  <span class="raqib-guide-lbl">إرشاد وأمثلة</span>
                   <p t-esc="l.hint"/>
                 </div>
               </div>
+
+              <!-- م3 ستستبدل هذين الحقلين بـ«نوع دليل المطابقة».
+                   يبقيان الآن لأنهما يغذيان عمود المرجع في تقرير URS. -->
               <div class="raqib-line-fields">
                 <div>
                   <label>مرجع الوثيقة / السجل</label>

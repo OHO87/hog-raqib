@@ -3,6 +3,8 @@ access_raqib_standard_user,raqib.standard user,model_raqib_standard,group_raqib_
 access_raqib_standard_manager,raqib.standard manager,model_raqib_standard,group_raqib_manager,1,1,1,1
 access_raqib_clause_user,raqib.clause user,model_raqib_clause,group_raqib_user,1,0,0,0
 access_raqib_clause_manager,raqib.clause manager,model_raqib_clause,group_raqib_manager,1,1,1,1
+access_raqib_ea_sector_user,raqib.ea.sector user,model_raqib_ea_sector,group_raqib_user,1,0,0,0
+access_raqib_ea_sector_manager,raqib.ea.sector manager,model_raqib_ea_sector,group_raqib_manager,1,1,1,1
 access_raqib_client_user,raqib.client user,model_raqib_client,group_raqib_user,1,1,1,0
 access_raqib_client_manager,raqib.client manager,model_raqib_client,group_raqib_manager,1,1,1,1
 access_raqib_client_process_user,raqib.client.process user,model_raqib_client_process,group_raqib_user,1,1,1,1

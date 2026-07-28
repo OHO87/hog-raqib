@@ -40,6 +40,7 @@ export class RaqibAppRoot extends Component {
             audits: [],
             clients: [],
             standards: [],
+            eaSectors: [],   // مرجع قطاعات EA/IAF 1–39
             // شاشة التدقيق
             audit: null,   // header
             lines: [],
@@ -52,10 +53,11 @@ export class RaqibAppRoot extends Component {
             kbTab: "evidence",
             kbLoading: false,
             kbEdit: null, // {exId, lineId, textEn, fields: [{label, value}]}
+            showGuide: false, // لوحة تفاصيل البند — تُفتح بالنقر فقط
             tab: "lines",  // lines | findings | summary
             // إنشاء سريع
             form: { name: "", client_id: 0, client_name: "", standard_ids: [],
-                    audit_type: "stage1" },
+                    ea_sector_ids: [], ea_search: "", audit_type: "stage1" },
             reportStd: 0, // مواصفة التقرير في التدقيق متعدد المواصفات
             saving: false,
         });
@@ -79,6 +81,7 @@ export class RaqibAppRoot extends Component {
                 audits: res.audits,
                 clients: res.clients,
                 standards: res.standards,
+                eaSectors: res.ea_sectors || [],
             });
         } catch (e) {
             this._err(e);
@@ -98,12 +101,42 @@ export class RaqibAppRoot extends Component {
         this.state.form = { name: "", client_id: 0, client_name: "",
                             standard_ids: this.state.standards[0]
                                 ? [this.state.standards[0].id] : [],
+                            ea_sector_ids: [], ea_search: "",
                             audit_type: "stage1" };
         this.state.view = "new";
     }
 
     toggleStandard(id) {
         const sel = this.state.form.standard_ids;
+        const i = sel.indexOf(id);
+        if (i >= 0) { sel.splice(i, 1); } else { sel.push(id); }
+    }
+
+    // --------------------------------------------------------- قطاعات EA
+    /** هل نطلب القطاع؟ عميل جديد، أو عميل قائم بلا قطاع مسجَّل. */
+    get needsSector() {
+        const f = this.state.form;
+        if (!f.client_id) { return true; }
+        const c = this.state.clients.find((x) => x.id === f.client_id);
+        return !!c && !c.ea_codes;
+    }
+
+    /** القطاعات المطابقة للبحث — بحث بالرمز أو بالاسم. */
+    get eaResults() {
+        const q = (this.state.form.ea_search || "").trim();
+        const sel = this.state.form.ea_sector_ids;
+        const list = this.state.eaSectors;
+        if (!q) {
+            // بلا بحث: نعرض المختار فقط حتى لا نُغرق الشاشة بـ39 خياراً
+            return list.filter((s) => sel.includes(s.id));
+        }
+        return list.filter(
+            (s) => s.code === q || s.label.includes(q) || sel.includes(s.id)
+        ).slice(0, 12);
+    }
+
+    toggleSector(id) {
+        const sel = this.state.form.ea_sector_ids;
         const i = sel.indexOf(id);
         if (i >= 0) { sel.splice(i, 1); } else { sel.push(id); }
     }
@@ -117,6 +150,13 @@ export class RaqibAppRoot extends Component {
                 { type: "warning" });
             return;
         }
+        if (!f.client_id && !f.ea_sector_ids.length) {
+            this.notification.add(
+                "حدد قطاع EA للعميل الجديد — عليه يعتمد ترتيب الأمثلة "
+                + "المقترحة من التدقيقات السابقة.",
+                { type: "warning" });
+            return;
+        }
         this.state.saving = true;
         try {
             const id = await this.orm.call(
@@ -125,6 +165,7 @@ export class RaqibAppRoot extends Component {
                     client_id: f.client_id || false,
                     client_name: f.client_name,
                     standard_ids: f.standard_ids,
+                    ea_sector_ids: f.ea_sector_ids,
                     audit_type: f.audit_type,
                 }]);
             await this.openAudit(id);
@@ -148,6 +189,11 @@ export class RaqibAppRoot extends Component {
             this.state.filter = "all";
             this.state.tab = "lines";
             this.state.openLine = false;
+            // ب-10: تصفير حالة قاعدة المعرفة — كانت تتسرب بين تدقيقين
+            this.state.kbFor = 0;
+            this.state.kb = { evidence: [], ofi: [], nc: [] };
+            this.state.kbEdit = null;
+            this.state.kbTab = "evidence";
             this.state.reportStd = res.header.is_multi
                 ? (res.header.standard_list[0]?.id || 0) : 0;
             this.state.view = "audit";
@@ -174,9 +220,18 @@ export class RaqibAppRoot extends Component {
 
     toggleLine(id) {
         this.state.openLine = this.state.openLine === id ? false : id;
+        // ب-11: محرر أقواس مفتوح كان يبقى في الذاكرة بعد إغلاق البند
+        this.state.kbEdit = null;
         if (this.state.openLine) {
             this.loadKb(id);
+        } else {
+            this.state.showGuide = false;
         }
+    }
+
+    /** لوحة تفاصيل البند (المتطلب والإرشاد) — بالنقر لا تلقائياً. */
+    toggleGuide() {
+        this.state.showGuide = !this.state.showGuide;
     }
 
     async splitLine(line) {

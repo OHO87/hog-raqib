@@ -15,6 +15,17 @@ class RaqibClient(models.Model):
         "نطاق الشهادة", tracking=True,
         help="نص النطاق كما سيظهر على الشهادة — يغذي أمثلة الأدلة المخصصة")
     industry = fields.Char("القطاع / مجال العمل")
+    ea_sector_ids = fields.Many2many(
+        "raqib.ea.sector", "raqib_client_ea_rel", "client_id", "sector_id",
+        string="قطاعات EA",
+        help="رمز أو أكثر من تصنيف IAF/EA. يحدد أي أمثلة من قاعدة المعرفة "
+             "تُعرض للمدقق أولاً — أمثلة نفس القطاع تتصدر القائمة.")
+    ea_sector_primary_id = fields.Many2one(
+        "raqib.ea.sector", string="القطاع الأساسي",
+        compute="_compute_ea_primary", store=True,
+        help="أول قطاع بالترتيب — المستخدم في ترتيب الأمثلة وفي التقارير.")
+    ea_codes = fields.Char(compute="_compute_ea_primary", store=True,
+                           string="رموز EA")
     address = fields.Text("عنوان الموقع الدائم")
     employee_count = fields.Integer("عدد الموظفين في الموقع")
     fte_equiv = fields.Float("مكافئ الدوام الكامل (FTE)")
@@ -29,6 +40,13 @@ class RaqibClient(models.Model):
     audit_ids = fields.One2many("raqib.audit", "client_id", string="التدقيقات")
     audit_count = fields.Integer(compute="_compute_audit_count")
     notes = fields.Text("ملاحظات")
+
+    @api.depends("ea_sector_ids")
+    def _compute_ea_primary(self):
+        for rec in self:
+            sectors = rec.ea_sector_ids.sorted("code_int")
+            rec.ea_sector_primary_id = sectors[:1]
+            rec.ea_codes = ",".join(sectors.mapped("code"))
 
     @api.depends("audit_ids")
     def _compute_audit_count(self):

@@ -21,6 +21,10 @@
                             <field name="client_number"/>
                             <field name="partner_id"/>
                             <field name="industry"/>
+                            <field name="ea_sector_ids" widget="many2many_tags"
+                                   options="{'no_create': True}"/>
+                            <field name="ea_sector_primary_id" readonly="1"
+                                   invisible="not ea_sector_primary_id"/>
                         </group>
                         <group>
                             <field name="employee_count"/>
@@ -67,7 +71,8 @@
             <list>
                 <field name="client_number" width="100px"/>
                 <field name="name"/>
-                <field name="industry"/>
+                <field name="ea_sector_ids" widget="many2many_tags" string="قطاعات EA"/>
+                <field name="industry" optional="hide"/>
                 <field name="employee_count"/>
                 <field name="site_count"/>
                 <field name="audit_count" string="تدقيقات"/>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- قطاعات EA/IAF 1–39 — المرجع المعتمد لترتيب أمثلة قاعدة المعرفة -->
+
+    <record id="ea_01" model="raqib.ea.sector"><field name="code">1</field><field name="name">الزراعة وصيد الأسماك والغابات</field></record>
+    <record id="ea_02" model="raqib.ea.sector"><field name="code">2</field><field name="name">التعدين واستغلال المحاجر</field></record>
+    <record id="ea_03" model="raqib.ea.sector"><field name="code">3</field><field name="name">الأغذية والمشروبات والتبغ</field></record>
+    <record id="ea_04" model="raqib.ea.sector"><field name="code">4</field><field name="name">المنسوجات</field></record>
+    <record id="ea_05" model="raqib.ea.sector"><field name="code">5</field><field name="name">الجلود ومنتجاتها</field></record>
+    <record id="ea_06" model="raqib.ea.sector"><field name="code">6</field><field name="name">الخشب ومنتجاته</field></record>
+    <record id="ea_07" model="raqib.ea.sector"><field name="code">7</field><field name="name">اللب والورق</field></record>
+    <record id="ea_08" model="raqib.ea.sector"><field name="code">8</field><field name="name">النشر</field></record>
+    <record id="ea_09" model="raqib.ea.sector"><field name="code">9</field><field name="name">الطباعة</field></record>
+    <record id="ea_10" model="raqib.ea.sector"><field name="code">10</field><field name="name">الكوك والمنتجات النفطية المكررة</field></record>
+    <record id="ea_11" model="raqib.ea.sector"><field name="code">11</field><field name="name">الوقود النووي</field></record>
+    <record id="ea_12" model="raqib.ea.sector"><field name="code">12</field><field name="name">الكيماويات والألياف</field></record>
+    <record id="ea_13" model="raqib.ea.sector"><field name="code">13</field><field name="name">الأدوية</field></record>
+    <record id="ea_14" model="raqib.ea.sector"><field name="code">14</field><field name="name">المطاط واللدائن</field></record>
+    <record id="ea_15" model="raqib.ea.sector"><field name="code">15</field><field name="name">المنتجات المعدنية اللافلزية</field></record>
+    <record id="ea_16" model="raqib.ea.sector"><field name="code">16</field><field name="name">الخرسانة والإسمنت والجير والجبس</field></record>
+    <record id="ea_17" model="raqib.ea.sector"><field name="code">17</field><field name="name">المعادن الأساسية والمنتجات المعدنية المصنعة</field></record>
+    <record id="ea_18" model="raqib.ea.sector"><field name="code">18</field><field name="name">الآلات والمعدات</field></record>
+    <record id="ea_19" model="raqib.ea.sector"><field name="code">19</field><field name="name">المعدات الكهربائية والبصرية</field></record>
+    <record id="ea_20" model="raqib.ea.sector"><field name="code">20</field><field name="name">بناء السفن</field></record>
+    <record id="ea_21" model="raqib.ea.sector"><field name="code">21</field><field name="name">الطيران والفضاء</field></record>
+    <record id="ea_22" model="raqib.ea.sector"><field name="code">22</field><field name="name">معدات النقل الأخرى</field></record>
+    <record id="ea_23" model="raqib.ea.sector"><field name="code">23</field><field name="name">صناعات أخرى غير مصنفة</field></record>
+    <record id="ea_24" model="raqib.ea.sector"><field name="code">24</field><field name="name">إعادة التدوير</field></record>
+    <record id="ea_25" model="raqib.ea.sector"><field name="code">25</field><field name="name">إمدادات الكهرباء</field></record>
+    <record id="ea_26" model="raqib.ea.sector"><field name="code">26</field><field name="name">إمدادات الغاز</field></record>
+    <record id="ea_27" model="raqib.ea.sector"><field name="code">27</field><field name="name">إمدادات المياه</field></record>
+    <record id="ea_28" model="raqib.ea.sector"><field name="code">28</field><field name="name">الإنشاءات</field></record>
+    <record id="ea_29" model="raqib.ea.sector"><field name="code">29</field><field name="name">تجارة الجملة والتجزئة وإصلاح المركبات</field></record>
+    <record id="ea_30" model="raqib.ea.sector"><field name="code">30</field><field name="name">الفنادق والمطاعم</field></record>
+    <record id="ea_31" model="raqib.ea.sector"><field name="code">31</field><field name="name">النقل والتخزين والاتصالات</field></record>
+    <record id="ea_32" model="raqib.ea.sector"><field name="code">32</field><field name="name">الوساطة المالية والعقارات والتأجير</field></record>
+    <record id="ea_33" model="raqib.ea.sector"><field name="code">33</field><field name="name">تقنية المعلومات</field></record>
+    <record id="ea_34" model="raqib.ea.sector"><field name="code">34</field><field name="name">الخدمات الهندسية والبحث والتطوير</field></record>
+    <record id="ea_35" model="raqib.ea.sector"><field name="code">35</field><field name="name">خدمات أخرى</field></record>
+    <record id="ea_36" model="raqib.ea.sector"><field name="code">36</field><field name="name">الإدارة العامة</field></record>
+    <record id="ea_37" model="raqib.ea.sector"><field name="code">37</field><field name="name">التعليم</field></record>
+    <record id="ea_38" model="raqib.ea.sector"><field name="code">38</field><field name="name">الصحة والعمل الاجتماعي</field></record>
+    <record id="ea_39" model="raqib.ea.sector"><field name="code">39</field><field name="name">خدمات اجتماعية أخرى</field></record>
+
+</odoo>

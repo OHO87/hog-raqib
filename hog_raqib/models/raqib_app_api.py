@@ -2,7 +2,15 @@
 """واجهات JSON لتطبيق رقيب المستقل (/raqib) — حمولات مجمعة لتقليل الرحلات."""
 import base64
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from .raqib_ea_sector import family_of
+
+# حد أعلى لأمثلة قاعدة المعرفة المُحمَّلة لبند واحد — يمنع تحميل مئات
+# الأمثلة لبند شائع. الترتيب يضمن أن الأقرب قطاعياً يبقى ضمن الحد.
+KB_FETCH_LIMIT = 300
+KB_PER_KIND_LIMIT = 40
 
 
 def _sel_label(rec, field):
@@ -27,16 +35,22 @@ class RaqibAuditApp(models.Model):
             "user_name": user.name,
             "is_manager": user.has_group("hog_raqib.group_raqib_manager"),
             "kpis": {
-                "active_audits": len(audits),
+                # ب-21: search_count لا len() على نتيجة محدودة بـlimit
+                "active_audits": self.search_count([("state", "!=", "done")]),
                 "open_findings": open_findings,
                 "pending_lines": pending_lines,
             },
             "audits": [self._app_audit_card(a) for a in audits] +
                       [self._app_audit_card(a) for a in done],
             "clients": self.env["raqib.client"].search_read(
-                [], ["name"], limit=200),
+                [], ["name", "ea_codes"], limit=200),
             "standards": self.env["raqib.standard"].search_read(
                 [], ["name", "code"], limit=20),
+            "ea_sectors": [
+                {"id": s.id, "code": s.code, "name": s.name,
+                 "label": s.display_name}
+                for s in self.env["raqib.ea.sector"].search([])
+            ],
         }
 
     def _app_audit_card(self, a):
@@ -56,12 +70,34 @@ class RaqibAuditApp(models.Model):
     # -------------------------------------------------------- إنشاء سريع
     @api.model
     def raqib_app_quick_create(self, vals):
-        client_id = vals.get("client_id")
-        if not client_id and vals.get("client_name"):
-            client_id = self.env["raqib.client"].create(
-                {"name": vals["client_name"]}).id
+        # ب-18: تحقق خادمي — لا نعتمد على تحقق الواجهة وحده
+        if not (vals.get("name") or "").strip():
+            raise UserError(_("رقم الزيارة (JI) مطلوب."))
         standard_ids = vals.get("standard_ids") or (
             [vals["standard_id"]] if vals.get("standard_id") else [])
+        if not standard_ids:
+            raise UserError(_("اختر مواصفة واحدة على الأقل."))
+
+        client_id = vals.get("client_id")
+        sector_ids = [s for s in (vals.get("ea_sector_ids") or []) if s]
+        if not client_id:
+            client_name = (vals.get("client_name") or "").strip()
+            if not client_name:
+                raise UserError(_("اسم العميل مطلوب لإنشاء عميل جديد."))
+            if not sector_ids:
+                raise UserError(_(
+                    "حدد قطاع EA واحداً على الأقل للعميل الجديد — "
+                    "عليه يعتمد ترتيب الأمثلة المقترحة من التدقيقات السابقة."))
+            client_id = self.env["raqib.client"].create({
+                "name": client_name,
+                "ea_sector_ids": [(6, 0, sector_ids)],
+            }).id
+        elif sector_ids:
+            # عميل قائم بلا قطاع — نكمل بياناته من نفس الشاشة
+            client = self.env["raqib.client"].browse(client_id)
+            if not client.ea_sector_ids:
+                client.ea_sector_ids = [(6, 0, sector_ids)]
+
         audit = self.create({
             "name": vals["name"],
             "client_id": client_id,
@@ -167,33 +203,41 @@ class RaqibAuditApp(models.Model):
     # -------------------------------------------------- خلاصة وتقرير
     def raqib_app_set_audit(self, vals):
         self.ensure_one()
+        # ب-7: أُزيل "state" من القائمة البيضاء — كان أي مدقق ينقل التدقيق
+        # إلى done عبر RPC مباشر متجاوزاً أزرار سير العمل.
         allowed = {k: v for k, v in vals.items() if k in (
             "mandays_planned", "mandays_actual", "mandays_justification",
             "recommendation", "client_action", "next_visit_month",
-            "next_visit_activity", "state")}
+            "next_visit_activity")}
         self.write(allowed)
         return True
 
     # ---------------------------------------------------- قاعدة المعرفة
     @staticmethod
     def _ea_family(code):
-        """عائلة قطاع EA للترتيب: أولية / تصنيع / مرافق وإنشاء / خدمات."""
-        try:
-            c = int(code)
-        except (TypeError, ValueError):
-            return 9
-        if c <= 2:
-            return 0
-        if c <= 24:
-            return 1
-        if c <= 28:
-            return 2
-        return 3
+        """عائلة قطاع EA — تُعيد False عند التعذر (لا قيمة مشتركة).
+
+        ب-16: الإصدار السابق كان يعيد 9 لكل رمز غير صالح، فيُعتبر عميلان
+        بلا قطاع «من نفس العائلة» وتُرفع أمثلتهما بالخطأ.
+        """
+        return family_of(code)
+
+    @staticmethod
+    def _client_ea_codes(client):
+        """كل رموز EA للعميل كمجموعة نصية، مع توافق خلفي مع حقل Studio."""
+        codes = set()
+        if "ea_sector_ids" in client._fields:
+            codes |= {c for c in client.ea_sector_ids.mapped("code") if c}
+        if not codes and "x_ea_code" in client._fields and client.x_ea_code:
+            codes.add(client.x_ea_code)
+        return codes
 
     @api.model
     def raqib_app_kb(self, line_id):
-        """أمثلة قاعدة المعرفة لبند السطر — مرتبة حسب قطاع عميل التدقيق:
-        نفس الرمز أولًا، ثم نفس عائلة القطاع، ثم البقية."""
+        """أمثلة قاعدة المعرفة لبند السطر — مرتبة حسب قطاعات عميل التدقيق:
+        نفس الرمز أولًا، ثم نفس عائلة القطاع، ثم البقية.
+
+        يدعم أكثر من رمز للعميل الواحد (عملاء متعددو النشاط)."""
         empty = {"evidence": [], "ofi": [], "nc": []}
         if "x_raqib.kb.example" not in self.env:
             return empty
@@ -204,27 +248,33 @@ class RaqibAuditApp(models.Model):
         Ex = self.env["x_raqib.kb.example"]
         labels = dict(Ex._fields["x_ea_code"]._description_selection(self.env))
         client = line.audit_id.client_id
-        ea = client.x_ea_code if "x_ea_code" in client._fields else False
-        fam = self._ea_family(ea)
+        codes = self._client_ea_codes(client)
+        families = {f for f in (family_of(c) for c in codes) if f}
         clause_std = {c.id: c.standard_id.code or "" for c in clauses}
 
         def rank(r):
-            if ea and r.x_ea_code == ea:
+            if codes and r.x_ea_code in codes:
                 return (0, r.id)
-            if ea and self._ea_family(r.x_ea_code) == fam:
+            if families and family_of(r.x_ea_code) in families:
                 return (1, r.id)
             return (2, r.id)
 
-        examples = Ex.search([("x_clause_id", "in", clauses.ids)])
-        out = dict(empty)
+        # ب-22: حد على الجلب — بند شائع قد يحمل مئات الأمثلة
+        examples = Ex.search([("x_clause_id", "in", clauses.ids)],
+                             limit=KB_FETCH_LIMIT)
+        out = {"evidence": [], "ofi": [], "nc": []}
         for ex in examples.sorted(key=rank):
-            out[ex.x_kind].append({
+            # ب-6: قيمة x_kind غير متوقعة كانت تُحدث KeyError وتُسقط اللوحة
+            bucket = out.get(ex.x_kind)
+            if bucket is None or len(bucket) >= KB_PER_KIND_LIMIT:
+                continue
+            bucket.append({
                 "id": ex.id,
                 "text_en": ex.x_text or "",
                 "text_ar": ex.x_text_ar or ex.x_text or "",
                 "ea": ex.x_ea_code or "",
                 "ea_label": labels.get(ex.x_ea_code, ""),
-                "same": bool(ea and ex.x_ea_code == ea),
+                "same": bool(codes and ex.x_ea_code in codes),
                 "std": clause_std.get(ex.x_clause_id.id, "")
                     if line.is_merged else "",
             })
@@ -240,12 +290,13 @@ class RaqibAuditApp(models.Model):
 
     @api.model
     def raqib_app_use_example(self, line_id, example_id):
-        """إدراج نص مثال في ملاحظة المدقق — يعيد النص المحدّث."""
-        line = self.env["raqib.audit.line"].browse(line_id)
+        """إدراج نص مثال في ملاحظة المدقق — يعيد النص المحدّث.
+
+        ب-25: الواجهة تستخدم raqib_app_append_note بعد محرر الأقواس؛
+        هذه أُبقيت كواجهة توافق للنداءات الخارجية ولم تعد تكرر المنطق.
+        """
         ex = self.env["x_raqib.kb.example"].browse(example_id)
-        sep = "\n• " if line.note else "• "
-        line.note = (line.note or "") + sep + (ex.x_text or "")
-        return line.note
+        return self.raqib_app_append_note(line_id, ex.x_text or "")
 
     def raqib_app_fill_report(self, filename, b64data, standard_id=False):
         self.ensure_one()
