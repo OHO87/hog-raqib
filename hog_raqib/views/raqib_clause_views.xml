@@ -9,8 +9,13 @@
                 <field name="number" width="80px"/>
                 <field name="name"/>
                 <field name="is_leaf" optional="hide"/>
-                <field name="applies_stage1"/>
-                <field name="applies_stage2"/>
+                <field name="applies_stage1" widget="boolean_toggle"/>
+                <field name="applies_stage2" widget="boolean_toggle"/>
+                <field name="applies_surveillance" widget="boolean_toggle"/>
+                <field name="applies_recert" widget="boolean_toggle"/>
+                <field name="is_surveillance_core" widget="boolean_toggle"
+                       optional="show"/>
+                <field name="stage1_focus" optional="hide"/>
                 <field name="standard_id" optional="hide"/>
             </list>
         </field>
@@ -31,15 +36,28 @@
                             <field name="parent_id"/>
                             <field name="sequence"/>
                         </group>
-                        <group>
+                        <group string="نطاق الزيارة">
                             <field name="is_leaf"/>
                             <field name="applies_stage1"/>
                             <field name="applies_stage2"/>
+                            <field name="applies_surveillance"/>
+                            <field name="applies_recert"/>
+                            <field name="is_surveillance_core"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="المتطلب">
                             <field name="requirement"/>
+                        </page>
+                        <page string="المرحلة الأولى"
+                              invisible="not applies_stage1">
+                            <div class="alert alert-info" role="alert">
+                                المرحلة الأولى مراجعة وثائقية وجاهزية وفهم ونطاق
+                                (ISO/IEC 17021-1 §9.3.1.2.2). ما يُكتب هنا يظهر
+                                للمدقق داخل التطبيق في تدقيقات المرحلة الأولى فقط.
+                            </div>
+                            <field name="stage1_focus"
+                                   placeholder="ما الذي يُفحص تحديداً في المرحلة الأولى لهذا البند؟"/>
                         </page>
                         <page string="الدليل المتوقع">
                             <group>

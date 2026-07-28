@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- صُدِّرت آلياً من ستيجنغ في م2-٠ لتثبيت مصدر الحقيقة في المستودع.
+         أعلام نطاق الزيارة تُطبَّق من CLAUSE_SCOPE في models/raqib_clause_scope.py -->
+
+    <!-- ============ 4 ============ -->
+    <record id="c14001_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">4</field>
+        <field name="name">سياق المنظمة</field>
+        <field name="sequence">40</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_4_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_4"/>
+        <field name="number">4.1</field>
+        <field name="name">فهم المنظمة وسياقها</field>
+        <field name="sequence">41</field>
+        <field name="requirement">تحديد القضايا الداخلية والخارجية ذات الصلة بغرض المنظمة والمؤثرة على قدرتها على تحقيق النتائج المقصودة من نظام الإدارة البيئية، بما في ذلك الظروف البيئية المتأثرة بالمنظمة أو القادرة على التأثير عليها.</field>
+        <field name="evidence_expected">تحليل سياق (SWOT/PESTEL) محدث يتضمن بعداً بيئياً صريحاً: الظروف البيئية المحيطة (مناخ، موارد مياه، جودة هواء)، التشريعات البيئية، توقعات المجتمع، مع دليل مراجعة دورية.</field>
+        <field name="evidence_hint">قضايا بيئية داخلية نموذجية: استهلاك طاقة/مياه مرتفع، مخلفات عملية إنتاجية، معدات قديمة عالية الانبعاثات. خارجية: تشدد تشريعي بيئي، ندرة مياه بالمنطقة، حساسية الجوار السكني، متطلبات عملاء تصديرية بيئية. الضعف الشائع: نسخ تحليل الجودة كما هو دون بعد بيئي.</field>
+        <field name="auditor_input_hint">حدد تاريخ آخر مراجعة للتحليل وهل يتضمن البعد البيئي</field>
+    </record>
+    <record id="c14001_4_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_4"/>
+        <field name="number">4.2</field>
+        <field name="name">فهم احتياجات وتوقعات الأطراف المعنية</field>
+        <field name="sequence">42</field>
+        <field name="requirement">تحديد الأطراف المعنية ذات الصلة بنظام الإدارة البيئية واحتياجاتها وتوقعاتها، وتحديد أيها يصبح التزامات امتثال.</field>
+        <field name="evidence_expected">سجل أطراف معنية يشمل الجهات البيئية الرقابية، الجوار/المجتمع، البلدية، متعهدي نقل المخلفات، مع تحديد صريح لما اعتُمد منها كالتزام امتثال.</field>
+        <field name="evidence_hint">أطراف تُنسى عادة: وزارة البيئة/سلطة المنطقة، شركات تدوير ومعالجة المخلفات المرخصة، الجيران (شكاوى ضجيج/روائح)، شركات التأمين. تحقق من الربط بين توقعات الأطراف وسجل التزامات الامتثال (6.1.3).</field>
+        <field name="auditor_input_hint">سجل مرجع السجل وهل ميّز التزامات الامتثال</field>
+    </record>
+    <record id="c14001_4_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_4"/>
+        <field name="number">4.3</field>
+        <field name="name">تحديد نطاق نظام الإدارة البيئية</field>
+        <field name="sequence">43</field>
+        <field name="requirement">تحديد حدود نظام الإدارة البيئية وقابلية تطبيقه مع مراعاة القضايا الخارجية والداخلية والتزامات الامتثال والوحدات التنظيمية والأنشطة والمنتجات والخدمات، وصلاحية المنظمة للضبط والتأثير، وتوثيق النطاق وإتاحته.</field>
+        <field name="evidence_expected">نطاق موثق ومعتمد يطابق شهادة الاعتماد المطلوبة، يذكر المواقع والأنشطة، ولا يستثني أنشطة ذات جوانب بيئية جوهرية دون مبرر.</field>
+        <field name="evidence_hint">الضعف الشائع: استثناء أنشطة ملوثة (ورشة صيانة، مولدات، مخازن كيماويات) من النطاق رغم أنها تحت سيطرة المنظمة. قارن النطاق مع الواقع الميداني وعقد التدقيق (JI).</field>
+        <field name="auditor_input_hint">انسخ نص النطاق وطابقه مع الواقع</field>
+    </record>
+    <record id="c14001_4_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_4"/>
+        <field name="number">4.4</field>
+        <field name="name">نظام الإدارة البيئية</field>
+        <field name="sequence">44</field>
+        <field name="requirement">إنشاء وتطبيق وصيانة وتحسين مستمر لنظام الإدارة البيئية بما يشمل العمليات اللازمة وتفاعلاتها لتحقيق النتائج المقصودة.</field>
+        <field name="evidence_expected">خريطة عمليات أو دليل نظام يوضح عمليات النظام البيئي وتكاملها مع عمليات التشغيل، خاصة نقاط التقاء الجوانب البيئية بالعمليات الإنتاجية.</field>
+        <field name="evidence_hint">تحقق أن النظام ليس ملفات معزولة لدى منسق البيئة بل مدمج بالعمليات: هل تعليمات التشغيل تتضمن الضوابط البيئية؟ هل مسؤوليات البيئة موزعة على المشرفين أم محصورة بشخص واحد؟</field>
+        <field name="auditor_input_hint">سجل مرجع خريطة العمليات/الدليل</field>
+    </record>
+    <!-- ============ 5 ============ -->
+    <record id="c14001_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">5</field>
+        <field name="name">القيادة</field>
+        <field name="sequence">50</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_5_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_5"/>
+        <field name="number">5.1</field>
+        <field name="name">القيادة والالتزام</field>
+        <field name="sequence">51</field>
+        <field name="requirement">إثبات الإدارة العليا قيادتها والتزامها تجاه نظام الإدارة البيئية: تحمل المساءلة عن فعاليته، ضمان توافق السياسة والأهداف مع التوجه الاستراتيجي، دمج المتطلبات في عمليات الأعمال، توفير الموارد، والتوجيه والدعم.</field>
+        <field name="evidence_expected">مقابلة الإدارة العليا: وعي بالجوانب البيئية الجوهرية والتزامات الامتثال، حضور مراجعة الإدارة، اعتماد موازنة للمشاريع البيئية (معالجة، تدوير، كفاءة طاقة).</field>
+        <field name="evidence_hint">أسئلة مقابلة نموذجية: ما أهم جوانبكم البيئية؟ ماذا خصصتم لها هذا العام؟ ما موقفكم من آخر نتيجة تقييم امتثال؟ الضعف الشائع: إدارة عليا تحيل كل شيء لمنسق البيئة دون معرفة فعلية.</field>
+        <field name="auditor_input_hint">سجل من قابلت وأبرز مؤشرات الالتزام</field>
+    </record>
+    <record id="c14001_5_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_5"/>
+        <field name="number">5.2</field>
+        <field name="name">السياسة البيئية</field>
+        <field name="sequence">52</field>
+        <field name="requirement">وضع سياسة بيئية مناسبة لغرض المنظمة وسياقها، توفر إطاراً للأهداف، وتتضمن التزاماً بحماية البيئة بما فيه منع التلوث، والوفاء بالتزامات الامتثال، والتحسين المستمر، مع توثيقها وإبلاغها وإتاحتها للأطراف المعنية.</field>
+        <field name="evidence_expected">سياسة معتمدة وموقعة تتضمن الالتزامات الثلاثة الإلزامية (منع التلوث، الامتثال، التحسين المستمر)، معلنة داخلياً ومتاحة خارجياً، والعاملون على دراية بجوهرها.</field>
+        <field name="evidence_hint">افحص النص حرفياً: غياب عبارة «منع التلوث» أو «الوفاء بالتزامات الامتثال» ملاحظة مباشرة. اسأل عاملاً في الميدان عن السياسة — لا يُشترط الحفظ بل فهم الالتزام العام.</field>
+        <field name="auditor_input_hint">تاريخ الاعتماد ووسائل الإبلاغ والإتاحة</field>
+    </record>
+    <record id="c14001_5_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_5"/>
+        <field name="number">5.3</field>
+        <field name="name">الأدوار والمسؤوليات والصلاحيات التنظيمية</field>
+        <field name="sequence">53</field>
+        <field name="requirement">إسناد وإبلاغ المسؤوليات والصلاحيات للأدوار ذات الصلة، بما يشمل ضمان مطابقة النظام لمتطلبات المواصفة ورفع تقارير الأداء البيئي للإدارة العليا.</field>
+        <field name="evidence_expected">هيكل تنظيمي وأوصاف وظيفية تتضمن المسؤوليات البيئية (منسق البيئة، مسؤول المخلفات، مشغل محطة المعالجة)، وتقارير أداء بيئي دورية مرفوعة للإدارة.</field>
+        <field name="evidence_hint">تحقق من إسناد المهام البيئية الميدانية: من يفصل المخلفات؟ من يفحص حاويات الكيماويات؟ من يستدعى عند انسكاب؟ الضعف الشائع: كل شيء باسم منسق واحد بلا بدائل عند غيابه.</field>
+        <field name="auditor_input_hint">سجل الأدوار البيئية الرئيسية ومن يشغلها</field>
+    </record>
+    <!-- ============ 6 ============ -->
+    <record id="c14001_6" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">6</field>
+        <field name="name">التخطيط</field>
+        <field name="sequence">60</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_6_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_6"/>
+        <field name="number">6.1</field>
+        <field name="name">إجراءات التعامل مع المخاطر والفرص</field>
+        <field name="sequence">61</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_6_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_6"/>
+        <field name="number">6.2</field>
+        <field name="name">الأهداف البيئية والتخطيط لتحقيقها</field>
+        <field name="sequence">62</field>
+        <field name="requirement">وضع أهداف بيئية للوظائف والمستويات ذات الصلة، مع مراعاة الجوانب الجوهرية والتزامات الامتثال، قابلة للقياس وتُرصد وتُبلغ وتُحدث، مع خطط تحقيق (ماذا، الموارد، المسؤول، المدة، تقييم النتائج).</field>
+        <field name="evidence_expected">أهداف بيئية معتمدة مرتبطة بالجوانب الجوهرية (خفض استهلاك، خفض مخلفات، رفع نسبة تدوير) بخطط عمل ومؤشرات متابعة دورية.</field>
+        <field name="evidence_hint">أمثلة أهداف جيدة: خفض استهلاك الكهرباء 5% لكل وحدة إنتاج، رفع نسبة فرز المخلفات إلى 80%، صفر انسكابات مسجلة. الضعف الشائع: أهداف بلا خط أساس (baseline) أو بلا متابعة رقمية فعلية.</field>
+        <field name="auditor_input_hint">سجل الأهداف ونسب الإنجاز الحالية</field>
+    </record>
+    <!-- ============ 7 ============ -->
+    <record id="c14001_7" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">7</field>
+        <field name="name">الدعم</field>
+        <field name="sequence">70</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_7_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_7"/>
+        <field name="number">7.1</field>
+        <field name="name">الموارد</field>
+        <field name="sequence">71</field>
+        <field name="requirement">تحديد وتوفير الموارد اللازمة لإنشاء وتطبيق وصيانة وتحسين نظام الإدارة البيئية.</field>
+        <field name="evidence_expected">دليل تخصيص موارد للبنية البيئية: معدات معالجة/فرز، حاويات مناسبة، عدة طوارئ انسكاب، معايرة أجهزة الرصد البيئي، موازنة للفحوصات الدورية.</field>
+        <field name="evidence_hint">عاين ميدانياً: حاويات فرز كافية وسليمة، مواد امتصاص للانسكابات قرب الكيماويات، صيانة وحدات المعالجة. الضعف الشائع: أجهزة رصد بيئي (ضجيج، انبعاثات) غير معايرة.</field>
+        <field name="auditor_input_hint">سجل الموارد البيئية التي عاينتها</field>
+    </record>
+    <record id="c14001_7_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_7"/>
+        <field name="number">7.2</field>
+        <field name="name">الكفاءة</field>
+        <field name="sequence">72</field>
+        <field name="requirement">تحديد الكفاءة اللازمة للعاملين الذين يؤثر عملهم على الأداء البيئي والقدرة على الوفاء بالتزامات الامتثال، وضمانها بالتعليم أو التدريب أو الخبرة، واتخاذ إجراءات لاكتسابها وتقييم فعاليتها، مع معلومات موثقة.</field>
+        <field name="evidence_expected">مصفوفة كفاءات تشمل الأدوار البيئية الحرجة (مناولة كيماويات، إدارة مخلفات خطرة، تشغيل محطة معالجة، فرق طوارئ) وسجلات تدريب وتقييم فعالية.</field>
+        <field name="evidence_hint">ركز على الأدوار الحرجة بيئياً: هل مشغل محطة المعالجة مدرب موثقاً؟ هل سائق نقل المخلفات الخطرة مؤهل؟ اختبر بالمقابلة الميدانية لا بالسجلات فقط.</field>
+        <field name="auditor_input_hint">عينة السجلات والأشخاص الذين قابلتهم</field>
+    </record>
+    <record id="c14001_7_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_7"/>
+        <field name="number">7.3</field>
+        <field name="name">التوعية</field>
+        <field name="sequence">73</field>
+        <field name="requirement">ضمان وعي العاملين بالسياسة البيئية والجوانب الجوهرية والآثار المرتبطة بعملهم ومساهمتهم في فعالية النظام وتبعات عدم المطابقة لمتطلباته.</field>
+        <field name="evidence_expected">برامج توعية موثقة، والأهم: وعي فعلي بالمقابلات الميدانية — العامل يعرف الجوانب البيئية لعمله وماذا يفعل عند انسكاب.</field>
+        <field name="evidence_hint">أسئلة ميدانية: ما الأثر البيئي لعملك؟ أين تضع الزيت المستعمل؟ ماذا تفعل لو انسكبت مادة كيماوية؟ إجابات عشوائية من عدة عاملين أقوى دليل من سجلات حضور التوعية.</field>
+        <field name="auditor_input_hint">عدد من قابلتهم وخلاصة مستوى الوعي</field>
+    </record>
+    <record id="c14001_7_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_7"/>
+        <field name="number">7.4</field>
+        <field name="name">الاتصال</field>
+        <field name="sequence">74</field>
+        <field name="requirement">تخطيط وتنفيذ الاتصالات الداخلية والخارجية ذات الصلة بالنظام البيئي (ماذا، متى، مع من، كيف)، مع الاستجابة للاتصالات ذات الصلة والاحتفاظ بمعلومات موثقة، وضمان موثوقية المعلومات البيئية المبلغة.</field>
+        <field name="evidence_expected">خطة اتصال بيئي تحدد الاتصالات الخارجية الإلزامية (تقارير الجهات الرقابية، الرد على شكاوى الجوار) وسجل بالاتصالات الواردة والصادرة.</field>
+        <field name="evidence_hint">اطلب سجل شكاوى الجوار البيئية (ضجيج، روائح، غبار) وكيف عولجت. تحقق من التقارير الدورية المطلوبة بموجب الترخيص البيئي: هل أُرسلت في مواعيدها؟</field>
+        <field name="auditor_input_hint">سجل الاتصالات الرقابية والشكاوى إن وجدت</field>
+    </record>
+    <record id="c14001_7_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_7"/>
+        <field name="number">7.5</field>
+        <field name="name">المعلومات الموثقة</field>
+        <field name="sequence">75</field>
+        <field name="requirement">إنشاء وتحديث وضبط المعلومات الموثقة المطلوبة بالمواصفة والتي تحددها المنظمة، بما يشمل التعريف والصيغة والمراجعة والاعتماد والإتاحة والحماية والتوزيع والاسترجاع والاحتفاظ والتخلص.</field>
+        <field name="evidence_expected">نظام ضبط وثائق موحد (غالباً مشترك مع الجودة) يغطي الوثائق البيئية: سجل الجوانب، سجل التشريعات، مناولة المخلفات، نتائج الرصد، تصاريح ومناولات المخلفات (manifests).</field>
+        <field name="evidence_hint">عينات فحص مميزة للبيئة: مناولات نقل المخلفات الخطرة (هل محفوظة وموقعة من المتعهد المرخص؟)، شهادات معايرة أجهزة الرصد، نتائج تحاليل الصرف. تحقق من النسخ المتداولة ميدانياً أنها الأحدث.</field>
+        <field name="auditor_input_hint">عينة الوثائق والسجلات المفحوصة</field>
+    </record>
+    <!-- ============ 8 ============ -->
+    <record id="c14001_8" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">8</field>
+        <field name="name">التشغيل</field>
+        <field name="sequence">80</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_8_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_8"/>
+        <field name="number">8.1</field>
+        <field name="name">التخطيط والضبط التشغيلي</field>
+        <field name="sequence">81</field>
+        <field name="requirement">إنشاء وضبط العمليات اللازمة للوفاء بمتطلبات النظام وتنفيذ إجراءات 6.1 و6.2، بوضع معايير تشغيل وتطبيق ضبط وفقها، وضبط التغييرات المخططة ومراجعة غير المقصودة، وضبط العمليات المسندة خارجياً، ومنظور دورة الحياة في التصميم والشراء والتسليم والمعالجة النهائية.</field>
+        <field name="evidence_expected">تعليمات تشغيل تتضمن الضوابط البيئية للجوانب الجوهرية (إدارة مخلفات، مناولة كيماويات، ضبط انبعاثات)، واشتراطات بيئية على الموردين والمقاولين، وجولة ميدانية تؤكد التطبيق.</field>
+        <field name="evidence_hint">بند الجولة الميدانية البيئية الرئيسي: مسار المخلفات من النشأة للتخلص النهائي (فرز ← تخزين مؤقت ← متعهد مرخص ← مناولة موثقة)، تخزين الكيماويات (أحواض احتواء، MSDS، فصل المتعارضات)، الصرف الصناعي. الضعف الشائع: مخلفات خطرة تسلم لمتعهد غير مرخص أو بلا مناولات.</field>
+        <field name="auditor_input_hint">سجل مسار الجولة وما عاينته</field>
+    </record>
+    <record id="c14001_8_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_8"/>
+        <field name="number">8.2</field>
+        <field name="name">الاستعداد والاستجابة للطوارئ</field>
+        <field name="sequence">82</field>
+        <field name="requirement">إنشاء وتطبيق وصيانة العمليات اللازمة للاستعداد والاستجابة لحالات الطوارئ المحتملة المحددة في 6.1.1: التخطيط للاستجابة، منع/تخفيف الآثار البيئية، الاختبار الدوري، المراجعة والتنقيح بعد الحوادث أو الاختبارات، وتوفير معلومات وتدريب ذي صلة.</field>
+        <field name="evidence_expected">خطط طوارئ بيئية (انسكاب، حريق، تسرب غاز) مرتبطة بسيناريوهات سجل الجوانب، سجلات تمارين/محاكاة دورية بتقييم ودروس مستفادة، وعدة استجابة متاحة وصالحة.</field>
+        <field name="evidence_hint">عاين عدة الانسكاب ميدانياً (مواد ماصة، حواجز، حاوية طوارئ) وتاريخ آخر تمرين انسكاب — تمرين إخلاء الحريق وحده لا يغطي السيناريوهات البيئية. اسأل عاملاً: ماذا تفعل حال انسكاب برميل زيت؟</field>
+        <field name="auditor_input_hint">تاريخ آخر تمرين طوارئ بيئي ونتيجته</field>
+    </record>
+    <!-- ============ 9 ============ -->
+    <record id="c14001_9" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">9</field>
+        <field name="name">تقييم الأداء</field>
+        <field name="sequence">90</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_9_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_9"/>
+        <field name="number">9.1</field>
+        <field name="name">الرصد والقياس والتحليل والتقييم</field>
+        <field name="sequence">91</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_9_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_9"/>
+        <field name="number">9.2</field>
+        <field name="name">التدقيق الداخلي</field>
+        <field name="sequence">92</field>
+        <field name="requirement">إجراء تدقيقات داخلية على فترات مخططة للتحقق من مطابقة النظام البيئي لمتطلبات المنظمة والمواصفة وفعالية تطبيقه، ببرنامج تدقيق يراعي الأهمية البيئية للعمليات والتغييرات ونتائج التدقيقات السابقة، بموضوعية وحياد، مع إبلاغ النتائج ومعلومات موثقة.</field>
+        <field name="evidence_expected">برنامج تدقيق داخلي يغطي كل بنود 14001 وكل المواقع/العمليات ذات الجوانب الجوهرية، بمدققين مؤهلين بيئياً، وتقارير بملاحظات حقيقية أُغلقت بإجراءات.</field>
+        <field name="evidence_hint">الضعف الشائع: مدقق داخلي مؤهل جودة فقط يدقق البيئة شكلياً، أو تدقيق مكتبي لا يشمل الميدان (مناطق المخلفات، المعالجة). تقرير داخلي صفر ملاحظات في نظام حديث إشارة ضعف.</field>
+        <field name="auditor_input_hint">تاريخ آخر تدقيق داخلي وعدد ملاحظاته</field>
+    </record>
+    <record id="c14001_9_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_9"/>
+        <field name="number">9.3</field>
+        <field name="name">مراجعة الإدارة</field>
+        <field name="sequence">93</field>
+        <field name="requirement">مراجعة الإدارة العليا للنظام البيئي على فترات مخططة بمدخلات تشمل: حالة إجراءات المراجعات السابقة، تغيرات القضايا والأطراف والالتزامات والجوانب والمخاطر، مدى تحقق الأهداف، الأداء البيئي واتجاهاته، نتائج تقييم الامتثال، كفاية الموارد، الاتصالات، فرص التحسين — ومخرجات تشمل استنتاجات الملاءمة والكفاية والفعالية وقرارات التحسين.</field>
+        <field name="evidence_expected">محضر مراجعة إدارة يغطي المدخلات الإلزامية كاملة — خاصة نتائج تقييم الامتثال والأداء البيئي واتجاهاته — بقرارات محددة بمسؤول ومدة.</field>
+        <field name="evidence_hint">قارن جدول أعمال المحضر مع قائمة مدخلات 9.3 بنداً بنداً — غياب «نتائج تقييم الامتثال» هو النقص الأكثر شيوعاً في أنظمة البيئة. تحقق من متابعة قرارات المراجعة السابقة.</field>
+        <field name="auditor_input_hint">تاريخ آخر مراجعة والمدخلات الناقصة إن وجدت</field>
+    </record>
+    <!-- ============ 10 ============ -->
+    <record id="c14001_10" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="number">10</field>
+        <field name="name">التحسين</field>
+        <field name="sequence">100</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c14001_10_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_10"/>
+        <field name="number">10.1</field>
+        <field name="name">عام (فرص التحسين)</field>
+        <field name="sequence">101</field>
+        <field name="requirement">تحديد فرص التحسين وتنفيذ الإجراءات اللازمة لتحقيق النتائج المقصودة من نظام الإدارة البيئية.</field>
+        <field name="evidence_expected">دليل على تحديد فرص تحسين من مصادر النظام (تدقيقات، رصد، مراجعة إدارة) وتحويلها لإجراءات فعلية.</field>
+        <field name="evidence_hint">اسأل: ما الذي تحسن بيئياً منذ العام الماضي؟ (استهلاك، نسب تدوير، شكاوى). غياب أي أثر تحسن ملموس مع مرور دورة كاملة إشارة ضعف بالنظام.</field>
+        <field name="auditor_input_hint">أمثلة التحسينات المحققة</field>
+    </record>
+    <record id="c14001_10_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_10"/>
+        <field name="number">10.2</field>
+        <field name="name">عدم المطابقة والإجراء التصحيحي</field>
+        <field name="sequence">102</field>
+        <field name="requirement">عند حدوث عدم مطابقة: التفاعل معها واتخاذ إجراء لضبطها وتصحيحها والتعامل مع تبعاتها بما فيه تخفيف الآثار البيئية، وتقييم الحاجة لإجراء يزيل الأسباب الجذرية، وتنفيذ الإجراءات ومراجعة فعاليتها، مع معلومات موثقة.</field>
+        <field name="evidence_expected">سجل عدم مطابقات بيئية (انسكابات، تجاوز حدود، ملاحظات رقابية، شكاوى جوار) بتحليل سبب جذري وإجراءات تصحيحية متحقق من فعاليتها.</field>
+        <field name="evidence_hint">مصادر عدم المطابقة البيئية غالباً غير مسجلة: انسكابات صغيرة «عولجت وانتهت» بلا تسجيل، ملاحظات زيارات الجهات الرقابية. اطلب سجل الحوادث البيئية وقارنه بمقابلات الميدان.</field>
+        <field name="auditor_input_hint">عدد عدم المطابقات المفتوحة/المغلقة وعينتك</field>
+    </record>
+    <record id="c14001_10_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_10"/>
+        <field name="number">10.3</field>
+        <field name="name">التحسين المستمر</field>
+        <field name="sequence">103</field>
+        <field name="requirement">التحسين المستمر لملاءمة وكفاية وفعالية نظام الإدارة البيئية لتعزيز الأداء البيئي.</field>
+        <field name="evidence_expected">اتجاهات أداء بيئي محسوبة عبر الزمن (استهلاكات، مخلفات، انبعاثات) تظهر تحسناً أو خططاً جدية عند التراجع.</field>
+        <field name="evidence_hint">اطلب مؤشرات 3 سنوات إن وجدت: كهرباء/وحدة إنتاج، مياه، نسبة تدوير. التحسن المستمر لا يعني تحسن كل مؤشر كل سنة بل وجود منهجية تعالج التراجع.</field>
+        <field name="auditor_input_hint">المؤشرات التي راجعتها واتجاهها</field>
+    </record>
+    <!-- ============ 6 ============ -->
+    <record id="c14001_6_1_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_6_1"/>
+        <field name="number">6.1.1</field>
+        <field name="name">عام (المخاطر والفرص)</field>
+        <field name="sequence">611</field>
+        <field name="requirement">تخطيط عمليات تحديد المخاطر والفرص المتعلقة بالجوانب البيئية والتزامات الامتثال والقضايا الأخرى، الواجب معالجتها لضمان تحقيق النتائج المقصودة ومنع الآثار غير المرغوبة، مع معلومات موثقة.</field>
+        <field name="evidence_expected">منهجية موثقة وسجل مخاطر وفرص بيئية مرتبط بقضايا السياق (4.1) والجوانب (6.1.2) والالتزامات (6.1.3)، مع إجراءات معالجة.</field>
+        <field name="evidence_hint">مخاطر بيئية نموذجية: انسكاب كيماوي، غرامة عدم امتثال، انقطاع متعهد نقل المخلفات، حريق مستودع. فرص: استرجاع حراري، بيع مخلفات قابلة للتدوير، طاقة شمسية. تأكد من الترابط المنطقي مع 4.1 و6.1.2.</field>
+        <field name="auditor_input_hint">تاريخ آخر مراجعة لسجل المخاطر البيئية</field>
+    </record>
+    <record id="c14001_6_1_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_6_1"/>
+        <field name="number">6.1.2</field>
+        <field name="name">الجوانب البيئية</field>
+        <field name="sequence">612</field>
+        <field name="requirement">تحديد الجوانب البيئية لأنشطتها ومنتجاتها وخدماتها القابلة للضبط أو التأثير وآثارها البيئية من منظور دورة الحياة، مع مراعاة التغييرات والظروف غير الاعتيادية وحالات الطوارئ، وتحديد الجوانب الجوهرية بمعايير معتمدة، وإبلاغها، وتوثيقها.</field>
+        <field name="evidence_expected">سجل جوانب وآثار بيئية شامل لكل الأنشطة (بما فيها الخدمية والطوارئ)، بمعايير تقييم واضحة (شدة × احتمال × حجم)، يميز الجوانب الجوهرية، ويتضمن منظور دورة الحياة.</field>
+        <field name="evidence_hint">هذا قلب المواصفة — افحصه بعمق. جوانب تُنسى: انبعاثات المولدات، مياه غسيل المعدات، زيوت الصيانة المستعملة، عبوات الكيماويات الفارغة، ضجيج، استهلاك مواد التغليف (دورة حياة). الضعف الشائع: سجل لا يغطي الحالات غير الاعتيادية (صيانة، بدء تشغيل) والطوارئ.</field>
+        <field name="auditor_input_hint">عدد الجوانب الجوهرية وأمثلة عليها</field>
+    </record>
+    <record id="c14001_6_1_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_6_1"/>
+        <field name="number">6.1.3</field>
+        <field name="name">التزامات الامتثال</field>
+        <field name="sequence">613</field>
+        <field name="requirement">تحديد التزامات الامتثال المتعلقة بالجوانب البيئية والوصول إليها، وتحديد كيفية انطباقها على المنظمة، ومراعاتها عند بناء النظام، مع معلومات موثقة.</field>
+        <field name="evidence_expected">سجل تشريعات والتزامات بيئية محدث (قانون البيئة، اشتراطات التراخيص، حدود الانبعاثات والصرف، اشتراطات نقل المخلفات الخطرة) مع تحديد مواد الانطباق وآلية التحديث.</field>
+        <field name="evidence_hint">اطلب الترخيص البيئي/الموافقة البيئية للموقع وتحقق من سريانها. اربط: هل حدود الصرف في الترخيص منعكسة في برنامج الرصد (9.1)؟ الضعف الشائع: سجل تشريعات عام منسوخ بلا تحديد مواد الانطباق الفعلية.</field>
+        <field name="auditor_input_hint">سجل التراخيص البيئية وتواريخ سريانها</field>
+    </record>
+    <record id="c14001_6_1_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_6_1"/>
+        <field name="number">6.1.4</field>
+        <field name="name">تخطيط الإجراءات</field>
+        <field name="sequence">614</field>
+        <field name="requirement">تخطيط إجراءات لمعالجة الجوانب الجوهرية والتزامات الامتثال والمخاطر والفرص، ودمجها في عمليات النظام أو عمليات الأعمال، وتقييم فعاليتها، مع مراعاة الخيارات التكنولوجية والمتطلبات المالية والتشغيلية.</field>
+        <field name="evidence_expected">خطط عمل واضحة لكل جانب جوهري (ضبط تشغيلي، هدف، رصد، أو استعداد طوارئ) — كل جانب جوهري يجب أن يقابله إجراء محدد في مكان ما بالنظام.</field>
+        <field name="evidence_hint">اختبار التتبع الأهم: خذ 3 جوانب جوهرية من السجل وتتبع أين عولج كل منها (تعليمات تشغيل؟ هدف؟ خطة طوارئ؟ برنامج رصد؟). جانب جوهري بلا معالجة = ملاحظة.</field>
+        <field name="auditor_input_hint">سجل الجوانب التي تتبعتها ونتيجة التتبع</field>
+    </record>
+    <!-- ============ 9 ============ -->
+    <record id="c14001_9_1_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_9_1"/>
+        <field name="number">9.1.1</field>
+        <field name="name">عام (الرصد والقياس والتحليل والتقييم)</field>
+        <field name="sequence">911</field>
+        <field name="requirement">رصد وقياس وتحليل وتقييم الأداء البيئي: تحديد ما يلزم رصده وقياسه، الطرق، معايير التقييم والمؤشرات، التوقيت — بمعدات معايرة أو متحقق منها، وتقييم الأداء وفعالية النظام، وإبلاغ المعلومات داخلياً وخارجياً وفق الالتزامات، مع معلومات موثقة.</field>
+        <field name="evidence_expected">برنامج رصد بيئي يغطي الجوانب الجوهرية وحدود الترخيص (صرف، انبعاثات، ضجيج، استهلاكات) بنتائج دورية من مختبرات معتمدة وأجهزة معايرة، مقارنة بالحدود المسموحة.</field>
+        <field name="evidence_hint">طابق برنامج الرصد مع اشتراطات الترخيص البيئي حرفياً: كل معيار مطلوب رصده يجب أن تجد نتائجه بتواتره. تحقق من شهادات اعتماد المختبر ومعايرة الأجهزة. تجاوز حد بلا إجراء = ملاحظة كبرى محتملة.</field>
+        <field name="auditor_input_hint">نتائج الرصد التي فحصتها ومطابقتها للحدود</field>
+    </record>
+    <record id="c14001_9_1_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_14001"/>
+        <field name="parent_id" ref="c14001_9_1"/>
+        <field name="number">9.1.2</field>
+        <field name="name">تقييم الامتثال</field>
+        <field name="sequence">912</field>
+        <field name="requirement">إنشاء وتطبيق عمليات لتقييم الوفاء بالتزامات الامتثال: تحديد التواتر، تنفيذ التقييم واتخاذ إجراءات عند الحاجة، والحفاظ على المعرفة والفهم لحالة الامتثال، مع معلومات موثقة كدليل على نتائج التقييم.</field>
+        <field name="evidence_expected">تقييم امتثال دوري موثق يمر على كل بند من سجل الالتزامات (6.1.3) بحالة (ممتثل/غير ممتثل/جزئي) وأدلة، وإجراءات تصحيحية لأي فجوة.</field>
+        <field name="evidence_hint">بند مميز لـ14001 يُهمل كثيراً: وجود سجل تشريعات لا يكفي — يجب تقييم موثق دوري لحالة الامتثال بنداً بنداً. اسأل الإدارة: ما حالة امتثالكم الحالية؟ يجب أن يعرفوا الإجابة بدليل.</field>
+        <field name="auditor_input_hint">تاريخ آخر تقييم امتثال ونتيجته</field>
+    </record>
+
+</odoo>

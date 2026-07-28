@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="standard_14001" model="raqib.standard">
+        <field name="name">ISO 14001:2015 — نظام الإدارة البيئية</field>
+        <field name="code">14001</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="standard_45001" model="raqib.standard">
+        <field name="name">ISO 45001:2018 — نظام إدارة السلامة والصحة المهنية</field>
+        <field name="code">45001</field>
+        <field name="sequence">3</field>
+    </record>
+
+</odoo>

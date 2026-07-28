@@ -11,6 +11,31 @@ RESULT_TO_CLASSIFICATION = {
     "nc_major": "nc_major",
 }
 
+# حقل النطاق على البند لكل نوع زيارة — surveillance و recert مفصولان عن
+# stage2 (كانا يشيران إليه، فكانت ثلاثة أنواع زيارة متطابقة تماماً).
+STAGE_FIELD = {
+    "stage1": "applies_stage1",
+    "stage2": "applies_stage2",
+    "surveillance": "applies_surveillance",
+    "recert": "applies_recert",
+}
+
+# نتائج تُصنَّف عدم مطابقة — تستدعي تحذيراً ناعماً في المرحلة الأولى
+NC_RESULTS = ("nc_minor", "nc_major")
+
+# ISO/IEC 17021-1 §9.3.1.2.4 يسمّي مخرجات المرحلة الأولى «areas of concern».
+# قرار معتمد: تحذير ناعم وإعادة تسمية معروضة — لا منع صلب، لأن الوثيقة
+# لا تمنع صراحةً تسجيل عدم مطابقة في المرحلة الأولى.
+STAGE1_RESULT_LABELS = {
+    "pending": "لم يفحص",
+    "conform": "مستوفٍ للجاهزية",
+    "class3": "مجال اهتمام — تصنيف 3",
+    "class4": "مجال اهتمام — فرصة تحسين",
+    "nc_minor": "مجال اهتمام (يقابل عدم مطابقة صغرى)",
+    "nc_major": "مجال اهتمام جوهري (يقابل عدم مطابقة كبرى)",
+    "na": "لا ينطبق",
+}
+
 
 class RaqibAudit(models.Model):
     _name = "raqib.audit"
@@ -25,7 +50,7 @@ class RaqibAudit(models.Model):
                                   required=True, tracking=True)
     standard_ids = fields.Many2many(
         "raqib.standard", "raqib_audit_standard_rel", "audit_id", "standard_id",
-        string="المواصفات",
+        string="المواصفات", domain="[('is_meta','=',False)]",
         help="اختر مواصفة واحدة أو أكثر — نظام متكامل (IMS) عند اختيار أكثر من واحدة.")
     is_multi_standard = fields.Boolean(compute="_compute_is_multi_standard")
 
@@ -79,6 +104,20 @@ class RaqibAudit(models.Model):
         ("surveillance", "زيارة مراقبة"),
         ("recert", "إعادة اعتماد"),
     ], string="نوع الزيارة", required=True, default="stage1", tracking=True)
+    is_stage1 = fields.Boolean(compute="_compute_is_stage1", store=True)
+
+    @api.depends("audit_type")
+    def _compute_is_stage1(self):
+        for rec in self:
+            rec.is_stage1 = rec.audit_type == "stage1"
+
+    # §9.3.1.2.2 e — «agree the details of stage 2»: مخرج إلزامي للمرحلة
+    # الأولى يُنقل إلى التقرير.
+    stage1_agreed_details = fields.Text(
+        "تفاصيل المرحلة الثانية المتفق عليها",
+        help="التوقيت والمدة والمواقع والعمليات ولغة التدقيق واحتياجات "
+             "الخبرة الفنية — يُتفق عليها مع العميل في المرحلة الأولى "
+             "(ISO/IEC 17021-1 §9.3.1.2.2e).")
     state = fields.Selection([
         ("draft", "مسودة"),
         ("in_progress", "قيد التدقيق"),
@@ -147,22 +186,26 @@ class RaqibAudit(models.Model):
             else:
                 rec.client_action = "none"
 
+    @api.model
+    def _meta_standards(self):
+        """المواصفات الوصفية (S1) — تُضاف مهما كانت المواصفات المختارة،
+        ولا يختارها المدقق. تصفية بنودها تتم بعلم نوع الزيارة نفسه، فلا
+        تظهر إلا حيث فُعِّلت — عملياً في المرحلة الأولى وحدها."""
+        return self.env["raqib.standard"].search([("is_meta", "=", True)])
+
     def action_generate_lines(self):
         """توليد بنود الفحص من مكتبة المواصفة حسب نوع الزيارة — نقرة واحدة."""
-        stage_field = {
-            "stage1": "applies_stage1",
-            "stage2": "applies_stage2",
-            "surveillance": "applies_stage2",
-            "recert": "applies_stage2",
-        }
         for rec in self:
             if rec.line_ids:
                 raise UserError("توجد بنود مولدة مسبقاً — احذفها أولاً إن أردت إعادة التوليد.")
             standards = rec.effective_standards
+            # البنود الوصفية (S1) تُصفّى بنفس علم نوع الزيارة، فلا تظهر
+            # إلا حيث فُعِّلت — عملياً في المرحلة الأولى وحدها.
+            search_std_ids = standards.ids + rec._meta_standards().ids
             clauses = self.env["raqib.clause"].search([
-                ("standard_id", "in", standards.ids),
+                ("standard_id", "in", search_std_ids),
                 ("is_leaf", "=", True),
-                (stage_field[rec.audit_type], "=", True),
+                (STAGE_FIELD[rec.audit_type], "=", True),
             ], order="sequence, number")
             vals_list = []
             if len(standards) <= 1:
@@ -193,6 +236,32 @@ class RaqibAudit(models.Model):
             self.env["raqib.audit.line"].create(vals_list)
             rec.state = "in_progress"
         return True
+
+    def action_regenerate_lines(self):
+        """إعادة توليد البنود بعد تغيير نوع الزيارة أو المواصفات.
+
+        يُرفض إن كان أي سطر مفحوصاً — لا نتلف عمل المدقق. (يعالج أيضاً ب-19:
+        فشل التوليد بعد الإنشاء كان يترك تدقيقاً بلا بنود ولا مخرج.)"""
+        for rec in self:
+            done = rec.line_ids.filtered(lambda l: l.result != "pending")
+            if done:
+                raise UserError(
+                    "لا يمكن إعادة التوليد: %d بنداً مفحوصاً بالفعل. "
+                    "احذف نتائجها أولاً إن كنت متأكداً." % len(done))
+            rec.line_ids.unlink()
+            rec.action_generate_lines()
+        return True
+
+    def _result_labels(self):
+        """تسميات النتائج المعروضة — في المرحلة الأولى تُسمّى «مجال اهتمام»
+        بدل «عدم مطابقة» (§9.3.1.2.4). القيم المخزَّنة لا تتغير، فلا تتأثر
+        الملاحظات ولا التقارير ولا الإحصاءات."""
+        self.ensure_one()
+        base = dict(self.env["raqib.audit.line"]._fields[
+            "result"]._description_selection(self.env))
+        if self.audit_type == "stage1":
+            base.update(STAGE1_RESULT_LABELS)
+        return base
 
     def action_open_report_wizard(self):
         self.ensure_one()
@@ -284,6 +353,11 @@ class RaqibAuditLine(models.Model):
                                 string="أمثلة إرشادية")
     auditor_input_hint = fields.Char(related="clause_id.auditor_input_hint",
                                      string="المطلوب منك")
+    stage1_focus = fields.Text(related="clause_id.stage1_focus",
+                               string="حدود فحص المرحلة الأولى")
+    is_surveillance_core = fields.Boolean(
+        related="clause_id.is_surveillance_core", string="نواة المراقبة",
+        store=True)
 
     doc_reference = fields.Char("مرجع الوثيقة / السجل",
                                 help="مثل: SWOT-2026 rev.3 أو QM-01 Issue 5")

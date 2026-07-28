@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from . import raqib_clause_scope
 from . import raqib_standard
 from . import raqib_ea_sector
 from . import raqib_client

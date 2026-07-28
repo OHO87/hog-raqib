@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- صُدِّرت آلياً من ستيجنغ في م2-٠ لتثبيت مصدر الحقيقة في المستودع.
+         أعلام نطاق الزيارة تُطبَّق من CLAUSE_SCOPE في models/raqib_clause_scope.py -->
+
+    <!-- ============ 4 ============ -->
+    <record id="c45001_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">4</field>
+        <field name="name">سياق المنظمة</field>
+        <field name="sequence">40</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_4_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_4"/>
+        <field name="number">4.1</field>
+        <field name="name">فهم المنظمة وسياقها</field>
+        <field name="sequence">41</field>
+        <field name="requirement">تحديد القضايا الداخلية والخارجية ذات الصلة بغرض المنظمة والمؤثرة على قدرتها على تحقيق النتائج المقصودة من نظام إدارة السلامة والصحة المهنية.</field>
+        <field name="evidence_expected">تحليل سياق محدث يتضمن بعد السلامة والصحة المهنية: طبيعة الأخطار بالقطاع، إحصاءات الحوادث، سوق العمالة، التشريعات العمالية والسلامة، مع مراجعة دورية.</field>
+        <field name="evidence_hint">قضايا OH&amp;S داخلية نموذجية: أعمال عالية الخطورة (ارتفاعات، أماكن مغلقة، رافعات)، عمالة موسمية/متعددة اللغات، ورديات ليلية، معدات قديمة. خارجية: تشريعات سلامة متشددة، تفتيش عمالي، نقص كفاءات سلامة. الضعف الشائع: تحليل منسوخ من الجودة بلا بعد سلامة.</field>
+        <field name="auditor_input_hint">تاريخ آخر مراجعة وهل يتضمن بعد السلامة</field>
+    </record>
+    <record id="c45001_4_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_4"/>
+        <field name="number">4.2</field>
+        <field name="name">فهم احتياجات وتوقعات العاملين والأطراف المعنية الأخرى</field>
+        <field name="sequence">42</field>
+        <field name="requirement">تحديد الأطراف المعنية الأخرى إضافة إلى العاملين، واحتياجاتها وتوقعاتها ذات الصلة، وتحديد أيها يصبح متطلبات قانونية ومتطلبات أخرى.</field>
+        <field name="evidence_expected">سجل أطراف معنية يبدأ بالعاملين أنفسهم (بكل فئاتهم: دائمون، مقاولون، متدربون) ويشمل وزارة العمل، الدفاع المدني، الضمان الاجتماعي، النقابات إن وجدت، وعائلات العاملين.</field>
+        <field name="evidence_hint">المواصفة تميز «العاملين» كطرف معني أول — تحقق أن توقعاتهم أُخذت فعلاً (عبر التشاور 5.4 لا افتراضاً). أطراف تُنسى: مقاولو الباطن الدائمون بالموقع، شركات التأمين، الزوار.</field>
+        <field name="auditor_input_hint">سجل مرجع السجل وموقع العاملين فيه</field>
+    </record>
+    <record id="c45001_4_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_4"/>
+        <field name="number">4.3</field>
+        <field name="name">تحديد نطاق نظام إدارة السلامة والصحة المهنية</field>
+        <field name="sequence">43</field>
+        <field name="requirement">تحديد حدود النظام وقابلية تطبيقه مع مراعاة القضايا والمتطلبات والأنشطة المتعلقة بالعمل المخططة أو المنفذة، وتوثيق النطاق — على أن يشمل الأنشطة والمنتجات والخدمات الخاضعة لضبط المنظمة أو تأثيرها والمؤثرة على أدائها في السلامة.</field>
+        <field name="evidence_expected">نطاق موثق يطابق الواقع وشهادة الاعتماد، لا يستثني أنشطة خطرة (صيانة، نقل، أعمال ليلية، مواقع فرعية) تحت سيطرة المنظمة.</field>
+        <field name="evidence_hint">الضعف الشائع: استثناء أنشطة المقاولين داخل الموقع من النطاق رغم أنها تحت سيطرة المنظمة — إصابة مقاول بالموقع تحسب على النظام. طابق النطاق مع عقد التدقيق والجولة.</field>
+        <field name="auditor_input_hint">انسخ نص النطاق وطابقه بالواقع</field>
+    </record>
+    <record id="c45001_4_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_4"/>
+        <field name="number">4.4</field>
+        <field name="name">نظام إدارة السلامة والصحة المهنية</field>
+        <field name="sequence">44</field>
+        <field name="requirement">إنشاء وتطبيق وصيانة وتحسين مستمر لنظام إدارة السلامة والصحة المهنية بما يشمل العمليات اللازمة وتفاعلاتها.</field>
+        <field name="evidence_expected">نظام موثق مدمج بالعمليات التشغيلية: مسؤوليات السلامة موزعة على الخط الإشرافي لا محصورة بمسؤول السلامة، وإجراءات السلامة جزء من تعليمات العمل.</field>
+        <field name="evidence_hint">اختبار الدمج: اسأل مشرف إنتاج (لا مسؤول السلامة) عن مسؤولياته في السلامة — إن أحال كل شيء لقسم السلامة فالنظام غير مدمج. تحقق من حضور السلامة في اجتماعات التشغيل.</field>
+        <field name="auditor_input_hint">مؤشرات دمج السلامة بالعمليات</field>
+    </record>
+    <!-- ============ 5 ============ -->
+    <record id="c45001_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">5</field>
+        <field name="name">القيادة ومشاركة العاملين</field>
+        <field name="sequence">50</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_5_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_5"/>
+        <field name="number">5.1</field>
+        <field name="name">القيادة والالتزام</field>
+        <field name="sequence">51</field>
+        <field name="requirement">إثبات الإدارة العليا قيادتها والتزامها: تحمل المساءلة الكاملة عن منع إصابات واعتلالات العمل وتوفير أماكن وأنشطة عمل آمنة وصحية، ضمان توافق السياسة والأهداف، الدمج بعمليات الأعمال، توفير الموارد، حماية العاملين من الانتقام عند الإبلاغ، ثقافة داعمة، ودعم التشاور والمشاركة.</field>
+        <field name="evidence_expected">مقابلة الإدارة العليا: معرفة بالأخطار الجسيمة وإحصاءات الحوادث، جولات قيادية موثقة، موازنة سلامة معتمدة، وسياسة عدم انتقام معلنة من المبلغين عن الأخطار.</field>
+        <field name="evidence_hint">مؤشرات التزام قوية: جولات سلامة للمدير العام موثقة، وقف عمل غير آمن بقرار إداري، استثمار في معدات حماية جماعية. أسئلة: كم إصابة مسجلة هذا العام؟ ما أخطر نشاط لديكم؟ عدم معرفة الإدارة بالأرقام مؤشر خطير.</field>
+        <field name="auditor_input_hint">من قابلت وأبرز مؤشرات الالتزام</field>
+    </record>
+    <record id="c45001_5_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_5"/>
+        <field name="number">5.2</field>
+        <field name="name">سياسة السلامة والصحة المهنية</field>
+        <field name="sequence">52</field>
+        <field name="requirement">وضع سياسة تتضمن التزاماً بتوفير ظروف عمل آمنة وصحية لمنع إصابات واعتلالات العمل، مناسبة لطبيعة المنظمة وأخطارها، توفر إطاراً للأهداف، وتتضمن التزامات: الوفاء بالمتطلبات القانونية، إزالة الأخطار وتقليل مخاطر السلامة، التحسين المستمر، والتشاور ومشاركة العاملين — موثقة ومبلغة ومتاحة.</field>
+        <field name="evidence_expected">سياسة معتمدة تتضمن الالتزامات الخمسة الإلزامية نصاً — خاصة «إزالة الأخطار وتقليل المخاطر» و«التشاور ومشاركة العاملين» — معلنة ومفهومة.</field>
+        <field name="evidence_hint">افحص النص حرفياً مقابل القائمة: الالتزام بالتشاور والمشاركة هو الأكثر غياباً في السياسات المنقولة من OHSAS 18001 القديمة. اسأل عاملين عن جوهرها.</field>
+        <field name="auditor_input_hint">تاريخ الاعتماد والالتزامات الناقصة إن وجدت</field>
+    </record>
+    <record id="c45001_5_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_5"/>
+        <field name="number">5.3</field>
+        <field name="name">الأدوار والمسؤوليات والصلاحيات التنظيمية</field>
+        <field name="sequence">53</field>
+        <field name="requirement">إسناد وإبلاغ المسؤوليات والصلاحيات للأدوار ذات الصلة على كل المستويات، مع بقاء الإدارة العليا مسؤولة نهائياً عن النظام، وضمان رفع تقارير أدائه إليها — والعاملون في كل مستوى يتحملون مسؤولية الجوانب الخاضعة لضبطهم.</field>
+        <field name="evidence_expected">مصفوفة مسؤوليات سلامة عبر الهيكل كاملاً (إدارة، مشرفون، عاملون، لجنة سلامة) بأوصاف وظيفية محدثة، وتقارير أداء سلامة دورية للإدارة العليا.</field>
+        <field name="evidence_hint">تحقق أن المسؤولية ليست محصورة بمسؤول السلامة: هل المشرفون مسؤولون موثقاً عن سلامة فرقهم؟ من يملك صلاحية إيقاف عمل غير آمن؟ يجب أن تكون الصلاحية واسعة ومعلنة.</field>
+        <field name="auditor_input_hint">الأدوار الرئيسية وصلاحية إيقاف العمل</field>
+    </record>
+    <record id="c45001_5_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_5"/>
+        <field name="number">5.4</field>
+        <field name="name">التشاور ومشاركة العاملين</field>
+        <field name="sequence">54</field>
+        <field name="requirement">إنشاء عمليات للتشاور مع العاملين ومشاركتهم على كل المستويات في تطوير وتخطيط وتنفيذ وتقييم وتحسين النظام: توفير الآليات والوقت والتدريب والموارد، الوصول للمعلومات، إزالة عوائق المشاركة، مع تأكيد التشاور مع غير الإداريين في بنود محددة (السياسة، الأخطار، المتطلبات، الأهداف، الضوابط، التدقيق...) ومشاركتهم في تحديد الأخطار والحوادث والضوابط.</field>
+        <field name="evidence_expected">آلية تشاور فعالة: لجنة سلامة بممثلين عن العاملين غير الإداريين بمحاضر دورية، صندوق/نظام إبلاغ عن الأخطار بردود فعلية، ومشاركة موثقة للعاملين في تقييم مخاطر أعمالهم.</field>
+        <field name="evidence_hint">البند المميز لـ45001 والأكثر ضعفاً في الأنظمة المحولة من OHSAS. اختبر فعلياً: قابل ممثل عاملين واسأله عن آخر قضية طرحها وماذا حدث لها. لجنة موجودة على الورق بمحاضر متطابقة النصوص = ملاحظة.</field>
+        <field name="auditor_input_hint">آلية التشاور ومن قابلت من ممثلي العاملين</field>
+    </record>
+    <!-- ============ 6 ============ -->
+    <record id="c45001_6" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">6</field>
+        <field name="name">التخطيط</field>
+        <field name="sequence">60</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_6_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_6"/>
+        <field name="number">6.1</field>
+        <field name="name">إجراءات التعامل مع المخاطر والفرص</field>
+        <field name="sequence">61</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_6_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_6"/>
+        <field name="number">6.2</field>
+        <field name="name">أهداف السلامة والصحة المهنية والتخطيط لتحقيقها</field>
+        <field name="sequence">62</field>
+        <field name="requirement">وضع أهداف سلامة وصحة مهنية للوظائف والمستويات ذات الصلة لصيانة النظام وتحسينه المستمر وتحسين أداء السلامة، متسقة مع السياسة، قابلة للقياس، تراعي نتائج تقييم المخاطر والتشاور مع العاملين، مع خطط تحقيق موثقة.</field>
+        <field name="evidence_expected">أهداف مرتبطة بالمخاطر الجسيمة المقيمة (خفض حوادث، إغلاق ملاحظات جولات، رفع نسب تدريب، تحسين قياسات تعرض) بخطط ومؤشرات متابعة.</field>
+        <field name="evidence_hint">أهداف جيدة: صفر إصابات مقعدة، خفض معدل التكرار LTIFR بنسبة محددة، إغلاق 90% من ملاحظات الجولات خلال شهر. الضعف الشائع: هدف وحيد «صفر حوادث» بلا خطط فعلية تؤدي إليه.</field>
+        <field name="auditor_input_hint">الأهداف ونسب إنجازها</field>
+    </record>
+    <!-- ============ 7 ============ -->
+    <record id="c45001_7" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">7</field>
+        <field name="name">الدعم</field>
+        <field name="sequence">70</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_7_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_7"/>
+        <field name="number">7.1</field>
+        <field name="name">الموارد</field>
+        <field name="sequence">71</field>
+        <field name="requirement">تحديد وتوفير الموارد اللازمة لإنشاء وتطبيق وصيانة وتحسين مستمر لنظام إدارة السلامة والصحة المهنية.</field>
+        <field name="evidence_expected">موازنة ومعدات سلامة: مهمات وقاية شخصية كافية وصالحة، معدات حماية جماعية (تهوية، حواجز، إنذار)، عيادة/إسعافات مجهزة، وفحوصات طبية دورية ممولة.</field>
+        <field name="evidence_hint">عاين ميدانياً: توفر PPE بالمقاسات والأنواع الصحيحة ومجانيتها للعاملين، صلاحية طفايات ومعدات الإنقاذ، تجهيز نقاط الإسعاف. اسأل عاملاً: ماذا تفعل لو تلفت قفازاتك؟</field>
+        <field name="auditor_input_hint">الموارد التي عاينتها وحالتها</field>
+    </record>
+    <record id="c45001_7_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_7"/>
+        <field name="number">7.2</field>
+        <field name="name">الكفاءة</field>
+        <field name="sequence">72</field>
+        <field name="requirement">تحديد الكفاءة اللازمة للعاملين المؤثرين أو المحتمل تأثيرهم على أداء السلامة، وضمانها (بما فيها القدرة على تحديد الأخطار)، واتخاذ إجراءات لاكتسابها وتقييم فعاليتها، مع معلومات موثقة.</field>
+        <field name="evidence_expected">مصفوفة كفاءات تشمل الأعمال الخطرة (مشغلو رافعات ومعدات، أعمال ساخنة، كهرباء، أماكن مغلقة، عمل بارتفاع) بشهادات سارية من جهات معتمدة وسجلات تقييم.</field>
+        <field name="evidence_hint">ركز على الشهادات الإلزامية: رخص مشغلي الرافعات والونشات سارية؟ مصرح العمل الساخن مدرب؟ كهربائي معتمد؟ شهادة منتهية لعمل خطر = ملاحظة مباشرة. اختبر بالمقابلة الميدانية.</field>
+        <field name="auditor_input_hint">عينة الشهادات الحرجة وحالتها</field>
+    </record>
+    <record id="c45001_7_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_7"/>
+        <field name="number">7.3</field>
+        <field name="name">التوعية</field>
+        <field name="sequence">73</field>
+        <field name="requirement">توعية العاملين بالسياسة والأهداف ومساهمتهم في فعالية النظام، وتبعات عدم المطابقة، والحوادث ونتائج تحقيقاتها ذات الصلة بهم، وأخطار ومخاطر عملهم والضوابط المحددة، وقدرتهم على الانسحاب من مواقف عمل تشكل خطراً جسيماً ووشيكاً مع حمايتهم من تبعات ذلك.</field>
+        <field name="evidence_expected">تحريض سلامة (induction) موثق لكل العاملين والمقاولين والزوار، توعية دورية بأخطار كل عمل، ووعي فعلي بالمقابلات — خاصة بحق الانسحاب من الخطر الوشيك.</field>
+        <field name="evidence_hint">سؤال مميز لـ45001: «لو شعرت أن العمل خطر عليك مباشرة، هل يحق لك التوقف؟ وهل ستعاقب؟» — إجابة سلبية أو تردد واسع بين العاملين مؤشر ثقافة ضعيفة وملاحظة على 7.3 و5.1.</field>
+        <field name="auditor_input_hint">عدد من قابلتهم ووعيهم بحق الانسحاب</field>
+    </record>
+    <record id="c45001_7_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_7"/>
+        <field name="number">7.4</field>
+        <field name="name">الاتصال</field>
+        <field name="sequence">74</field>
+        <field name="requirement">تخطيط وتنفيذ الاتصالات الداخلية والخارجية ذات الصلة بالنظام (ماذا، متى، مع من، كيف)، مع مراعاة جوانب التنوع (لغة، ثقافة، إلمام بالقراءة، إعاقة)، وضمان أخذ آراء الأطراف الخارجية، والاستجابة للاتصالات ذات الصلة.</field>
+        <field name="evidence_expected">وسائل اتصال سلامة فعالة تناسب تنوع العمالة: لوحات وإشارات مصورة ومتعددة اللغات، اجتماعات سلامة قصيرة (toolbox talks) موثقة، وقنوات إبلاغ سهلة.</field>
+        <field name="evidence_hint">تحقق من ملاءمة اللغة: عمالة أجنبية مع تعليمات بالعربية فقط = فجوة اتصال حقيقية. عاين لوحات الإرشاد بالميدان وسجلات التوك بوكس بالتواريخ والتواقيع.</field>
+        <field name="auditor_input_hint">وسائل الاتصال وملاءمتها لتنوع العمالة</field>
+    </record>
+    <record id="c45001_7_5" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_7"/>
+        <field name="number">7.5</field>
+        <field name="name">المعلومات الموثقة</field>
+        <field name="sequence">75</field>
+        <field name="requirement">إنشاء وتحديث وضبط المعلومات الموثقة المطلوبة بالمواصفة والتي تحددها المنظمة لفعالية النظام، بما يشمل الضبط الكامل (إتاحة، حماية، توزيع، احتفاظ، تخلص).</field>
+        <field name="evidence_expected">نظام ضبط وثائق يغطي وثائق السلامة: تقييمات المخاطر، تصاريح العمل، سجلات الفحص الهندسي للمعدات، تقارير الحوادث، سجلات الفحوصات الطبية (بسرية مناسبة).</field>
+        <field name="evidence_hint">عينات مميزة: تصاريح عمل خطر مكتملة التواقيع ومغلقة أصولاً، شهادات فحص الرافعات والأوعية سارية، سرية السجلات الطبية (وصول مقيد). تعليمات متداولة بنسخ قديمة بالميدان = ملاحظة ضبط وثائق.</field>
+        <field name="auditor_input_hint">عينة الوثائق والسجلات المفحوصة</field>
+    </record>
+    <!-- ============ 8 ============ -->
+    <record id="c45001_8" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">8</field>
+        <field name="name">التشغيل</field>
+        <field name="sequence">80</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_8_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_8"/>
+        <field name="number">8.1</field>
+        <field name="name">التخطيط والضبط التشغيلي</field>
+        <field name="sequence">81</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_8_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_8"/>
+        <field name="number">8.2</field>
+        <field name="name">الاستعداد والاستجابة للطوارئ</field>
+        <field name="sequence">82</field>
+        <field name="requirement">إنشاء وتطبيق وصيانة عمليات الاستعداد والاستجابة لحالات الطوارئ المحتملة المحددة في 6.1.2: خطط استجابة تشمل الإسعاف الأولي، تدريب على الاستجابة، اختبار وتمرين دوري للقدرات، تقييم الأداء وتنقيح الخطط بعد الاختبارات والحوادث، إبلاغ المعلومات لكل العاملين والمقاولين والزوار والجهات المعنية، مع مراعاة احتياجات وقدرات كل الأطراف ومعلومات موثقة.</field>
+        <field name="evidence_expected">خطط طوارئ تغطي السيناريوهات المقيمة (حريق، إصابة جسيمة، انهيار، تسرب)، فرق إخلاء وإسعاف مدربة ومعلنة، تمارين دورية موثقة بتقييم ودروس، ومسعفون معتمدون بعدد كافٍ لكل وردية.</field>
+        <field name="evidence_hint">عاين: نقاط التجمع مشارة، مخارج الطوارئ سالكة غير مقفلة، إنذار يعمل (اطلب اختباره إن أمكن)، مسعف معتمد بالوردية الليلية أيضاً. تمرين إخلاء واحد قديم بلا تقييم = ملاحظة. اسأل عاملاً: أين نقطة تجمعك؟</field>
+        <field name="auditor_input_hint">تاريخ آخر تمرين وما عاينته من جاهزية</field>
+    </record>
+    <!-- ============ 9 ============ -->
+    <record id="c45001_9" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">9</field>
+        <field name="name">تقييم الأداء</field>
+        <field name="sequence">90</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_9_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_9"/>
+        <field name="number">9.1</field>
+        <field name="name">الرصد والقياس والتحليل وتقييم الأداء</field>
+        <field name="sequence">91</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_9_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_9"/>
+        <field name="number">9.2</field>
+        <field name="name">التدقيق الداخلي</field>
+        <field name="sequence">92</field>
+        <field name="requirement">تدقيقات داخلية على فترات مخططة للتحقق من مطابقة النظام لمتطلبات المنظمة والمواصفة وفعالية تطبيقه، ببرنامج يراعي أهمية العمليات ونتائج التدقيقات السابقة، باختيار مدققين يضمن الموضوعية والحياد، وإبلاغ النتائج للإدارة والعاملين وممثليهم، ومعالجة عدم المطابقات، مع معلومات موثقة.</field>
+        <field name="evidence_expected">برنامج تدقيق يغطي كل البنود والمواقع والورديات ذات الخطورة، بمدققين مؤهلين في السلامة، مع إبلاغ نتائجه للعاملين وممثليهم (متطلب مميز لـ45001)، وملاحظات أُغلقت فعلياً.</field>
+        <field name="evidence_hint">تحقق من المتطلب المميز: هل أُبلغت نتائج التدقيق لممثلي العاملين/لجنة السلامة؟ تدقيق داخلي لا يشمل الميدان والورديات الليلية للأعمال الخطرة = تغطية ناقصة.</field>
+        <field name="auditor_input_hint">آخر تدقيق داخلي وتغطيته وإبلاغ نتائجه</field>
+    </record>
+    <record id="c45001_9_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_9"/>
+        <field name="number">9.3</field>
+        <field name="name">مراجعة الإدارة</field>
+        <field name="sequence">93</field>
+        <field name="requirement">مراجعة الإدارة العليا للنظام على فترات مخططة بمدخلات تشمل: حالة إجراءات المراجعات السابقة، التغيرات، مدى تحقق السياسة والأهداف، معلومات الأداء (الحوادث وعدم المطابقات والاتجاهات، نتائج الرصد، تقييم الامتثال، التدقيقات، التشاور والمشاركة، المخاطر والفرص)، كفاية الموارد، الاتصالات مع الأطراف، فرص التحسين — بمخرجات: استنتاجات الملاءمة والكفاية والفعالية، قرارات التحسين، الموارد، الاندماج بالأعمال — مع إبلاغ المخرجات للعاملين وممثليهم.</field>
+        <field name="evidence_expected">محضر مراجعة يغطي المدخلات كاملة — خاصة إحصاءات الحوادث واتجاهاتها ونتائج التشاور والمشاركة — بقرارات محددة، ودليل إبلاغ المخرجات للعاملين وممثليهم.</field>
+        <field name="evidence_hint">مدخلان يغيبان عادة: «نتائج التشاور والمشاركة» و«إبلاغ المخرجات للعاملين» — كلاهما مميز لـ45001. قارن جدول المحضر بقائمة المدخلات بنداً بنداً.</field>
+        <field name="auditor_input_hint">تاريخ آخر مراجعة والمدخلات الناقصة</field>
+    </record>
+    <!-- ============ 10 ============ -->
+    <record id="c45001_10" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="number">10</field>
+        <field name="name">التحسين</field>
+        <field name="sequence">100</field>
+        <field name="is_leaf" eval="False"/>
+    </record>
+    <record id="c45001_10_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_10"/>
+        <field name="number">10.1</field>
+        <field name="name">عام (فرص التحسين)</field>
+        <field name="sequence">101</field>
+        <field name="requirement">تحديد فرص التحسين وتنفيذ الإجراءات اللازمة لتحقيق النتائج المقصودة من نظام إدارة السلامة والصحة المهنية.</field>
+        <field name="evidence_expected">دليل تحديد فرص تحسين من مصادر النظام (تحقيقات الحوادث، الجولات، مقترحات العاملين، التدقيقات) وتحويلها لإجراءات.</field>
+        <field name="evidence_hint">اسأل: ما الذي تحسن في السلامة منذ العام الماضي؟ (معدلات، ثقافة، معدات). تحقق من مصير مقترحات العاملين — قناة مقترحات بلا أي مقترح منفذ إشارة ضعف مشاركة.</field>
+        <field name="auditor_input_hint">أمثلة التحسينات المحققة</field>
+    </record>
+    <record id="c45001_10_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_10"/>
+        <field name="number">10.2</field>
+        <field name="name">الحوادث وعدم المطابقة والإجراء التصحيحي</field>
+        <field name="sequence">102</field>
+        <field name="requirement">عمليات للإبلاغ والتحقيق واتخاذ الإجراءات عند الحوادث وعدم المطابقات: التفاعل الفوري والضبط والتصحيح، التقييم بمشاركة العاملين لتحديد الأسباب الجذرية، مراجعة تقييمات المخاطر الحالية، تحديد وتنفيذ إجراءات تصحيحية وفق التسلسل الهرمي، تقييم مخاطر أي أخطار جديدة قبل الإجراء، مراجعة الفعالية، وإجراء تغييرات بالنظام عند اللزوم — مع معلومات موثقة وإبلاغها للعاملين المعنيين وممثليهم.</field>
+        <field name="evidence_expected">سجل حوادث شامل (إصابات + أحداث وشيكة near-miss) بتحقيقات بمشاركة العاملين وتحليل جذري حقيقي، إجراءات وفق التسلسل الهرمي، وتحديث تقييم المخاطر بعد كل حادث جسيم.</field>
+        <field name="evidence_hint">مؤشرات فحص: نسبة الأحداث الوشيكة المبلغة (قلتها = ضعف ثقافة إبلاغ لا انعدام أخطار)، «تنبيه العامل» كإجراء وحيد = تحليل سطحي، وهل حُدث تقييم المخاطر بعد آخر حادث؟ قارن سجل الإصابات بسجل الضمان/العيادة.</field>
+        <field name="auditor_input_hint">عدد الحوادث والوشيكة وعينة التحقيقات</field>
+    </record>
+    <record id="c45001_10_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_10"/>
+        <field name="number">10.3</field>
+        <field name="name">التحسين المستمر</field>
+        <field name="sequence">103</field>
+        <field name="requirement">التحسين المستمر لملاءمة وكفاية وفعالية النظام: تعزيز أداء السلامة، ترويج ثقافة داعمة، تعزيز مشاركة العاملين، إبلاغ نتائج التحسين للعاملين وممثليهم، ومعلومات موثقة كدليل.</field>
+        <field name="evidence_expected">اتجاهات مؤشرات سلامة عبر الزمن (LTIFR، شدة، أحداث وشيكة، إغلاق ملاحظات) مع مبادرات ثقافة ومشاركة متطورة سنة بعد سنة.</field>
+        <field name="evidence_hint">انظر للاتجاه لا اللقطة: تحسن مستمر بالمؤشرات الاستباقية (جولات، إبلاغ وشيك، مقترحات) أهم من صفر إصابات وحده — صفر إصابات مع صفر إبلاغ وشيك يوحي بإخفاء لا بأمان.</field>
+        <field name="auditor_input_hint">المؤشرات واتجاهها عبر السنوات</field>
+    </record>
+    <!-- ============ 6 ============ -->
+    <record id="c45001_6_1_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_6_1"/>
+        <field name="number">6.1.1</field>
+        <field name="name">عام (المخاطر والفرص)</field>
+        <field name="sequence">611</field>
+        <field name="requirement">عند التخطيط: مراعاة قضايا 4.1 ومتطلبات 4.2 و4.3 وتحديد المخاطر والفرص الواجب معالجتها لضمان تحقيق النتائج المقصودة ومنع الآثار غير المرغوبة، مع مراعاة الأخطار ومخاطر السلامة والفرص والمتطلبات القانونية، ومعلومات موثقة عن المخاطر والفرص والعمليات اللازمة.</field>
+        <field name="evidence_expected">منهجية موثقة لمخاطر النظام (إضافة لمخاطر السلامة التشغيلية): مخاطر تنظيمية كنقص كفاءات السلامة، تغيير تشريعي، توسع سريع — وفرص كأتمتة عمل خطر أو تحسين ثقافة.</field>
+        <field name="evidence_hint">ميز بين مستويين: مخاطر السلامة التشغيلية (6.1.2) ومخاطر النظام نفسه (هنا). الضعف الشائع: الاكتفاء بتقييم مخاطر الأعمال دون مخاطر وفرص على مستوى النظام.</field>
+        <field name="auditor_input_hint">تاريخ آخر مراجعة لسجل مخاطر النظام</field>
+    </record>
+    <record id="c45001_6_1_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_6_1"/>
+        <field name="number">6.1.2</field>
+        <field name="name">تحديد الأخطار وتقييم المخاطر والفرص</field>
+        <field name="sequence">612</field>
+        <field name="requirement">عمليات مستمرة واستباقية لتحديد الأخطار (تشمل: تنظيم العمل والعوامل الاجتماعية، الأنشطة الاعتيادية وغير الاعتيادية، الحوادث السابقة، الطوارئ المحتملة، الأشخاص بمن فيهم المقاولون والزوار، تصميم مناطق العمل، المواقف قرب الموقع، التغييرات)، وتقييم مخاطر السلامة بمنهجيات محددة، وتقييم الفرص لتحسين الأداء.</field>
+        <field name="evidence_expected">تقييمات مخاطر (HIRA/JSA) شاملة لكل الأنشطة والمهن بما فيها غير الروتينية (صيانة، طوارئ) وفئات الأشخاص كافة، بمنهجية واضحة (احتمال × شدة)، محدثة بعد أي حادث أو تغيير، وبمشاركة العاملين.</field>
+        <field name="evidence_hint">قلب المواصفة — افحصه بعمق: خذ أخطر 3 أنشطة بالموقع وتحقق أن تقييمها واقعي وضوابطه مطبقة ميدانياً. أخطار تُنسى: العنف والتحرش، الإجهاد الحراري، العمل المنفرد، الأرغونوميا، صحة نفسية. تقييم لم يحدث بعد حادث مسجل = ملاحظة.</field>
+        <field name="auditor_input_hint">الأنشطة التي تتبعت تقييمها ميدانياً</field>
+    </record>
+    <record id="c45001_6_1_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_6_1"/>
+        <field name="number">6.1.3</field>
+        <field name="name">تحديد المتطلبات القانونية والمتطلبات الأخرى</field>
+        <field name="sequence">613</field>
+        <field name="requirement">تحديد المتطلبات القانونية والمتطلبات الأخرى المنطبقة على الأخطار ومخاطر السلامة والنظام والوصول إليها، وتحديد كيفية انطباقها وما يلزم إبلاغه، ومراعاتها عند بناء النظام، مع معلومات موثقة وتحديث يواكب التغييرات.</field>
+        <field name="evidence_expected">سجل متطلبات قانونية سلامة محدث: قانون العمل (فصول السلامة)، أنظمة الدفاع المدني، اشتراطات الفحص الهندسي للمعدات، الفحوصات الطبية الإلزامية — بمواد الانطباق وآلية متابعة التحديثات.</field>
+        <field name="evidence_hint">طابق عينة: هل يفرض قانون العمل المحلي فحوصات طبية دورية لمهن معينة؟ هل تُنفذ؟ هل شهادات فحص المعدات الرافعة بالتواتر القانوني؟ سجل عام منسوخ بلا انطباق فعلي = ضعف شائع.</field>
+        <field name="auditor_input_hint">عينة المتطلبات التي تتبعت تنفيذها</field>
+    </record>
+    <record id="c45001_6_1_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_6_1"/>
+        <field name="number">6.1.4</field>
+        <field name="name">تخطيط الإجراءات</field>
+        <field name="sequence">614</field>
+        <field name="requirement">تخطيط إجراءات لمعالجة المخاطر والفرص والمتطلبات القانونية والاستعداد للطوارئ، ودمجها بعمليات النظام والأعمال وتقييم فعاليتها، مع مراعاة التسلسل الهرمي للضوابط (8.1.2) ومخرجات النظام وأفضل الممارسات والخيارات التكنولوجية.</field>
+        <field name="evidence_expected">خطط معالجة لكل خطر جسيم مقيّم، تراعي التسلسل الهرمي (إزالة قبل PPE)، مدمجة بالتشغيل ومتابعة التنفيذ.</field>
+        <field name="evidence_hint">اختبار التتبع: خذ 3 مخاطر جسيمة من التقييم وتتبع معالجة كل منها حتى الميدان. خطر جسيم معالجته الوحيدة «توعية + PPE» دون بحث خيارات أعلى بالتسلسل = ملاحظة على 6.1.4 و8.1.2.</field>
+        <field name="auditor_input_hint">المخاطر التي تتبعتها ونتيجة التتبع</field>
+    </record>
+    <!-- ============ 8 ============ -->
+    <record id="c45001_8_1_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_8_1"/>
+        <field name="number">8.1.1</field>
+        <field name="name">عام (الضبط التشغيلي)</field>
+        <field name="sequence">811</field>
+        <field name="requirement">تخطيط وتطبيق وضبط وصيانة العمليات اللازمة للوفاء بمتطلبات النظام وتنفيذ إجراءات القسم 6: وضع معايير للعمليات وتطبيق ضبط وفقها، وصيانة معلومات موثقة، وتكييف العمل مع العاملين — وفي أماكن العمل متعددة أصحاب العمل: تنسيق الأجزاء ذات الصلة مع المنظمات الأخرى.</field>
+        <field name="evidence_expected">إجراءات عمل آمنة (SOPs/SSW) للأنشطة الخطرة، نظام تصاريح عمل فعال (ساخن، مرتفعات، مغلق، كهرباء)، وجولة ميدانية تؤكد الالتزام الفعلي.</field>
+        <field name="evidence_hint">بند الجولة الميدانية الرئيسي: افحص تصاريح العمل السارية اليوم بالموقع ميدانياً — هل الاحتياطات المكتوبة مطبقة فعلاً؟ حواجز، عزل طاقة LOTO، مراقب أماكن مغلقة. تصريح موقع بلا تنفيذ احتياطاته = ملاحظة كبرى محتملة.</field>
+        <field name="auditor_input_hint">التصاريح والأنشطة التي عاينتها</field>
+    </record>
+    <record id="c45001_8_1_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_8_1"/>
+        <field name="number">8.1.2</field>
+        <field name="name">إزالة الأخطار وتقليل مخاطر السلامة والصحة المهنية</field>
+        <field name="sequence">812</field>
+        <field name="requirement">إنشاء وتطبيق وصيانة عملية لإزالة الأخطار وتقليل المخاطر باستخدام التسلسل الهرمي للضوابط: (أ) الإزالة، (ب) الاستبدال، (ج) الضوابط الهندسية وإعادة تنظيم العمل، (د) الضوابط الإدارية بما فيها التدريب، (هـ) مهمات الوقاية الشخصية.</field>
+        <field name="evidence_expected">دليل تطبيق فعلي للتسلسل في تقييمات المخاطر وقرارات الضبط: أمثلة إزالة/استبدال/ضوابط هندسية موثقة، لا اعتماد شبه حصري على PPE والتوعية.</field>
+        <field name="evidence_hint">اطلب أمثلة محددة: ماذا أزلتم أو استبدلتم هذا العام؟ (مادة أقل خطورة، أتمتة رفع يدوي، حاجز آلة). نظام كل ضوابطه «تدريب + PPE» لأخطار جسيمة يعكس عدم فهم التسلسل الهرمي — ملاحظة نمطية.</field>
+        <field name="auditor_input_hint">أمثلة الضوابط بحسب مستويات التسلسل</field>
+    </record>
+    <record id="c45001_8_1_3" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_8_1"/>
+        <field name="number">8.1.3</field>
+        <field name="name">إدارة التغيير</field>
+        <field name="sequence">813</field>
+        <field name="requirement">عملية لتنفيذ وضبط التغييرات المخططة المؤثرة على أداء السلامة: منتجات/خدمات/عمليات جديدة أو متغيرة (مواقع ومحيط العمل، تنظيم العمل، ظروف العمل، المعدات، القوى العاملة)، تغييرات المتطلبات القانونية، تغيرات المعرفة بالأخطار، تطورات المعرفة والتقنية — ومراجعة تبعات التغييرات غير المقصودة واتخاذ إجراءات لتخفيف الآثار السلبية.</field>
+        <field name="evidence_expected">إجراء إدارة تغيير (MOC) يشترط تقييم مخاطر قبل أي تغيير جوهري (معدة جديدة، مادة جديدة، تعديل تخطيط)، بسجلات تغييرات منفذة عبره.</field>
+        <field name="evidence_hint">اختبر بأثر رجعي: ما آخر معدة أو خط أضيف؟ اطلب تقييم المخاطر السابق لتشغيله. تغيير جوهري نُفذ بلا تقييم مسبق = ملاحظة مباشرة على 8.1.3.</field>
+        <field name="auditor_input_hint">آخر تغيير جوهري وهل قُيّم مسبقاً</field>
+    </record>
+    <record id="c45001_8_1_4" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_8_1"/>
+        <field name="number">8.1.4</field>
+        <field name="name">الشراء (المقاولون والإسناد الخارجي)</field>
+        <field name="sequence">814</field>
+        <field name="requirement">ضبط شراء المنتجات والخدمات لضمان مطابقتها للنظام، والتنسيق مع المقاولين لتحديد الأخطار وتقييم وضبط المخاطر الناشئة عن أنشطتهم على المنظمة والعكس، وضمان وفائهم بمتطلبات النظام، وضمان خضوع الوظائف والعمليات المسندة خارجياً للضبط.</field>
+        <field name="evidence_expected">اشتراطات سلامة في التعاقد والتأهيل، تحريض إلزامي للمقاولين، إشراف ميداني على أعمالهم، وتضمين حوادثهم بإحصاءات الموقع، وضبط شراء المواد الخطرة (MSDS قبل الإدخال).</field>
+        <field name="evidence_hint">نقطة الضعف الأشهر بالأنظمة: مقاول يعمل بالموقع بمعايير أدنى من معايير المنظمة. عاين عمال مقاول ميدانياً: PPE؟ تصاريح؟ مدرجون بالتحريض؟ إصابات المقاولين غير المسجلة بالإحصاءات = ملاحظة.</field>
+        <field name="auditor_input_hint">المقاولون بالموقع وحالة ضبطهم</field>
+    </record>
+    <!-- ============ 9 ============ -->
+    <record id="c45001_9_1_1" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_9_1"/>
+        <field name="number">9.1.1</field>
+        <field name="name">عام (الرصد والقياس والتحليل وتقييم الأداء)</field>
+        <field name="sequence">911</field>
+        <field name="requirement">رصد وقياس وتحليل وتقييم أداء السلامة: تحديد ما يلزم رصده (بما يشمل مدى الوفاء بالمتطلبات القانونية، الأنشطة والعمليات المتعلقة بالأخطار والمخاطر والفرص، التقدم نحو الأهداف، فعالية الضوابط)، والطرق ومعايير التقييم والتوقيت — بمعدات معايرة، وتقييم الأداء وفعالية النظام، مع معلومات موثقة.</field>
+        <field name="evidence_expected">برنامج رصد يجمع مؤشرات استباقية (جولات، توك بوكس، إغلاق ملاحظات) وتفاعلية (إصابات، أحداث وشيكة)، وقياسات بيئة العمل (ضجيج، إضاءة، حرارة، تعرضات) بأجهزة معايرة ومختبرات معتمدة، وفحوصات طبية دورية للمعرضين.</field>
+        <field name="evidence_hint">تحقق من قياسات بيئة العمل للمخاطر الصحية المزمنة (ضجيج &gt; حد التعرض؟ برنامج حماية سمع؟) والفحوصات الطبية الدورية بحسب التعرض (سمع لعمال الضجيج، تنفس للغبار). غيابها مع وجود التعرض = ملاحظة جوهرية.</field>
+        <field name="auditor_input_hint">القياسات والفحوصات التي راجعتها</field>
+    </record>
+    <record id="c45001_9_1_2" model="raqib.clause">
+        <field name="standard_id" ref="standard_45001"/>
+        <field name="parent_id" ref="c45001_9_1"/>
+        <field name="number">9.1.2</field>
+        <field name="name">تقييم الامتثال</field>
+        <field name="sequence">912</field>
+        <field name="requirement">إنشاء وتطبيق وصيانة عملية لتقييم الامتثال للمتطلبات القانونية والمتطلبات الأخرى (6.1.3): تحديد التواتر والطرق، التقييم واتخاذ إجراءات عند الحاجة، الحفاظ على المعرفة والفهم لحالة الامتثال، ومعلومات موثقة بنتائج التقييم.</field>
+        <field name="evidence_expected">تقييم امتثال دوري موثق يمر على سجل المتطلبات القانونية للسلامة بنداً بنداً بحالة وأدلة (شهادات فحص سارية، فحوصات طبية منفذة، مسعفون بالنسب القانونية)، وإجراءات لأي فجوة.</field>
+        <field name="evidence_hint">لا تكتفِ بوجود السجل — اطلب آخر تقييم موثق لحالة الامتثال. اختبر عينة: هل عدد المسعفين يطابق النسبة القانونية؟ شهادات فحص الرافعات سارية؟ فجوة قانونية مكتشفة بلا إجراء = ملاحظة كبرى محتملة.</field>
+        <field name="auditor_input_hint">تاريخ آخر تقييم امتثال والفجوات</field>
+    </record>
+
+</odoo>

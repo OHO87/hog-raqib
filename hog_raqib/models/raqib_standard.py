@@ -11,6 +11,12 @@ class RaqibStandard(models.Model):
     code = fields.Char("الرمز", help="مثل: 9001")
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
+    is_meta = fields.Boolean(
+        "قائمة وصفية (لا تُختار)", default=False,
+        help="مواصفة وصفية لا يختارها المدقق — بنودها تُضاف تلقائياً حسب "
+             "نوع الزيارة (مثل قائمة أهداف المرحلة الأولى من "
+             "ISO/IEC 17021-1 §9.3.1.2.2). تُستبعد من اختيار المواصفات "
+             "ومن تصفية التقارير، وتظهر في تقرير كل مواصفة.")
     clause_ids = fields.One2many("raqib.clause", "standard_id", string="البنود")
     clause_count = fields.Integer(compute="_compute_clause_count")
 
@@ -48,8 +54,31 @@ class RaqibClause(models.Model):
     sequence = fields.Integer(default=10)
     is_leaf = fields.Boolean("بند قابل للتدقيق", default=True,
                              help="البنود الأب (مثل 4) لا تولّد سطر تدقيق")
-    applies_stage1 = fields.Boolean("Stage 1", default=True)
-    applies_stage2 = fields.Boolean("Stage 2", default=True)
+    # --- نطاق البند حسب نوع الزيارة (م2) -------------------------------
+    # المصدر: models/raqib_clause_scope.py — يُطبَّق في الترحيل و post_init_hook.
+    # الافتراضات هنا تخص أي بند يُنشأ يدوياً لاحقاً: المرحلة الثانية وما بعدها،
+    # والمرحلة الأولى تُفعَّل صراحةً فقط (وثائقية/جاهزية بنص §9.3.1.2.2).
+    applies_stage1 = fields.Boolean(
+        "المرحلة الأولى", default=False,
+        help="ينطبق في تدقيق المرحلة الأولى — مراجعة وثائقية وجاهزية وفهم "
+             "ونطاق (ISO/IEC 17021-1 §9.3.1.2.2).")
+    applies_stage2 = fields.Boolean(
+        "المرحلة الثانية", default=True,
+        help="ينطبق في تدقيق المرحلة الثانية — أدلة المطابقة والأداء والضبط "
+             "التشغيلي في الموقع (§9.3.1.3).")
+    applies_surveillance = fields.Boolean(
+        "المراقبة", default=True, help="ينطبق في زيارة المراقبة (§9.6.2.2).")
+    applies_recert = fields.Boolean(
+        "إعادة الاعتماد", default=True,
+        help="ينطبق في تدقيق إعادة الاعتماد (§9.6.3.2.1).")
+    is_surveillance_core = fields.Boolean(
+        "نواة المراقبة", default=False,
+        help="من البنود الثمانية الإلزامية في زيارة المراقبة "
+             "(§9.6.2.2 a–h) — لا يجوز تخطيها.")
+    stage1_focus = fields.Text(
+        "ماذا يُفحص في المرحلة الأولى",
+        help="حدود الفحص في المرحلة الأولى لهذا البند: مراجعة وثيقة؟ سؤال "
+             "فهم؟ تثبيت نطاق؟ — يظهر للمدقق في تدقيقات المرحلة الأولى فقط.")
 
     evidence_expected = fields.Text(
         "الدليل المتوقع",

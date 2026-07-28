@@ -14,6 +14,17 @@ const RESULT_BTNS = [
     { key: "na", label: "لا ينطبق", icon: "fa-ban", cls: "muted" },
 ];
 
+// المرحلة الأولى: مخرجاتها «مجالات اهتمام» (ISO/IEC 17021-1 §9.3.1.2.4).
+// تسميات مختصرة للأزرار — القيم المخزَّنة لا تتغير.
+const STAGE1_BTN_LABELS = {
+    conform: "جاهز",
+    class3: "تصنيف 3",
+    class4: "تصنيف 4",
+    nc_minor: "مجال اهتمام",
+    nc_major: "اهتمام جوهري",
+    na: "لا ينطبق",
+};
+
 // أقسام قاعدة المعرفة
 const KB_KINDS = [
     { key: "evidence", label: "أدلة مطابقة", icon: "fa-check", cls: "ok" },
@@ -204,6 +215,19 @@ export class RaqibAppRoot extends Component {
         }
     }
 
+    /** هل التدقيق المفتوح زيارة مرحلة أولى؟ */
+    get isStage1() {
+        return !!(this.state.audit && this.state.audit.is_stage1);
+    }
+
+    /** أزرار النتيجة بتسميات حسّاسة لنوع الزيارة. */
+    get resultButtons() {
+        if (!this.isStage1) { return RESULT_BTNS; }
+        return RESULT_BTNS.map((b) => Object.assign({}, b, {
+            label: STAGE1_BTN_LABELS[b.key] || b.label,
+        }));
+    }
+
     get filteredLines() {
         const f = this.state.filter;
         if (f === "pending") {
@@ -382,6 +406,11 @@ export class RaqibAppRoot extends Component {
                 "raqib_app_set_line", [line.id, vals]);
             if ("result" in vals) {
                 line.result = res.result;
+            }
+            // م2: تحذير ناعم عند تسجيل عدم مطابقة في المرحلة الأولى
+            if (res.warning) {
+                this.notification.add(res.warning,
+                    { type: "warning", sticky: false });
             }
             Object.assign(line, {
                 finding_number: res.finding_number,

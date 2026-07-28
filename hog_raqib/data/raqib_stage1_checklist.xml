@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    قائمة أهداف المرحلة الأولى — ISO/IEC 17021-1 §9.3.1.2.2 (a–g).
+
+    هذه ليست بنود مواصفة، بل أهداف المرحلة الأولى نفسها. تُحفظ كمواصفة
+    «وصفية» (is_meta) لا يختارها المدقق، وبنودها تُضاف تلقائياً إلى كل
+    تدقيق مرحلة أولى مهما كانت المواصفات المختارة (9001 أو IMS ثلاثي).
+
+    التسلسل 1–7 ليضعها التوليد قبل بنود المواصفة — تُملأ أولاً لأنها
+    تحدد نطاق المرحلة الثانية وتخطيطها.
+-->
+<odoo noupdate="1">
+
+    <record id="standard_stage1" model="raqib.standard">
+        <field name="name">أهداف المرحلة الأولى — ISO/IEC 17021-1 §9.3.1.2.2</field>
+        <field name="code">S1</field>
+        <field name="sequence">0</field>
+        <field name="is_meta" eval="True"/>
+    </record>
+
+    <record id="cS1_a" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.a</field>
+        <field name="name">مراجعة المعلومات الموثقة لنظام إدارة العميل</field>
+        <field name="sequence">1</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 a — review the client's management system documented information.</field>
+        <field name="evidence_expected">حزمة الوثائق المستلمة: دليل/نطاق النظام، السياسة، خريطة العمليات، الإجراءات الموثقة المطلوبة بالمواصفة، سجل الوثائق الرئيسي بإصداراته. يُثبَّت ما استُلم وما ينقص.</field>
+        <field name="stage1_focus">اكتمال الحزمة لا فعاليتها. سجّل الوثائق الناقصة كمجالات اهتمام تُغلق قبل المرحلة الثانية.</field>
+        <field name="auditor_input_hint">عدّد الوثائق المستلمة وحدد الناقص منها</field>
+    </record>
+
+    <record id="cS1_b" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.b</field>
+        <field name="name">تقييم الظروف الموقعية ومناقشات العاملين لتحديد الجاهزية للمرحلة الثانية</field>
+        <field name="sequence">2</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 b — evaluate the client's site-specific conditions and undertake discussions with the client's personnel to determine the preparedness for stage 2.</field>
+        <field name="evidence_expected">وصف الظروف الموقعية المؤثرة (طبيعة النشاط، المناوبات، المواقع المؤقتة، أعمال المقاولين) وخلاصة المناقشات مع المسؤولين — لغرض الجاهزية فقط.</field>
+        <field name="stage1_focus">المقابلات هنا لتقدير الجاهزية لا لجمع أدلة مطابقة. لا تُسجَّل أدلة تتبّع عينات أو فحص سجلات تشغيل في هذه المرحلة.</field>
+        <field name="auditor_input_hint">اذكر من قابلت ولأي غرض، وخلاصة تقدير الجاهزية</field>
+    </record>
+
+    <record id="cS1_c" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.c</field>
+        <field name="name">مراجعة حالة العميل وفهمه لمتطلبات المواصفة</field>
+        <field name="sequence">3</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 c — review the client's status and understanding regarding requirements of the standard, in particular with respect to the identification of key performance or significant aspects, processes, objectives and operation of the management system.</field>
+        <field name="evidence_expected">دليل فهم المتطلبات: تحديد العمليات الجوهرية ومؤشرات الأداء الرئيسية والجوانب/الأخطار الهامة والأهداف — ومدى وضوحها لدى مسؤولي النظام.</field>
+        <field name="stage1_focus">فهم لا تطبيق. النتيجة هنا تحدد ما إذا كان النظام ناضجاً كفاية للانتقال للمرحلة الثانية.</field>
+        <field name="auditor_input_hint">قيّم مستوى الفهم واذكر الفجوات</field>
+    </record>
+
+    <record id="cS1_d" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.d</field>
+        <field name="name">تثبيت النطاق: المواقع والعمليات والمعدات والضوابط المُنشأة والمتطلبات القانونية</field>
+        <field name="sequence">4</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 d — obtain information regarding the scope of the management system: processes and equipment used, levels of controls established (particularly in case of multisite clients), applicable statutory and regulatory requirements.</field>
+        <field name="evidence_expected">النطاق المقترح حرفياً، قائمة المواقع (دائمة/مؤقتة) والعمليات المُسندة خارجياً والمعدات الحرجة، ومستوى الضوابط المُنشأة، وسجل المتطلبات القانونية والتنظيمية المنطبقة.</field>
+        <field name="stage1_focus">أهم مخرج تعاقدي للمرحلة الأولى: أي خطأ في النطاق أو عدد المواقع ينعكس مباشرة على أيام التدقيق وعلى صحة الشهادة.</field>
+        <field name="auditor_input_hint">أثبت نص النطاق وعدد المواقع والعمليات المُسندة خارجياً</field>
+    </record>
+
+    <record id="cS1_e" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.e</field>
+        <field name="name">مراجعة تخصيص الموارد للمرحلة الثانية والاتفاق على تفاصيلها</field>
+        <field name="sequence">5</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 e — review the allocation of resources for stage 2 and agree with the client on the details of stage 2.</field>
+        <field name="evidence_expected">أيام التدقيق المخططة للمرحلة الثانية، تركيبة الفريق واحتياجات الخبرة الفنية والترجمة، التوقيت والمواقع المشمولة — متفق عليها مع العميل.</field>
+        <field name="stage1_focus">مخرج تخطيطي إلزامي. يُنقل إلى حقل «تفاصيل المرحلة الثانية المتفق عليها» في شاشة الخلاصة ثم إلى التقرير.</field>
+        <field name="auditor_input_hint">سجّل الأيام والفريق والتوقيت المتفق عليه</field>
+    </record>
+
+    <record id="cS1_f" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.f</field>
+        <field name="name">تكوين فهم كافٍ لتوجيه تخطيط المرحلة الثانية</field>
+        <field name="sequence">6</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 f — provide a focus for planning stage 2 by gaining a sufficient understanding of the client's management system and site operations in the context of the standard.</field>
+        <field name="evidence_expected">مجالات التركيز المقترحة للمرحلة الثانية: العمليات عالية المخاطر، المواقع الحرجة، البنود التي ظهرت فيها مؤشرات ضعف — مبررة.</field>
+        <field name="stage1_focus">مدخل تخطيط: صياغة أولويات المرحلة الثانية بناءً على ما رُصد وثائقياً وموقعياً.</field>
+        <field name="auditor_input_hint">حدد مجالات التركيز للمرحلة الثانية ومبرر كل منها</field>
+    </record>
+
+    <record id="cS1_g" model="raqib.clause">
+        <field name="standard_id" ref="standard_stage1"/>
+        <field name="number">S1.g</field>
+        <field name="name">التحقق من أن التدقيق الداخلي ومراجعة الإدارة مخططان ومنفَّذان</field>
+        <field name="sequence">7</field>
+        <field name="applies_stage1" eval="True"/>
+        <field name="applies_stage2" eval="False"/>
+        <field name="applies_surveillance" eval="False"/>
+        <field name="applies_recert" eval="False"/>
+        <field name="requirement">§9.3.1.2.2 g — evaluate if the internal audits and management review are being planned and performed, and that the level of implementation of the management system substantiates that the client is ready for stage 2.</field>
+        <field name="evidence_expected">برنامج تدقيق داخلي معتمد ودليل تنفيذ دورة كاملة واحدة على الأقل، ومحضر مراجعة إدارة واحد على الأقل بمدخلاته ومخرجاته.</field>
+        <field name="stage1_focus">وجود وتنفيذ لا فعالية. عمق التدقيق الداخلي وكفاية قرارات مراجعة الإدارة تُدقَّق في المرحلة الثانية (§9.3.1.3e).</field>
+        <field name="auditor_input_hint">أثبت تواريخ آخر تدقيق داخلي وآخر مراجعة إدارة</field>
+    </record>
+
+</odoo>

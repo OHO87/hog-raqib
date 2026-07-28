@@ -40,19 +40,24 @@ class RaqibReportFill(models.TransientModel):
     audit_id = fields.Many2one("raqib.audit", required=True)
     standard_id = fields.Many2one(
         "raqib.standard", string="المواصفة",
+        domain="[('is_meta','=',False)]",
         help="في التدقيق متعدد المواصفات: يولد تقرير هذه المواصفة فقط "
              "(بنودها وملاحظاتها). اتركه فارغاً لتقرير يشمل الكل.")
     template_file = fields.Binary("ملف التقرير من CMS (docx)", required=True)
     template_filename = fields.Char("اسم الملف")
 
     def _report_lines(self):
-        """بنود الفحص الداخلة في هذا التقرير (مفلترة بالمواصفة إن حددت)."""
+        """بنود الفحص الداخلة في هذا التقرير (مفلترة بالمواصفة إن حددت).
+
+        بنود القوائم الوصفية (قائمة المرحلة الأولى S1) لا تخص مواصفة بعينها
+        فتدخل في تقرير **كل** مواصفة، وإلا سقطت من التقارير المفلترة."""
         audit = self.audit_id
         lines = audit.line_ids.filtered(lambda l: l.result != "pending")
         if self.standard_id:
             std = self.standard_id
             lines = lines.filtered(
-                lambda l: std in l._covered_clauses().mapped("standard_id"))
+                lambda l: std in l._covered_clauses().mapped("standard_id")
+                or any(l._covered_clauses().mapped("standard_id.is_meta")))
         return lines
 
     def _report_findings(self):
@@ -62,7 +67,9 @@ class RaqibReportFill(models.TransientModel):
             std = self.standard_id
             findings = findings.filtered(
                 lambda f: std in (f.standard_ids
-                                  or f.clause_id.standard_id))
+                                  or f.clause_id.standard_id)
+                or any((f.standard_ids
+                        or f.clause_id.standard_id).mapped("is_meta")))
         return findings
 
     # ------------------------------------------------------------------
@@ -234,11 +241,15 @@ class RaqibReportFill(models.TransientModel):
         else:
             missing.append("Regulatory")
 
-        # 6) جاهزية Stage 2: سطر لكل بند مفحوص
+        # 6) جاهزية Stage 2: سطر لكل بند مفحوص — **للمرحلة الأولى فقط**.
+        # كان يُعبَّأ في كل التقارير أياً كان نوع الزيارة، فيظهر «جاهزية
+        # المرحلة الثانية» في تقرير مراقبة أو إعادة اعتماد بلا معنى.
         t = self._find_table(document, KEY_STAGE2_READY)
-        if t is not None:
-            result_label = dict(
-                audit.line_ids._fields["result"]._description_selection(self.env))
+        if t is not None and audit.audit_type != "stage1":
+            missing.append("Stage 2 Readiness (تُخطّى — ليست زيارة مرحلة أولى)")
+        elif t is not None:
+            # في المرحلة الأولى تُسمّى النتائج «مجالات اهتمام» (§9.3.1.2.4)
+            result_label = audit._result_labels()
             rows = []
             for line in self._report_lines():
                 ref = line.doc_reference or ""
@@ -256,10 +267,12 @@ class RaqibReportFill(models.TransientModel):
         else:
             missing.append("Stage 2 Readiness")
 
-        # 7) الملاحظات Comments Raised
+        # 7) الملاحظات Comments Raised — «areas of concern» في المرحلة الأولى
+        is_stage1 = audit.audit_type == "stage1"
         t = self._find_table(document, KEY_COMMENTS)
         if t is not None:
-            rows = [(str(f.number), f.description, f.urs_type_label())
+            rows = [(str(f.number), f.description,
+                     f.urs_type_label(stage1=is_stage1))
                     for f in self._report_findings()]
             if rows:
                 self._fill_repeating(t, rows)
@@ -279,6 +292,25 @@ class RaqibReportFill(models.TransientModel):
             filled.append("Next Visit")
         else:
             missing.append("Next Visit")
+
+        # 9) قسم خاص بالمرحلة الأولى: تفاصيل المرحلة الثانية المتفق عليها
+        # (§9.3.1.2.2e) + تنبيه أن مخرجات المرحلة «مجالات اهتمام».
+        # يُلحق في نهاية الوثيقة لأن قالب CMS لا يحوي جدولاً مخصصاً له.
+        if is_stage1:
+            document.add_paragraph()
+            head = document.add_paragraph()
+            run = head.add_run(
+                "Stage 1 — Agreed Details of Stage 2 / "
+                "تفاصيل المرحلة الثانية المتفق عليها")
+            run.bold = True
+            document.add_paragraph(audit.stage1_agreed_details or "—")
+            note = document.add_paragraph()
+            note_run = note.add_run(
+                "Note: Stage 1 findings are recorded as areas of concern "
+                "(ISO/IEC 17021-1 §9.3.1.2.4). No statement of effectiveness "
+                "or recommendation for certification is made at this stage.")
+            note_run.italic = True
+            filled.append("Stage 1 Agreed Details")
 
         out = io.BytesIO()
         document.save(out)

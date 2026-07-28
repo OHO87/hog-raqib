@@ -12,6 +12,34 @@ from .raqib_ea_sector import family_of
 KB_FETCH_LIMIT = 300
 KB_PER_KIND_LIMIT = 40
 
+# حقل يدوي على نموذج قاعدة المعرفة (نموذج Studio) يحدد صلاحية النقطة
+# حسب نوع الزيارة. ثلاث حالات:
+#   ""            لم تُصنَّف بعد  ⇒ تُعرض في كل الزيارات (افتراض آمن يضمن
+#                 أن أي استيراد محتوى جديد يظهر فوراً ولا يُحجب بالخطأ)
+#   "stage2_only" دليل مرحلة ثانية صريح ⇒ يُخفى في المرحلة الأولى
+#   "any"         صالحة لكل الزيارات بما فيها المرحلة الأولى
+KB_SCOPE_FIELD = "x_stage_scope"
+KB_SCOPE_STAGE2_ONLY = "stage2_only"
+KB_SCOPE_ANY = "any"
+
+# مؤشرات نصية على أن النقطة دليل مرحلة ثانية: حضور موقعي، تتبّع، عينات،
+# قياس أداء فعلي — كلها من §9.3.1.3 a–d ولا مكان لها في المرحلة الأولى.
+KB_STAGE2_MARKERS_EN = (
+    "was visited", "were visited", "site visit", "site tour", "walk through",
+    "walkthrough", "walk-through", "shop floor", "operational area",
+    "production line", "witnessed", "observed during", "observed on site",
+    "traced", "tracing", "sample of", "samples of", "sampled", "sampling",
+    "randomly selected", "selected sample", "spot check",
+    "performance against", "achievement against", "measurement results",
+    "physically verified", "on-site verification", "field visit",
+)
+KB_STAGE2_MARKERS_AR = (
+    "زيارة الموقع", "تمت زيارة", "زيارة ميدانية", "جولة ميدانية", "جولة في",
+    "تتبع", "تتبّع", "تُتبع", "عينة", "عينات", "معاينة", "شوهد", "لوحظ أثناء",
+    "خط الإنتاج", "أرض المصنع", "المناطق التشغيلية", "تحقق ميداني",
+    "الأداء مقابل", "نتائج القياس",
+)
+
 
 def _sel_label(rec, field):
     return dict(rec._fields[field]._description_selection(rec.env)).get(
@@ -44,8 +72,9 @@ class RaqibAuditApp(models.Model):
                       [self._app_audit_card(a) for a in done],
             "clients": self.env["raqib.client"].search_read(
                 [], ["name", "ea_codes"], limit=200),
+            # المواصفات الوصفية (قائمة المرحلة الأولى) لا يختارها المدقق
             "standards": self.env["raqib.standard"].search_read(
-                [], ["name", "code"], limit=20),
+                [("is_meta", "=", False)], ["name", "code"], limit=20),
             "ea_sectors": [
                 {"id": s.id, "code": s.code, "name": s.name,
                  "label": s.display_name}
@@ -61,6 +90,8 @@ class RaqibAuditApp(models.Model):
             "standard": " · ".join(
                 s.code or s.name for s in standards.sorted("sequence")),
             "is_multi": len(standards) > 1,
+            "audit_type": a.audit_type,
+            "is_stage1": a.audit_type == "stage1",
             "type_label": _sel_label(a, "audit_type"),
             "state": a.state, "state_label": _sel_label(a, "state"),
             "progress": round(a.progress),
@@ -119,6 +150,7 @@ class RaqibAuditApp(models.Model):
                 "client_action_label": _sel_label(self, "client_action"),
                 "recommendation": self.recommendation or "",
                 "next_visit_month": self.next_visit_month or "",
+                "stage1_agreed_details": self.stage1_agreed_details or "",
                 "report_name": self.report_docx_name or "",
                 "standard_list": [{
                     "id": s.id, "code": s.code or s.name,
@@ -127,9 +159,8 @@ class RaqibAuditApp(models.Model):
             }),
             "lines": [self._app_line(l) for l in self.line_ids],
             "findings": self._app_findings(),
-            "result_labels": dict(
-                self.env["raqib.audit.line"]._fields[
-                    "result"]._description_selection(self.env)),
+            # تسميات حسّاسة لنوع الزيارة: «مجال اهتمام» في المرحلة الأولى
+            "result_labels": self._result_labels(),
         }
 
     def _app_line(self, l):
@@ -142,6 +173,10 @@ class RaqibAuditApp(models.Model):
             "evidence": l.evidence_expected or "",
             "hint": l.evidence_hint or "",
             "input_hint": l.auditor_input_hint or "",
+            # م2: حدود الفحص في المرحلة الأولى — تُعرض في تدقيقات stage1 فقط
+            "stage1_focus": l.stage1_focus or "",
+            "is_surveillance_core": l.is_surveillance_core,
+            "is_meta": l.clause_id.standard_id.is_meta,
             "doc_reference": l.doc_reference or "",
             "last_review_date": l.last_review_date
                 and fields.Date.to_string(l.last_review_date) or "",
@@ -190,8 +225,17 @@ class RaqibAuditApp(models.Model):
             allowed["last_review_date"] = False
         line.write(allowed)
         audit = line.audit_id
+        # تحذير ناعم لا منع: §9.3.1.2.4 يسمّي مخرجات المرحلة الأولى
+        # «areas of concern»، لكن الوثيقة لا تمنع صراحةً تسجيل عدم مطابقة.
+        warning = ""
+        if audit.audit_type == "stage1" and line.result in ("nc_minor", "nc_major"):
+            warning = _(
+                "المرحلة الأولى مخرجاتها «مجالات اهتمام» (§9.3.1.2.4). "
+                "سُجِّلت النتيجة كما اخترتها، وستظهر في التقرير بصياغة "
+                "«مجال اهتمام» — راجع إن كنت تقصد تصنيف 3 بدلاً منها.")
         return {
             "result": line.result,
+            "warning": warning,
             "finding_number": line.finding_id.number or 0,
             "progress": round(audit.progress),
             "findings_count": audit.finding_count,
@@ -208,7 +252,7 @@ class RaqibAuditApp(models.Model):
         allowed = {k: v for k, v in vals.items() if k in (
             "mandays_planned", "mandays_actual", "mandays_justification",
             "recommendation", "client_action", "next_visit_month",
-            "next_visit_activity")}
+            "next_visit_activity", "stage1_agreed_details")}
         self.write(allowed)
         return True
 
@@ -259,9 +303,16 @@ class RaqibAuditApp(models.Model):
                 return (1, r.id)
             return (2, r.id)
 
+        # م2: في المرحلة الأولى تُخفى النقاط الموسومة «دليل مرحلة ثانية»
+        # (زيارة موقع، تتبّع، عينات، قياس أداء — §9.3.1.3 a–d).
+        # النقاط غير المصنَّفة تبقى ظاهرة، فلا يُحجب أي محتوى جديد بالخطأ.
+        domain = [("x_clause_id", "in", clauses.ids)]
+        if (line.audit_id.audit_type == "stage1"
+                and KB_SCOPE_FIELD in Ex._fields):
+            domain.append((KB_SCOPE_FIELD, "!=", KB_SCOPE_STAGE2_ONLY))
+
         # ب-22: حد على الجلب — بند شائع قد يحمل مئات الأمثلة
-        examples = Ex.search([("x_clause_id", "in", clauses.ids)],
-                             limit=KB_FETCH_LIMIT)
+        examples = Ex.search(domain, limit=KB_FETCH_LIMIT)
         out = {"evidence": [], "ofi": [], "nc": []}
         for ex in examples.sorted(key=rank):
             # ب-6: قيمة x_kind غير متوقعة كانت تُحدث KeyError وتُسقط اللوحة
@@ -279,6 +330,51 @@ class RaqibAuditApp(models.Model):
                     if line.is_merged else "",
             })
         return out
+
+    # ------------------------------------------- تصنيف نقاط قاعدة المعرفة
+    @api.model
+    def raqib_kb_classify_text(self, text_en, text_ar=""):
+        """هل النقطة دليل مرحلة ثانية صريح؟ تصنيف نصي محافظ.
+
+        نبحث عن حضور موقعي أو تتبّع أو عينات أو قياس أداء — أي §9.3.1.3 a–d.
+        ما عدا ذلك يُعتبر صالحاً لكل الزيارات، لأن الخطأ في اتجاه الإخفاء
+        أسوأ من الخطأ في اتجاه الإظهار.
+        """
+        low = (text_en or "").lower()
+        if any(m in low for m in KB_STAGE2_MARKERS_EN):
+            return KB_SCOPE_STAGE2_ONLY
+        ar = text_ar or ""
+        if any(m in ar for m in KB_STAGE2_MARKERS_AR):
+            return KB_SCOPE_STAGE2_ONLY
+        return KB_SCOPE_ANY
+
+    @api.model
+    def raqib_kb_autotag_scope(self, only_untagged=True, limit=None):
+        """وسم نقاط قاعدة المعرفة بنطاق الزيارة الصالح لها.
+
+        قابلة لإعادة التشغيل: بعد أي استيراد محتوى جديد شغّلها بـ
+        ``only_untagged=True`` فتمس النقاط غير المصنَّفة فقط ولا تدهس
+        أي تصنيف يدوي سابق.
+
+        :return: dict بإحصاء ما وُسم.
+        """
+        if "x_raqib.kb.example" not in self.env:
+            return {"error": "نموذج قاعدة المعرفة غير موجود"}
+        Ex = self.env["x_raqib.kb.example"]
+        if KB_SCOPE_FIELD not in Ex._fields:
+            return {"error": "الحقل %s غير معرَّف بعد" % KB_SCOPE_FIELD}
+        domain = []
+        if only_untagged:
+            domain = ["|", (KB_SCOPE_FIELD, "=", False),
+                      (KB_SCOPE_FIELD, "=", "")]
+        records = Ex.search(domain, limit=limit)
+        counts = {KB_SCOPE_STAGE2_ONLY: 0, KB_SCOPE_ANY: 0}
+        for rec in records:
+            scope = self.raqib_kb_classify_text(rec.x_text, rec.x_text_ar)
+            if rec[KB_SCOPE_FIELD] != scope:
+                rec.write({KB_SCOPE_FIELD: scope})
+            counts[scope] += 1
+        return {"scanned": len(records), **counts}
 
     @api.model
     def raqib_app_append_note(self, line_id, text):

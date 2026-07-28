@@ -171,6 +171,17 @@
           </div>
         </div>
 
+        <!-- تحذير ناعم لزيارة المرحلة الأولى — لا منع صلب -->
+        <div t-if="isStage1" class="raqib-stage1-bar">
+          <i class="fa fa-info-circle"/>
+          <div>
+            <strong>زيارة مرحلة أولى</strong>
+            <p>نطاقها مراجعة وثائقية وجاهزية وفهم وتثبيت نطاق
+               (ISO/IEC 17021-1 §9.3.1.2.2): لا تقييم فعالية، ولا تتبّع عينات،
+               ولا توصية منح. النتائج تُسجَّل «مجالات اهتمام» (§9.3.1.2.4).</p>
+          </div>
+        </div>
+
         <div class="raqib-tabs">
           <button t-attf-class="raqib-tab {{state.tab === 'lines' ? 'active' : ''}}"
                   t-on-click="() => state.tab = 'lines'">
@@ -178,7 +189,9 @@
           </button>
           <button t-attf-class="raqib-tab {{state.tab === 'findings' ? 'active' : ''}}"
                   t-on-click="() => state.tab = 'findings'">
-            <i class="fa fa-flag-o"/> الملاحظات
+            <i class="fa fa-flag-o"/>
+            <t t-if="isStage1">مجالات الاهتمام</t>
+            <t t-else="">الملاحظات</t>
             <span t-if="state.findings.length" class="raqib-tab-count" t-esc="state.findings.length"/>
           </button>
           <button t-attf-class="raqib-tab {{state.tab === 'summary' ? 'active' : ''}}"
@@ -206,6 +219,15 @@
               <span class="raqib-line-no" t-esc="l.number"/>
               <div class="raqib-line-title">
                 <strong t-esc="l.title"/>
+                <span t-if="l.is_meta" class="raqib-chip is-s1"
+                      title="من أهداف المرحلة الأولى — ISO/IEC 17021-1 §9.3.1.2.2">
+                  <i class="fa fa-flag-checkered"/> هدف مرحلة أولى
+                </span>
+                <span t-if="l.is_surveillance_core and state.audit.audit_type === 'surveillance'"
+                      class="raqib-chip is-core"
+                      title="من النواة الإلزامية لزيارة المراقبة — §9.6.2.2">
+                  <i class="fa fa-thumb-tack"/> نواة مراقبة
+                </span>
                 <span t-if="l.is_merged" class="raqib-chip is-ims"
                       title="بند مدمج يغطي المواصفات المختارة">
                   <i class="fa fa-compress"/> <t t-esc="l.standards"/>
@@ -239,6 +261,15 @@
                   </div>
                 </div>
               </div>
+              <!-- حدود الفحص في المرحلة الأولى — يظهر في stage1 فقط -->
+              <div class="raqib-stage1-focus" t-if="isStage1 and l.stage1_focus">
+                <i class="fa fa-crosshairs"/>
+                <div>
+                  <span class="raqib-stage1-focus-lbl">حدود الفحص في المرحلة الأولى</span>
+                  <p t-esc="l.stage1_focus"/>
+                </div>
+              </div>
+
               <!-- ما يحتاجه المدقق فوراً: أقصر سطر ممكن -->
               <div class="raqib-line-ask" t-if="l.input_hint">
                 <i class="fa fa-hand-o-left"/>
@@ -286,6 +317,9 @@
                 <div class="raqib-kb-head">
                   <i class="fa fa-database"/> أمثلة جاهزة من تدقيقات سابقة
                   <small>— الأقرب لقطاع العميل أولًا · عدّل ما بين [الأقواس] فقط</small>
+                  <small t-if="isStage1" class="raqib-kb-stage1-note">
+                    · أمثلة زيارة المواقع وتتبّع العينات مخفية — أدلة مرحلة ثانية
+                  </small>
                   <i t-if="state.kbLoading" class="fa fa-circle-o-notch fa-spin"/>
                 </div>
                 <div class="raqib-seg raqib-kb-tabs">
@@ -364,7 +398,7 @@
               <textarea class="form-control" t-att-value="l.note"
                         t-on-change="(ev) => this.saveLineField(l, 'note', ev.target.value)"/>
               <div class="raqib-results">
-                <button t-foreach="resultBtns" t-as="b" t-key="b.key"
+                <button t-foreach="resultButtons" t-as="b" t-key="b.key"
                         t-attf-class="raqib-result-btn is-{{b.cls}} {{l.result === b.key ? 'active' : ''}}"
                         t-on-click="() => this.setResult(l, b.key)">
                   <i t-attf-class="fa {{b.icon}}"/> <t t-esc="b.label"/>
@@ -414,6 +448,17 @@
                        t-on-change="(ev) => this.saveAuditField('next_visit_month', ev.target.value)"/>
               </div>
             </div>
+            <!-- §9.3.1.2.2e — مخرج إلزامي للمرحلة الأولى -->
+            <div t-if="isStage1" class="raqib-stage1-agreed">
+              <label>تفاصيل المرحلة الثانية المتفق عليها
+                <small>— التوقيت والمدة والمواقع والعمليات ولغة التدقيق
+                       واحتياجات الخبرة الفنية (§9.3.1.2.2e)</small>
+              </label>
+              <textarea class="form-control" rows="4"
+                        t-att-value="state.audit.stage1_agreed_details"
+                        t-on-change="(ev) => this.saveAuditField('stage1_agreed_details', ev.target.value)"/>
+            </div>
+
             <div class="raqib-hintbox is-action">
               <i class="fa fa-magic"/>
               <div>

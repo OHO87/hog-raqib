@@ -47,12 +47,20 @@ class RaqibFinding(models.Model):
                 vals["number"] = (last.number or 0) + 1
         return super().create(vals_list)
 
-    def urs_type_label(self):
-        """التسمية الرقمية لعمود Type of Comment في تقرير URS."""
+    def urs_type_label(self, stage1=False):
+        """التسمية الرقمية لعمود Type of Comment في تقرير URS.
+
+        في المرحلة الأولى تُسمّى المخرجات «areas of concern»
+        (ISO/IEC 17021-1 §9.3.1.2.4). نُبقي رمز URS كما هو — التصنيفان 3 و4
+        صالحان في المرحلة الأولى أصلاً — ونُلحق الوسم بعدم المطابقات فقط
+        حفاظاً على اصطلاح التقرير مع توضيح دلالة المرحلة."""
         self.ensure_one()
-        return {
+        base = {
             "class3": "3",
             "class4": "4",
             "nc_minor": "Minor NC",
             "nc_major": "Major NC",
         }[self.classification]
+        if stage1 and self.classification in ("nc_minor", "nc_major"):
+            return "%s (Area of Concern)" % base
+        return base
