@@ -27,7 +27,10 @@
                     <group>
                         <group>
                             <field name="client_id"/>
-                            <field name="standard_id"/>
+                            <field name="standard_ids" widget="many2many_tags"/>
+                            <field name="standard_id" string="المواصفة الأساسية"
+                                   readonly="1" force_save="1"/>
+                            <field name="is_multi_standard" invisible="1"/>
                             <field name="audit_type"/>
                         </group>
                         <group>
@@ -46,6 +49,9 @@
                                       decoration-danger="result in ('nc_minor','nc_major')"
                                       decoration-muted="result == 'na'">
                                     <field name="number" readonly="1" width="70px"/>
+                                    <field name="standard_codes" readonly="1"
+                                           string="المواصفات" optional="show" width="110px"/>
+                                    <field name="is_merged" column_invisible="1"/>
                                     <field name="clause_name" readonly="1"/>
                                     <field name="evidence_expected" readonly="1" optional="show" width="300px"/>
                                     <field name="auditor_input_hint" readonly="1" optional="hide"/>
@@ -64,6 +70,9 @@
                                             icon="fa-lightbulb-o" title="تصنيف 4 — فرصة تحسين"/>
                                     <button name="action_set_na" type="object"
                                             icon="fa-ban" title="لا ينطبق"/>
+                                    <button name="action_split_line" type="object"
+                                            icon="fa-columns" title="فصل حسب المواصفة"
+                                            invisible="not is_merged"/>
                                     <field name="finding_id" column_invisible="1"/>
                                 </list>
                             </field>
@@ -138,13 +147,43 @@
                   decoration-success="state == 'done'">
                 <field name="name"/>
                 <field name="client_id"/>
-                <field name="standard_id"/>
+                <field name="standard_ids" widget="many2many_tags" string="المواصفات"/>
+                <field name="standard_id" optional="hide"/>
                 <field name="audit_type"/>
                 <field name="date_start"/>
                 <field name="progress" widget="progressbar"/>
                 <field name="finding_count" string="ملاحظات"/>
                 <field name="state" widget="badge"/>
             </list>
+        </field>
+    </record>
+
+    <record id="view_raqib_audit_search" model="ir.ui.view">
+        <field name="name">raqib.audit.search</field>
+        <field name="model">raqib.audit</field>
+        <field name="arch" type="xml">
+            <search string="بحث في التدقيقات">
+                <field name="name" string="رقم الزيارة"/>
+                <field name="client_id"/>
+                <field name="standard_ids" string="المواصفة"/>
+                <filter name="filter_multi" string="نظام متكامل (IMS)"
+                        domain="[('standard_ids','!=',False)]"/>
+                <separator/>
+                <filter name="filter_9001" string="ISO 9001"
+                        domain="[('standard_ids.code','=','9001')]"/>
+                <filter name="filter_14001" string="ISO 14001"
+                        domain="[('standard_ids.code','=','14001')]"/>
+                <filter name="filter_45001" string="ISO 45001"
+                        domain="[('standard_ids.code','=','45001')]"/>
+                <group expand="0" string="تجميع حسب">
+                    <filter name="group_client" string="العميل"
+                            context="{'group_by': 'client_id'}"/>
+                    <filter name="group_standard" string="المواصفة الأساسية"
+                            context="{'group_by': 'standard_id'}"/>
+                    <filter name="group_state" string="الحالة"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
         </field>
     </record>
 

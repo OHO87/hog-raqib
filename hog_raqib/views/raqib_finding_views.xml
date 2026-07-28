@@ -11,6 +11,8 @@
                 <field name="number" width="60px"/>
                 <field name="audit_id"/>
                 <field name="clause_id"/>
+                <field name="standard_ids" widget="many2many_tags"
+                       string="المواصفات" optional="show"/>
                 <field name="description"/>
                 <field name="classification" widget="badge"/>
                 <field name="state" widget="badge"/>
@@ -29,8 +31,12 @@
                             <field name="audit_id"/>
                             <field name="number" readonly="1"/>
                             <field name="clause_id"/>
+                            <field name="clause_ids" widget="many2many_tags"
+                                   string="البنود المشمولة (عند الدمج)"/>
                         </group>
                         <group>
+                            <field name="standard_ids" widget="many2many_tags"
+                                   string="المواصفات" readonly="1"/>
                             <field name="classification"/>
                             <field name="state"/>
                         </group>
