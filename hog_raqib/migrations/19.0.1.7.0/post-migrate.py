@@ -45,10 +45,20 @@ def _ensure_kb_scope_field(env):
         "index": True,
     })
     # إنشاء حقل يدوي يعيد بناء السجل عادةً؛ نتأكد صراحةً تفادياً لاختلاف
-    # التوقيت بين الإصدارات.
+    # التوقيت بين الإصدارات. اسم دالة إعادة البناء تغيّر عبر الإصدارات
+    # (`setup_models` → `_setup_models__` في 19.0) فنبحث عنها بالاسمين.
     if KB_SCOPE_FIELD not in env[KB_MODEL]._fields:
         env.flush_all()
-        env.registry.setup_models(env.cr)
+        rebuild = (getattr(env.registry, "_setup_models__", None)
+                   or getattr(env.registry, "setup_models", None))
+        if rebuild:
+            try:
+                rebuild(env.cr)
+            except TypeError:
+                rebuild(env.cr, [KB_MODEL])
+        else:
+            _logger.warning("raqib m2: cannot rebuild registry — "
+                            "%s may need a manual restart.", KB_SCOPE_FIELD)
     return KB_SCOPE_FIELD in env[KB_MODEL]._fields
 
 

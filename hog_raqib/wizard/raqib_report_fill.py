@@ -148,7 +148,8 @@ class RaqibReportFill(models.TransientModel):
                 "ثم أعد تشغيل أودو.")
         audit = self.audit_id
         document = docx.Document(io.BytesIO(base64.b64decode(self.template_file)))
-        filled, missing = [], []
+        # skipped ≠ missing: المتخطّى قرار مقصود، والمفقود يحتاج تعبئة يدوية
+        filled, missing, skipped = [], [], []
 
         # 1) Man-days
         t = self._find_table(document, KEY_MANDAYS)
@@ -246,7 +247,7 @@ class RaqibReportFill(models.TransientModel):
         # المرحلة الثانية» في تقرير مراقبة أو إعادة اعتماد بلا معنى.
         t = self._find_table(document, KEY_STAGE2_READY)
         if t is not None and audit.audit_type != "stage1":
-            missing.append("Stage 2 Readiness (تُخطّى — ليست زيارة مرحلة أولى)")
+            skipped.append("Stage 2 Readiness — ليست زيارة مرحلة أولى")
         elif t is not None:
             # في المرحلة الأولى تُسمّى النتائج «مجالات اهتمام» (§9.3.1.2.4)
             result_label = audit._result_labels()
@@ -310,7 +311,12 @@ class RaqibReportFill(models.TransientModel):
                 "(ISO/IEC 17021-1 §9.3.1.2.4). No statement of effectiveness "
                 "or recommendation for certification is made at this stage.")
             note_run.italic = True
-            filled.append("Stage 1 Agreed Details")
+            # §9.3.1.2.2e مخرج إلزامي — الفراغ نقص لا إنجاز
+            if audit.stage1_agreed_details:
+                filled.append("Stage 1 Agreed Details")
+            else:
+                missing.append("Stage 1 Agreed Details (تفاصيل المرحلة الثانية "
+                               "المتفق عليها — §9.3.1.2.2e)")
 
         out = io.BytesIO()
         document.save(out)
@@ -332,10 +338,11 @@ class RaqibReportFill(models.TransientModel):
                          ".wordprocessingml.document"),
         })
         audit.message_post(body=(
-            "تم توليد التقرير%s. جداول عبئت: %s.%s"
+            "تم توليد التقرير%s. جداول عبئت: %s.%s%s"
             % ((" (مواصفة %s)" % self.standard_id.code)
                if self.standard_id else "",
                ", ".join(filled),
+               (" تُخطّيت عمداً: %s." % ", ".join(skipped)) if skipped else "",
                (" لم يعثر على: %s — عبئها يدوياً." % ", ".join(missing))
                if missing else "")))
         return {

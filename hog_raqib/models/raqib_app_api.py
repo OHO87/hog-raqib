@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """واجهات JSON لتطبيق رقيب المستقل (/raqib) — حمولات مجمعة لتقليل الرحلات."""
 import base64
+import re
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from .raqib_audit import NC_RESULTS
 from .raqib_ea_sector import family_of
 
 # حد أعلى لأمثلة قاعدة المعرفة المُحمَّلة لبند واحد — يمنع تحميل مئات
@@ -33,12 +35,20 @@ KB_STAGE2_MARKERS_EN = (
     "performance against", "achievement against", "measurement results",
     "physically verified", "on-site verification", "field visit",
 )
+# العربية تحتاج حدود كلمات: «عينة» تطابق داخل «معيَّنة» و«تتبع» داخل
+# «تتبعية»، فتُخفى نقاط مشروعة. نطابق بحدود حروف عربية صريحة.
 KB_STAGE2_MARKERS_AR = (
     "زيارة الموقع", "تمت زيارة", "زيارة ميدانية", "جولة ميدانية", "جولة في",
-    "تتبع", "تتبّع", "تُتبع", "عينة", "عينات", "معاينة", "شوهد", "لوحظ أثناء",
+    "تتبع", "تتبّع", "عينة", "عينات", "معاينة", "شوهد", "لوحظ أثناء",
     "خط الإنتاج", "أرض المصنع", "المناطق التشغيلية", "تحقق ميداني",
     "الأداء مقابل", "نتائج القياس",
 )
+
+# حرف عربي أو لاتيني أو رقم — ما قبل/بعد المؤشر يجب ألا يكون منها
+_AR_WORD = r"[\wء-ٰٟ-ۿ]"
+KB_STAGE2_RE_AR = re.compile(
+    "|".join("(?<!%s)%s(?!%s)" % (_AR_WORD, re.escape(m), _AR_WORD)
+             for m in KB_STAGE2_MARKERS_AR))
 
 
 def _sel_label(rec, field):
@@ -108,6 +118,10 @@ class RaqibAuditApp(models.Model):
             [vals["standard_id"]] if vals.get("standard_id") else [])
         if not standard_ids:
             raise UserError(_("اختر مواصفة واحدة على الأقل."))
+        # المواصفات الوصفية (قائمة المرحلة الأولى) تُحقن آلياً ولا تُختار —
+        # التصفية في الواجهة وحدها لا تكفي أمام نداء RPC مباشر.
+        if self.env["raqib.standard"].browse(standard_ids).filtered("is_meta"):
+            raise UserError(_("لا يمكن اختيار قائمة وصفية كمواصفة تدقيق."))
 
         client_id = vals.get("client_id")
         sector_ids = [s for s in (vals.get("ea_sector_ids") or []) if s]
@@ -228,7 +242,7 @@ class RaqibAuditApp(models.Model):
         # تحذير ناعم لا منع: §9.3.1.2.4 يسمّي مخرجات المرحلة الأولى
         # «areas of concern»، لكن الوثيقة لا تمنع صراحةً تسجيل عدم مطابقة.
         warning = ""
-        if audit.audit_type == "stage1" and line.result in ("nc_minor", "nc_major"):
+        if audit.audit_type == "stage1" and line.result in NC_RESULTS:
             warning = _(
                 "المرحلة الأولى مخرجاتها «مجالات اهتمام» (§9.3.1.2.4). "
                 "سُجِّلت النتيجة كما اخترتها، وستظهر في التقرير بصياغة "
@@ -343,8 +357,7 @@ class RaqibAuditApp(models.Model):
         low = (text_en or "").lower()
         if any(m in low for m in KB_STAGE2_MARKERS_EN):
             return KB_SCOPE_STAGE2_ONLY
-        ar = text_ar or ""
-        if any(m in ar for m in KB_STAGE2_MARKERS_AR):
+        if KB_STAGE2_RE_AR.search(text_ar or ""):
             return KB_SCOPE_STAGE2_ONLY
         return KB_SCOPE_ANY
 

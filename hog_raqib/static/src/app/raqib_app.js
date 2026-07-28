@@ -40,7 +40,8 @@ export class RaqibAppRoot extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
-        this.resultBtns = RESULT_BTNS;
+        // أزرار النتيجة تُقرأ من getter `resultButtons` — تسمياتها حسّاسة
+        // لنوع الزيارة، فلا نُثبّت النسخة الخام على المكوّن.
         this.kbKinds = KB_KINDS;
         this.state = useState({
             loading: true,

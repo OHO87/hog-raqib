@@ -47,7 +47,8 @@ class RaqibAudit(models.Model):
     client_id = fields.Many2one("raqib.client", string="العميل",
                                 required=True, tracking=True)
     standard_id = fields.Many2one("raqib.standard", string="المواصفة",
-                                  required=True, tracking=True)
+                                  required=True, tracking=True,
+                                  domain="[('is_meta','=',False)]")
     standard_ids = fields.Many2many(
         "raqib.standard", "raqib_audit_standard_rel", "audit_id", "standard_id",
         string="المواصفات", domain="[('is_meta','=',False)]",
@@ -240,14 +241,17 @@ class RaqibAudit(models.Model):
     def action_regenerate_lines(self):
         """إعادة توليد البنود بعد تغيير نوع الزيارة أو المواصفات.
 
-        يُرفض إن كان أي سطر مفحوصاً — لا نتلف عمل المدقق. (يعالج أيضاً ب-19:
-        فشل التوليد بعد الإنشاء كان يترك تدقيقاً بلا بنود ولا مخرج.)"""
+        يُرفض إن كان أي سطر يحمل عمل مدقق — نتيجة أو ملاحظة أو مرجع وثيقة —
+        لا النتيجة وحدها: سطر «لم يفحص» قد يحمل ملاحظة مكتوبة تُفقد بالحذف.
+        (يعالج أيضاً ب-19: فشل التوليد بعد الإنشاء كان يترك تدقيقاً بلا بنود.)"""
         for rec in self:
-            done = rec.line_ids.filtered(lambda l: l.result != "pending")
+            done = rec.line_ids.filtered(
+                lambda l: l.result != "pending" or l.note
+                or l.doc_reference or l.last_review_date)
             if done:
                 raise UserError(
-                    "لا يمكن إعادة التوليد: %d بنداً مفحوصاً بالفعل. "
-                    "احذف نتائجها أولاً إن كنت متأكداً." % len(done))
+                    "لا يمكن إعادة التوليد: %d بنداً يحمل نتيجة أو ملاحظة أو "
+                    "مرجع وثيقة. امسح محتواها أولاً إن كنت متأكداً." % len(done))
             rec.line_ids.unlink()
             rec.action_generate_lines()
         return True
