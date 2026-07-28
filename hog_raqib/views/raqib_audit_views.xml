@@ -175,14 +175,13 @@
                         domain="[('standard_ids.code','=','14001')]"/>
                 <filter name="filter_45001" string="ISO 45001"
                         domain="[('standard_ids.code','=','45001')]"/>
-                <group expand="0" string="تجميع حسب">
-                    <filter name="group_client" string="العميل"
-                            context="{'group_by': 'client_id'}"/>
-                    <filter name="group_standard" string="المواصفة الأساسية"
-                            context="{'group_by': 'standard_id'}"/>
-                    <filter name="group_state" string="الحالة"
-                            context="{'group_by': 'state'}"/>
-                </group>
+                <separator/>
+                <filter name="group_client" string="العميل"
+                        context="{'group_by': 'client_id'}"/>
+                <filter name="group_standard" string="المواصفة الأساسية"
+                        context="{'group_by': 'standard_id'}"/>
+                <filter name="group_state" string="الحالة"
+                        context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
