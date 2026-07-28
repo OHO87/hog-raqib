@@ -20,6 +20,17 @@ class RaqibStandard(models.Model):
             rec.clause_count = len(rec.clause_ids)
 
 
+# بنود تحمل نفس الرقم عبر المواصفات لكن متطلبها مختلف جوهرياً — يُمنع دمجها.
+# المفتاح: (رمز المواصفة، رقم البند) → يُفرد البند بمفتاح خاص فلا يندمج مع غيره.
+NO_MERGE_CLAUSES = {
+    # 9001 8.2 «متطلبات المنتجات والخدمات» ≠ 14001/45001 8.2 «الاستعداد والاستجابة للطوارئ»
+    ("9001", "8.2"),
+    # 14001 6.1.2 «الجوانب البيئية» ≠ 45001 6.1.2 «تحديد الأخطار وتقييم المخاطر»
+    ("14001", "6.1.2"),
+    ("45001", "6.1.2"),
+}
+
+
 class RaqibClause(models.Model):
     _name = "raqib.clause"
     _description = "بند مواصفة (رقيب)"
@@ -51,6 +62,19 @@ class RaqibClause(models.Model):
         help="أقل إدخال مطلوب من المدقق لهذا البند، مثل: تاريخ آخر مراجعة للتحليل")
 
     display_label = fields.Char(compute="_compute_display_label", store=True)
+    hls_key = fields.Char(
+        "مفتاح الدمج (HLS)", compute="_compute_hls_key", store=True, index=True,
+        help="البنود التي تتشارك نفس المفتاح تُدمج في سطر تدقيق واحد عند اختيار "
+             "أكثر من مواصفة. الافتراضي هو رقم البند، ما لم يكن البند ضمن "
+             "استثناءات عدم الدمج.")
+
+    @api.depends("number", "standard_id.code")
+    def _compute_hls_key(self):
+        for rec in self:
+            code = rec.standard_id.code or ""
+            number = rec.number or ""
+            rec.hls_key = ("%s-%s" % (code, number)
+                           if (code, number) in NO_MERGE_CLAUSES else number)
 
     _sql_constraints = [
         ("clause_unique", "unique(standard_id, number)",

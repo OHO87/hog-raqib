@@ -169,17 +169,19 @@ class RaqibAudit(models.Model):
                 vals_list = [{"audit_id": rec.id, "clause_id": c.id,
                               "clause_ids": [(6, 0, [c.id])]} for c in clauses]
             else:
-                # دمج البنود المشتركة (HLS) بالرقم عبر المواصفات المختارة
+                # دمج البنود المشتركة (HLS) بمفتاح الدمج عبر المواصفات المختارة.
+                # المفتاح = رقم البند، إلا للبنود المستثناة (نفس الرقم/متطلب مختلف).
                 std_order = {s.id: i for i, s in enumerate(
                     standards.sorted("sequence"))}
                 groups = {}
                 order = []
                 for c in clauses:
-                    if c.number not in groups:
-                        groups[c.number] = c
-                        order.append(c.number)
+                    key = c.hls_key or c.number
+                    if key not in groups:
+                        groups[key] = c
+                        order.append(key)
                     else:
-                        groups[c.number] |= c
+                        groups[key] |= c
                 for number in order:
                     grp = groups[number].sorted(
                         key=lambda c: std_order.get(c.standard_id.id, 99))
