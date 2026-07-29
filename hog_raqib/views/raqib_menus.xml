@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- مدخل التطبيق: النقر على أيقونة «رقيب» يفتح قمرة التدقيق مباشرة
+         (واجهة OWL بنمط نقطة البيع على /raqib) لا القوائم الخلفية. -->
+    <record id="action_raqib_app" model="ir.actions.act_url">
+        <field name="name">قمرة التدقيق</field>
+        <field name="url">/raqib</field>
+        <field name="target">self</field>
+    </record>
+
     <menuitem id="menu_raqib_root" name="رقيب"
               web_icon="hog_raqib,static/description/icon.png"
+              action="action_raqib_app"
               sequence="35"/>
+
+    <menuitem id="menu_raqib_cockpit" name="قمرة التدقيق"
+              parent="menu_raqib_root" action="action_raqib_app" sequence="1"/>
 
     <menuitem id="menu_raqib_audits" name="التدقيقات"
               parent="menu_raqib_root" action="action_raqib_audit" sequence="10"/>
